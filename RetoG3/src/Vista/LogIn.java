@@ -57,13 +57,13 @@ public class LogIn extends JFrame implements ActionListener {
 		btnLogIn.addActionListener(this);
 		
 		textFieldUsername = new JTextField();
-		textFieldUsername.setFont(new Font("Goudy Old Style", Font.PLAIN, 10));
+		textFieldUsername.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
 		textFieldUsername.setBounds(859, 263, 186, 26);
 		panel.add(textFieldUsername);
 		textFieldUsername.setColumns(10);
 		
 		passwordFieldPassword = new JPasswordField();
-		passwordFieldPassword.setFont(new Font("Goudy Old Style", Font.PLAIN, 10));
+		passwordFieldPassword.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
 		passwordFieldPassword.setBounds(859, 327, 186, 26);
 		panel.add(passwordFieldPassword);
 		
