@@ -10,7 +10,7 @@ import Modelo.Usuario;
 public interface Icontrolador {
 	public Usuario logIn(String us, String pass);
 
-	public Usuario SignUp(String username, int telefono, String direccion, String email, String nº_Cuenta);
-
 	public Personaje getPersonaje(int Codigo, String nombre, String descripcion, Date cumple, String curiosidad);
+
+	public boolean SignUp(Usuario user);
 }
