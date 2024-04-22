@@ -60,39 +60,40 @@ public class SignUp extends JFrame implements ActionListener {
 		lblUsername.setForeground(new Color(222, 111, 111));
 		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUsername.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		lblUsername.setBounds(359, 189, 158, 19);
+		lblUsername.setBounds(361, 224, 158, 19);
 		contentPane.add(lblUsername);
 		
 		lblTelf = new JLabel("Teléfono:");
 		lblTelf.setForeground(new Color(222, 111, 111));
 		lblTelf.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTelf.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		lblTelf.setBounds(359, 234, 158, 13);
+		lblTelf.setBounds(361, 269, 158, 13);
 		contentPane.add(lblTelf);
 		
 		lblEmail = new JLabel("Email:");
 		lblEmail.setForeground(new Color(222, 111, 111));
 		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblEmail.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		lblEmail.setBounds(406, 275, 111, 13);
+		lblEmail.setBounds(408, 310, 111, 13);
 		contentPane.add(lblEmail);
 		
 		lblDireccion = new JLabel("Dirección:");
 		lblDireccion.setForeground(new Color(222, 111, 111));
 		lblDireccion.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDireccion.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		lblDireccion.setBounds(359, 316, 158, 13);
+		lblDireccion.setBounds(361, 351, 158, 13);
 		contentPane.add(lblDireccion);
 		
 		lblNewLabel_6 = new JLabel("Nº de cuenta:");
 		lblNewLabel_6.setForeground(new Color(222, 111, 111));
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_6.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		lblNewLabel_6.setBounds(296, 359, 221, 13);
+		lblNewLabel_6.setBounds(298, 394, 221, 13);
 		contentPane.add(lblNewLabel_6);
 		
 		textFieldTelefono = new JTextField();
-		textFieldTelefono.setBounds(527, 230, 158, 24);
+		textFieldTelefono.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
+		textFieldTelefono.setBounds(529, 265, 158, 24);
 		contentPane.add(textFieldTelefono);
 		textFieldTelefono.setColumns(10);
 		
@@ -100,45 +101,51 @@ public class SignUp extends JFrame implements ActionListener {
 		lblContraseña2.setForeground(new Color(222, 111, 111));
 		lblContraseña2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblContraseña2.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		lblContraseña2.setBounds(326, 443, 191, 13);
+		lblContraseña2.setBounds(328, 478, 191, 13);
 		contentPane.add(lblContraseña2);
 		
 		textFieldUsername = new JTextField();
+		textFieldUsername.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
 		textFieldUsername.setColumns(10);
-		textFieldUsername.setBounds(527, 188, 158, 24);
+		textFieldUsername.setBounds(529, 223, 158, 24);
 		contentPane.add(textFieldUsername);
 		
 		textFieldEmail = new JTextField();
+		textFieldEmail.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
 		textFieldEmail.setColumns(10);
-		textFieldEmail.setBounds(527, 270, 158, 26);
+		textFieldEmail.setBounds(529, 305, 158, 26);
 		contentPane.add(textFieldEmail);
 		
 		textFieldDireccion = new JTextField();
+		textFieldDireccion.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
 		textFieldDireccion.setColumns(10);
-		textFieldDireccion.setBounds(527, 312, 158, 24);
+		textFieldDireccion.setBounds(529, 347, 158, 24);
 		contentPane.add(textFieldDireccion);
 		
 		lblContraseña1 = new JLabel("Contraseña:");
 		lblContraseña1.setForeground(new Color(222, 111, 111));
 		lblContraseña1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblContraseña1.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		lblContraseña1.setBounds(326, 402, 191, 13);
+		lblContraseña1.setBounds(328, 437, 191, 13);
 		contentPane.add(lblContraseña1);
 		
 		passwordFieldContraseña2 = new JPasswordField();
-		passwordFieldContraseña2.setBounds(527, 438, 158, 25);
+		passwordFieldContraseña2.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
+		passwordFieldContraseña2.setBounds(529, 473, 158, 25);
 		contentPane.add(passwordFieldContraseña2);
 		passwordFieldContraseña1 = new JPasswordField();
-		passwordFieldContraseña1.setBounds(527, 398, 158, 23);
+		passwordFieldContraseña1.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
+		passwordFieldContraseña1.setBounds(529, 433, 158, 23);
 		contentPane.add(passwordFieldContraseña1);
 		
 		textFieldNCuenta = new JTextField();
+		textFieldNCuenta.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
 		textFieldNCuenta.setColumns(10);
-		textFieldNCuenta.setBounds(527, 354, 158, 24);
+		textFieldNCuenta.setBounds(529, 389, 158, 24);
 		contentPane.add(textFieldNCuenta);
 		
 		btnSignUp = new JButton("Sign Up");
-		btnSignUp.setBounds(440, 497, 131, 31);
+		btnSignUp.setBounds(443, 552, 131, 31);
 		contentPane.add(btnSignUp);
 		btnSignUp.setBackground(new Color(255, 255, 255));
 		btnSignUp.setForeground(new Color(222, 111, 111));
@@ -149,7 +156,7 @@ public class SignUp extends JFrame implements ActionListener {
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setForeground(new Color(247, 34, 167));
 		lblError.setFont(new Font("Goudy Old Style", Font.PLAIN, 20));
-		lblError.setBounds(336, 474, 349, 13);
+		lblError.setBounds(338, 509, 349, 33);
 		contentPane.add(lblError);
 		
 		btnLogIn = new JButton("Log In");
@@ -160,11 +167,18 @@ public class SignUp extends JFrame implements ActionListener {
 		btnLogIn.setBounds(716, 566, 111, 36);
 		contentPane.add(btnLogIn);
 		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(SignUp.class.getResource("/Imagenes/logo.png")));
+		lblNewLabel.setBounds(298, 85, 442, 140);
+		contentPane.add(lblNewLabel);
+		
 		lblFondo_Inicio = new JLabel("");
 		lblFondo_Inicio.setIcon(
 				new ImageIcon(SignUp.class.getResource("/Imagenes/Fondo_Inicio.jpeg")));
 		lblFondo_Inicio.setBounds(0, 0, 993, 908);
 		contentPane.add(lblFondo_Inicio);
+		
+		
 	}
 
 	@Override
