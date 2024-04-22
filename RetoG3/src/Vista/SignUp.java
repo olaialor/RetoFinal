@@ -1,9 +1,7 @@
 package Vista;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
 import Modelo.Cliente;
 import Modelo.Usuario;
@@ -42,8 +40,7 @@ public class SignUp extends JFrame implements ActionListener {
 	private JLabel lblContraseña1;
 	private JLabel lblFondo_Inicio;
 	private Controlador l;
-	private Pattern formatoEmail = Pattern
-			.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)(\\.[A-Za-z]{2,})$");
+	private Pattern formatoEmail = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
 	public SignUp(Controlador c) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/LazoHelloKitty.png")));
@@ -204,7 +201,7 @@ public class SignUp extends JFrame implements ActionListener {
 			String n_cuenta = textFieldNCuenta.getText();
 			try {
 				if (l.existeUsuario(username)) {
-					if (password1 == password2) {
+					if (password1.equals(password2)) {
 						if (formatoEmail.matcher(email).matches()) {
 							Usuario user = new Cliente(username, password1, n_telefono, direccion, email, n_cuenta);
 							if (l.SignUp(user)) {
