@@ -164,10 +164,7 @@ public class SignUp extends JFrame implements ActionListener {
 		btnLogIn.setBounds(716, 566, 111, 36);
 		contentPane.add(btnLogIn);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(SignUp.class.getResource("/Imagenes/logo.png")));
-		lblNewLabel.setBounds(298, 85, 442, 140);
-		contentPane.add(lblNewLabel);
+	
 		
 		lblFondo_Inicio = new JLabel("");
 		lblFondo_Inicio.setIcon(
@@ -193,22 +190,23 @@ public class SignUp extends JFrame implements ActionListener {
 			}
 		} else if (o == btnSignUp) {
 			String username = textFieldUsername.getText();
-			String password1 = new String(passwordFieldContraseña1.getPassword());
-			String password2 = new String(passwordFieldContraseña2.getPassword());
-			int    n_telefono = Integer.valueOf(textFieldTelefono.getText());
-			String direccion = textFieldDireccion.getText();
-			String email = textFieldEmail.getText();
-			String n_cuenta = textFieldNCuenta.getText();
+			
 			try {
 				if (l.existeUsuario(username)) {
+					String password2 = new String(passwordFieldContraseña2.getPassword());
+					String password1 = new String(passwordFieldContraseña1.getPassword());
 					if (password1.equals(password2)) {
+						String email = textFieldEmail.getText();
 						if (formatoEmail.matcher(email).matches()) {
+							int    n_telefono = Integer.valueOf(textFieldTelefono.getText());
+							String direccion = textFieldDireccion.getText();
+							String n_cuenta = textFieldNCuenta.getText();
 							Usuario user = new Cliente(username, password1, n_telefono, direccion, email, n_cuenta);
 							if (l.SignUp(user)) {
 								SignUp.this.setVisible(false);
 								SignUp.this.dispose();
 								try {
-									Wiki_Personaje frame = new Wiki_Personaje();
+									Paneles frame = new Paneles(l);
 									frame.setVisible(true);
 								} catch (Exception e1) {
 									e1.printStackTrace();

@@ -150,6 +150,8 @@ public class Añadir_Producto extends JFrame implements ActionListener{
         UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
 		JButton sourceButton = (JButton) e.getSource();
 		if (sourceButton == btnAnadir) {
+			
+			
 			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
 					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 

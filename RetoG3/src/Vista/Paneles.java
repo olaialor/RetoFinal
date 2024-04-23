@@ -1,12 +1,16 @@
 package Vista;
 
 import javax.swing.*;
+
+import Controlador.Controlador;
+
 import java.awt.*;
 import java.awt.event.*;
 
 public class Paneles extends JFrame {
-
-    public Paneles() {
+	private Controlador l;
+    public Paneles(Controlador c) {
+    	this.l=c;
         setTitle("Aplicación con Pestañas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
@@ -29,16 +33,16 @@ public class Paneles extends JFrame {
         Busqueda_Producto ventana2 = new Busqueda_Producto(); // Suponiendo que Ventana2 es un JFrame existente
         panel2.add(ventana2.getContentPane(), BorderLayout.CENTER);
         tabbedPane.addTab("Pestaña 2", panel2);
+        
+        JPanel panel3 = new JPanel();
+        panel3.setLayout(new BorderLayout());
+        Añadir_Personaje ventana3 = new Añadir_Personaje(l);
+        panel3.add(ventana3.getContentPane(), BorderLayout.CENTER);
+        tabbedPane.addTab("Pestaña 3", panel3);
+
 
 
         getContentPane().add(tabbedPane);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Paneles().setVisible(true);
-            }
-        });
-    }
 }

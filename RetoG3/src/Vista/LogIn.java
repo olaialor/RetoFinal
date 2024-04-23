@@ -126,7 +126,7 @@ public class LogIn extends JFrame implements ActionListener {
 			Usuario u = l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
 			if (u!= null) {
 				lblError.setText("ok");
-				Paneles paneles = new Paneles();
+				Paneles paneles = new Paneles(l);
 				paneles.setVisible(true);
 				dispose();
 			} else {

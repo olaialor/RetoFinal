@@ -1,15 +1,17 @@
 package Vista;
 
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import Controlador.Controlador;
+import Modelo.Personaje;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JLabel;
@@ -24,7 +26,7 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textFieldNombre_Personaje;
-	private JTextField textFieldFoto;
+	private JTextField textFieldRuta_Foto;
 	private JLabel lblNombre;
 	private JLabel lblDescripcionPer;
 	private JTextPane textPaneDescrip;
@@ -35,27 +37,19 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 	private JButton btnAnadir;
 	private JButton btnCancelar;
 	private JLabel lblNewLabel;
+	private Controlador l;
+	private JTextField textFieldCumpleaños;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Añadir_Personaje frame = new Añadir_Personaje();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public Añadir_Personaje() {
+	public Añadir_Personaje(Controlador c) {
+		this.l=c;
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Añadir_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,9 +91,9 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		textPaneCuriosidad.setBounds(614, 221, 464, 172);
 		contentPane.add(textPaneCuriosidad);
 
-		lblCumpleaos = new JLabel("Cumpleaños");
+		lblCumpleaos = new JLabel("Cumpleaños (aaaa-MM-dd)");
 		lblCumpleaos.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
-		lblCumpleaos.setBounds(39, 438, 193, 23);
+		lblCumpleaos.setBounds(39, 438, 285, 23);
 		contentPane.add(lblCumpleaos);
 
 		lblRutaFoto = new JLabel("Ruta Foto");
@@ -107,11 +101,11 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		lblRutaFoto.setBounds(470, 445, 193, 23);
 		contentPane.add(lblRutaFoto);
 
-		textFieldFoto = new JTextField();
-		textFieldFoto.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		textFieldFoto.setColumns(10);
-		textFieldFoto.setBounds(470, 478, 489, 41);
-		contentPane.add(textFieldFoto);
+		textFieldRuta_Foto = new JTextField();
+		textFieldRuta_Foto.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
+		textFieldRuta_Foto.setColumns(10);
+		textFieldRuta_Foto.setBounds(470, 478, 489, 41);
+		contentPane.add(textFieldRuta_Foto);
 
 		btnAnadir = new JButton("Añadir");
 		btnAnadir.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
@@ -122,7 +116,13 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		btnCancelar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnCancelar.setBounds(856, 630, 152, 41);
 		contentPane.add(btnCancelar);
-		
+
+		textFieldCumpleaños = new JTextField();
+		textFieldCumpleaños.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
+		textFieldCumpleaños.setColumns(10);
+		textFieldCumpleaños.setBounds(39, 478, 255, 41);
+		contentPane.add(textFieldCumpleaños);
+
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(Añadir_Personaje.class.getResource("/Imagenes/FondoAñadir2.jpg")));
 		lblNewLabel.setBounds(-42, -19, 1328, 767);
@@ -132,25 +132,66 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		btnCancelar.addActionListener(this);
 	}
 
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		UIManager.put("OptionPane.background", new Color(160,202,238));
-        UIManager.put("Panel.background", new Color(160,202,238));
-        UIManager.put("OptionPane.messageForeground", Color.BLACK);
-        UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
+		UIManager.put("OptionPane.background", new Color(160, 202, 238));
+		UIManager.put("Panel.background", new Color(160, 202, 238));
+		UIManager.put("OptionPane.messageForeground", Color.BLACK);
+		UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
 		JButton sourceButton = (JButton) e.getSource();
 		if (sourceButton == btnAnadir) {
-			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
-					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
-			if (opcion == JOptionPane.OK_OPTION) {
-				JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
-						JOptionPane.INFORMATION_MESSAGE);
-			} else {
+			String nombre = textFieldNombre_Personaje.getText();
+			try {
+				if (!l.existePersonaje(nombre)) {
+					String descripcion = textPaneDescrip.getText();
+					String curiosidad = textPaneCuriosidad.getText();
+					String ruta_foto = String.valueOf(textFieldRuta_Foto.getText());
+					String cumpleString = textPaneCuriosidad.getText();
+					LocalDate cumple = LocalDate.parse("2000-01-01");
+					try {
+						cumple = LocalDate.parse(cumpleString);
+					} catch (DateTimeParseException e1) {
+						JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto", "Ok",
+								JOptionPane.ERROR_MESSAGE);
+					}
+					int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este personaje?",
+							"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+					if (opcion == JOptionPane.OK_OPTION) {
+						int codigo= l.nuevoCodigo();						
+						Personaje character=new Personaje(nombre, descripcion, cumple, curiosidad, ruta_foto, codigo);
+						l.añadirPersonaje(character);
+						Añadir_Personaje.this.setVisible(false);
+						Añadir_Personaje.this.dispose();
+						try {
+							Paneles frame = new Paneles(l);
+							frame.setVisible(true);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						JOptionPane.showMessageDialog(this, "Personaje añadido correctamente.", "Éxito",
+								JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+					}
+				
+			
+		
+			} else if (sourceButton == btnCancelar) {
 				JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+			
+			}else {
+				
 			}
-		} else if (sourceButton == btnCancelar) {
-			JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}}
 		}
-	}
+
+	
+	
 }
