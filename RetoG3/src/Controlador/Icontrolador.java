@@ -1,6 +1,7 @@
 package Controlador;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.sound.sampled.DataLine;
 
@@ -10,7 +11,7 @@ import Modelo.Usuario;
 public interface Icontrolador {
 	public Usuario logIn(String us, String pass);
 
-	public Personaje getPersonaje(int Codigo, String nombre, String descripcion, Date cumple, String curiosidad);
+	public List<Personaje> getPersonajes();
 
 	public boolean SignUp(Usuario user);
 }

@@ -1,13 +1,21 @@
 package Vista;
 
 import javax.swing.*;
+
+import Controlador.Controlador;
+import Modelo.Personaje;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Wiki_Personaje extends JFrame implements ActionListener {
 
-	public Wiki_Personaje() {
+	private Controlador controlador;
+
+	public Wiki_Personaje(Controlador controlador) {
+		this.controlador = controlador;
+
 		setIconImage(
 				Toolkit.getDefaultToolkit().getImage(Wiki_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setTitle("Ejemplo de GUI");
@@ -19,90 +27,89 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 		JPanel scrollPaneContainer = new JPanel();
 		scrollPaneContainer.setBounds(194, 113, 862, 583);
-		//scrollPaneContainer.setPreferredSize(new Dimension(800, 600)); // Tamaño deseado del JScrollPane
+		// scrollPaneContainer.setPreferredSize(new Dimension(800, 600)); // Tamaño
+		// deseado del JScrollPane
 
 		// Crear el panel que contendrá las partes
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
+		// Obtener la lista de personajes desde el controlador
+		List<Personaje> personajes = controlador.getPersonajes();
+
 		// Agregar las partes al panel central
-		for (int i = 0; i < 20; i++) { // Agregamos más partes para demostrar el funcionamiento del scrollbar
-			JPanel panel = createPanel();
+		for (Personaje personaje : personajes) { // Agregamos más partes para demostrar el funcionamiento del scrollbar
+			JPanel panel = createPanel(personaje);
 			centerPanel.add(panel);
 			centerPanel.add(Box.createVerticalStrut(50)); // Separación entre las partes
 		}
 		mainPanel.setLayout(null);
 
-		// Crear JScrollPane para el panel central
 		JScrollPane scrollPane = new JScrollPane(centerPanel);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	    // Ajustar el tamaño del JScrollPane
-	    scrollPane.setPreferredSize(new Dimension(860, 580));
-	    
-		// Agregar el JScrollPane al panel interno
+		scrollPane.setPreferredSize(new Dimension(860, 580));
+
 		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
 
-		// Agregar el panel interno al panel principal
 		mainPanel.add(scrollPaneContainer);
 
 		getContentPane().add(mainPanel);
 		pack();
 		setLocationRelativeTo(null);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/logo_wiki3.png")));
 		lblNewLabel.setBounds(236, 21, 756, 82);
 		mainPanel.add(lblNewLabel);
-		
+
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/fondo_wiki2.jpg")));
 		lblFondo.setBounds(-36, 0, 1382, 770);
 		mainPanel.add(lblFondo);
-		
-		
+
 	}
 
-	private JPanel createPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
+	private JPanel createPanel(Personaje personaje) {
+		 JPanel panel = new JPanel();
+		    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Establecer layout vertical
 
-		// Agregar imagen a la izquierda
-		ImageIcon icon = new ImageIcon("ruta/a/imagen.png"); // Cambiar la ruta por la ruta de tu imagen
-		JLabel imageLabel = new JLabel(icon);
-		panel.add(imageLabel, BorderLayout.WEST);
+		    ImageIcon imagen = new ImageIcon(personaje.getRuta_foto()); // Obtener la ruta de la imagen del personaje
+		    JLabel imagenLabel = new JLabel(imagen);
+		    panel.add(imagenLabel);
+		    
+		    JLabel nombre = new JLabel("Nombre: " + personaje.getNombre());
+		    nombre.setHorizontalAlignment(SwingConstants.LEFT);
+		    panel.add(nombre);
+		    JLabel descrip = new JLabel("Descripción: " + personaje.getDescripcion());
+		    descrip.setHorizontalAlignment(SwingConstants.LEFT);
+		    panel.add(descrip);
+		    JLabel cumple = new JLabel("Cumpleaños: " + personaje.getCumpleaños());
+		    cumple.setHorizontalAlignment(SwingConstants.LEFT);
+		    panel.add(cumple);
+		    JLabel curi = new JLabel("Curiosidad: " + personaje.getCuriosidad());
+		    curi.setHorizontalAlignment(SwingConstants.LEFT);
+		    panel.add(curi);
 
-		// Agregar JLabel en el centro
-		JLabel label = new JLabel("Texto del label");
-		label.setHorizontalAlignment(JLabel.CENTER);
-		panel.add(label, BorderLayout.CENTER);
-
-		// Agregar JButton debajo del JLabel
-		JButton button = new JButton("Botón");
-		// button.setBounds(0, 0, 100, 100);
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Acción del botón
-				JOptionPane.showMessageDialog(null, "Botón presionado");
-			}
-		});
-		panel.add(button, BorderLayout.SOUTH);
-
-		return panel;
+		    JButton detallesButton = new JButton("Ver detalles");
+		    detallesButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el botón horizontalmente
+		    panel.add(detallesButton);
+		    return panel;
 	}
+
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new Wiki_Personaje().setVisible(true);
+				Controlador controlador = new Controlador();
+				new Wiki_Personaje(controlador).setVisible(true);
 			}
 		});
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		// Método no utilizado
 	}
 }

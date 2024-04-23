@@ -208,7 +208,7 @@ public class SignUp extends JFrame implements ActionListener {
 								SignUp.this.setVisible(false);
 								SignUp.this.dispose();
 								try {
-									Wiki_Personaje frame = new Wiki_Personaje();
+									Wiki_Personaje frame = new Wiki_Personaje(l);
 									frame.setVisible(true);
 								} catch (Exception e1) {
 									e1.printStackTrace();
