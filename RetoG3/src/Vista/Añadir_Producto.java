@@ -148,8 +148,8 @@ public class Añadir_Producto extends JFrame implements ActionListener{
         UIManager.put("Panel.background", new Color(160,202,238));
         UIManager.put("OptionPane.messageForeground", Color.BLACK);
         UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
-		JButton sourceButton = (JButton) e.getSource();
-		if (sourceButton == btnAnadir) {
+		
+		if (e.getSource().equals(btnAnadir)) {
 			
 			
 			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
@@ -161,7 +161,7 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 			} else {
 				JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
 			}
-		} else if (sourceButton == btnCancelar) {
+		} else if (e.getSource().equals(btnCancelar)) {
 			JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
 		}
 	}

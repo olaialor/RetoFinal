@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
-import javax.swing.JOptionPane;
-
 import Modelo.Usuario;
 import Modelo.Personaje;
 
@@ -91,9 +88,10 @@ public class Controlador implements Icontrolador {
 			stmt = con.prepareStatement(OBTENERusername);
 			stmt.setString(1, username);
 			rs = stmt.executeQuery();
-			if (rs.next()) {
-				existe = true;
-			}
+			if (rs.next()) 
+				if (rs.getInt(1)==1)
+					existe = true;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -113,9 +111,10 @@ public class Controlador implements Icontrolador {
 			stmt = con.prepareStatement(OBTENERpersonaje);
 			stmt.setString(1, nombre);
 			rs = stmt.executeQuery();
-			if (rs.next()) {
-				existe = true;
-			}
+			if (rs.next()) 
+				if (rs.getInt(1)==1)
+					existe = true;
+				
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -161,13 +160,17 @@ public class Controlador implements Icontrolador {
 	}
 
 	public int nuevoCodigo() throws SQLException {
-		int codigo = 0;
-		stmt = con.prepareStatement("OBTENERcodigo_max");
-		ResultSet resultSet = stmt.executeQuery();
-		codigo = resultSet.getInt("max_codigo") + 1;
-
-		return codigo;
-
+	    int codigo = 0;
+	    this.openConnection();
+	    String query = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
+	    stmt = con.prepareStatement(query);
+	    ResultSet resultSet = stmt.executeQuery();
+	    if (resultSet.next()) {
+	        codigo = resultSet.getInt("max_codigo") + 1;
+	    }
+	    
+	    this.closeConnection();
+	    return codigo;
 	}
 
 	public boolean añadirPersonaje(Personaje character) {
@@ -180,7 +183,9 @@ public class Controlador implements Icontrolador {
 			stmt.setString(2, character.getNombre());
 			stmt.setString(3, character.getDescripción());
 			stmt.setDate(4, java.sql.Date.valueOf(character.getCumple()));
-			stmt.setString(5, character.getRuta());
+			stmt.setString(5, character.getCuriosidad());
+			stmt.setString(6, character.getRuta());
+			
 			if (stmt.executeUpdate() > 0) {
 				introducido = true;
 
