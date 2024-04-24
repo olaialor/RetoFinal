@@ -75,7 +75,9 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		 JPanel panel = new JPanel();
 		    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Establecer layout vertical
 
-		    ImageIcon imagen = new ImageIcon(personaje.getRuta_foto()); // Obtener la ruta de la imagen del personaje
+		    // Obtener la ruta de la imagen del personaje desde el objeto Personaje
+		    String rutaImagen = personaje.getRuta_foto();
+		    ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen));
 		    JLabel imagenLabel = new JLabel(imagen);
 		    panel.add(imagenLabel);
 		    
