@@ -17,9 +17,9 @@ public class Paneles extends JFrame {
         setTitle("SANRIO");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
-        setSize(1280, 768);
+        setSize(1280, 830);
         setLocationRelativeTo(null);
-        setPreferredSize(new Dimension(1280, 768));
+        setPreferredSize(new Dimension(1280, 830));
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
