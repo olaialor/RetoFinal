@@ -5,7 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+
+import javax.swing.JComboBox;
+
 import Modelo.Usuario;
 import Modelo.Personaje;
 
@@ -20,6 +24,7 @@ public class Controlador implements Icontrolador {
 	final String OBTENERusername = "SELECT COUNT(*) FROM usuario WHERE username = ?";
 	final String OBTENERpersonaje = "SELECT COUNT(*) FROM Personaje WHERE nombre = ?";
 	final String OBTENERcodigo_max = "SELECT MAX(codigo) FROM Personaje";
+	final String OBTENERnom_personajes= "SELECT nombre from Personaje";
 
 	private void openConnection() {
 		try {
@@ -201,6 +206,78 @@ public class Controlador implements Icontrolador {
 		}
 		return introducido;
 	}
+
+	public ArrayList<String> completarNombrePer() {
+	    ArrayList<String> lista = new ArrayList<>();
+	    ResultSet rs = null;
+	    this.openConnection();
+	    try {
+	        stmt = con.prepareStatement(OBTENERnom_personajes);
+	        rs = stmt.executeQuery();
+	        while (rs.next()) {
+	            String nombrePersonaje = rs.getString(1);
+	            lista.add(nombrePersonaje);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (rs != null) {
+	            try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+	        this.closeConnection();
+	    }
+	    return lista;
+	}
+
+//	public ArrayList<String> completarNombrePer() throws SQLException {
+//		ArrayList<String> lista = new ArrayList<>();
+//				
+//	    ResultSet rs = null;
+//	    boolean existe = false;
+//	    this.openConnection();
+//	    try {
+//	        stmt = con.prepareStatement(OBTENERnom_personajes);
+//	        rs = stmt.executeQuery();
+//	        while (rs.next()) {
+//	            rs.getString(1);
+//	            lista.add(userName)	 ;       }
+//	    } catch (SQLException e) {
+//	        e.printStackTrace();
+//	    } finally {
+//	        if (rs != null) {
+//	            rs.close();
+//	        }
+//	        this.closeConnection();
+//	    }
+//	    return lista;
+//	}
+	
+	
+//	public void completarNombrePer(JComboBox comboBoxNombrePer) throws SQLException {
+//	    ResultSet rs = null;
+//	    boolean existe = false;
+//	    this.openConnection();
+//	    try {
+//	        stmt = con.prepareStatement(OBTENERpersonaje);
+//	        rs = stmt.executeQuery();
+//	        while (rs.next()) {
+//	            comboBoxNombrePer.addItem(rs.getString(1));
+//	        }
+//	    } catch (SQLException e) {
+//	        e.printStackTrace();
+//	    } finally {
+//	        if (rs != null) {
+//	            rs.close();
+//	        }
+//	        this.closeConnection();
+//	    }
+//	}
+
 
 
 }

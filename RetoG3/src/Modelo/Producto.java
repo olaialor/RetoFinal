@@ -1,12 +1,12 @@
 package Modelo;
 
 public class Producto {
-	private String cod_producto;
+	private int cod_producto;
 	private double precio;
 	private String descripcion;
 	private int stock;	
 	
-	public Producto(String cod_producto, double precio, String descripcion, int stock) {
+	public Producto(int cod_producto, double precio, String descripcion, int stock) {
 		this.cod_producto = cod_producto;
 		this.precio = precio;
 		this.descripcion = descripcion;
@@ -14,17 +14,17 @@ public class Producto {
 	}
 
 	public Producto() {
-		this.cod_producto = "";
+		this.cod_producto = 0;
 		this.precio = 0.0;
 		this.descripcion = "";
 		this.stock = 0;
 	}
 
-	public String getCod_producto() {
+	public int getCod_producto() {
 		return cod_producto;
 	}
 
-	public void setCod_producto(String cod_producto) {
+	public void setCod_producto(int cod_producto) {
 		this.cod_producto = cod_producto;
 	}
 

@@ -5,9 +5,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Controlador.Controlador;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JLabel;
@@ -20,7 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
-public class Añadir_Producto extends JFrame implements ActionListener{
+public class Añadir_Producto extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPaneStock;
@@ -36,28 +42,18 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 	private JLabel lblStock;
 	private JButton btnAnadir;
 	private JButton btnCancelar;
+	private Controlador l;
 	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Añadir_Producto frame = new Añadir_Producto();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Añadir_Producto() {
+	public Añadir_Producto(Controlador c) {
+		this.l = c;
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Añadir_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,6 +100,11 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 		comboBoxNombrePer.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		comboBoxNombrePer.setBounds(50, 68, 255, 41);
 		contentPaneStock.add(comboBoxNombrePer);
+		ArrayList<String> miUserLista=l.completarNombrePer();
+		for(String str : miUserLista) {
+			comboBoxNombrePer.addItem(str);
+		}
+		
 
 		lblNombrePer = new JLabel("Nombre Personaje");
 		lblNombrePer.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
@@ -144,14 +145,13 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		UIManager.put("OptionPane.background", new Color(160,202,238));
-        UIManager.put("Panel.background", new Color(160,202,238));
-        UIManager.put("OptionPane.messageForeground", Color.BLACK);
-        UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
-		
+		UIManager.put("OptionPane.background", new Color(160, 202, 238));
+		UIManager.put("Panel.background", new Color(160, 202, 238));
+		UIManager.put("OptionPane.messageForeground", Color.BLACK);
+		UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
+
 		if (e.getSource().equals(btnAnadir)) {
-			
-			
+
 			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
 					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
