@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
+import Modelo.Trabajador;
 import Modelo.Usuario;
 
 public class LogIn extends JFrame implements ActionListener {
@@ -126,14 +127,17 @@ public class LogIn extends JFrame implements ActionListener {
 			Usuario u = l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
 			if (u!= null) {
 				lblError.setText("ok");
-				Paneles paneles = new Paneles(l);
+				boolean administrador= false;
+				administrador=l.buscarusuario(u.getUsername());
+				
+				Paneles paneles = new Paneles(l,administrador);
 				paneles.setVisible(true);
 				dispose();
 			} else {
 				lblError.setText("ERROR, Inserta de nuevo");
 			}
 		}
-		// TODO Auto-generated method stub
+		
 	}
 	
 }

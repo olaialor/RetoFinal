@@ -25,6 +25,7 @@ public class Controlador implements Icontrolador {
 	final String OBTENERpersonaje = "SELECT COUNT(*) FROM Personaje WHERE nombre = ?";
 	final String OBTENERcodigo_max = "SELECT MAX(codigo) FROM Personaje";
 	final String OBTENERnom_personajes= "SELECT nombre from Personaje";
+	final String OBTENERtrabajador= "SELECT * FROM Trabajador WHERE username=?";
 
 	private void openConnection() {
 		try {
@@ -234,6 +235,36 @@ public class Controlador implements Icontrolador {
 	    return lista;
 	}
 
+	public boolean buscarusuario(String usuario) {
+		// TODO Auto-generated method stub
+		ResultSet rs = null;
+		boolean existe = false;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(OBTENERtrabajador);
+			stmt.setString(1, usuario);
+			rs = stmt.executeQuery();
+			if (rs.next()) 
+				//if (rs.getInt(1)==1)
+					existe = true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			this.closeConnection();
+		}
+		return existe;
+	}
+	}
+
 //	public ArrayList<String> completarNombrePer() throws SQLException {
 //		ArrayList<String> lista = new ArrayList<>();
 //				
@@ -280,4 +311,3 @@ public class Controlador implements Icontrolador {
 
 
 
-}
