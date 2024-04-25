@@ -206,7 +206,7 @@ public class SignUp extends JFrame implements ActionListener {
 								SignUp.this.setVisible(false);
 								SignUp.this.dispose();
 								try {
-									Paneles frame = new Paneles(l);
+									Paneles frame = new Paneles(l, false);
 									frame.setVisible(true);
 								} catch (Exception e1) {
 									e1.printStackTrace();
