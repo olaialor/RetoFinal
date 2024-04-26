@@ -1,5 +1,6 @@
 package Vista;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -8,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,8 +21,11 @@ import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import Controlador.Controlador;
 import Modelo.Personaje;
+import com.toedter.calendar.JCalendar;
 
 public class Añadir_Personaje extends JFrame implements ActionListener {
 
@@ -38,7 +44,7 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 	private JButton btnAnadir;
 	private JButton btnCancelar;
 	private Controlador l;
-	private JTextField textFieldCumpleaños;
+	private JCalendar calendar;
 
 	public Añadir_Personaje(Controlador c) {
 		this.l = c;
@@ -56,6 +62,7 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		textFieldNombre_Personaje.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		textFieldNombre_Personaje.setColumns(10);
 		textFieldNombre_Personaje.setBounds(39, 90, 255, 41);
+		textFieldNombre_Personaje.setBorder(new LineBorder(new Color(255, 192, 203)));
 		contentPane.add(textFieldNombre_Personaje);
 
 		lblNombre = new JLabel("Nombre Personaje");
@@ -71,6 +78,7 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		textPaneDescrip = new JTextPane();
 		textPaneDescrip.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		textPaneDescrip.setBounds(39, 221, 464, 172);
+		textPaneDescrip.setBorder(new LineBorder(new Color(255, 192, 203)));
 		contentPane.add(textPaneDescrip);
 
 		lblCuriosidad = new JLabel("Curiosidad");
@@ -81,11 +89,12 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		textPaneCuriosidad = new JTextPane();
 		textPaneCuriosidad.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		textPaneCuriosidad.setBounds(614, 221, 464, 172);
+		textPaneCuriosidad.setBorder(new LineBorder(new Color(255, 192, 203)));
 		contentPane.add(textPaneCuriosidad);
 
-		lblCumpleaos = new JLabel("Cumpleaños (aaaa-MM-dd)");
+		lblCumpleaos = new JLabel("Cumpleaños");
 		lblCumpleaos.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
-		lblCumpleaos.setBounds(39, 438, 285, 23);
+		lblCumpleaos.setBounds(39, 438, 126, 23);
 		contentPane.add(lblCumpleaos);
 
 		lblRutaFoto = new JLabel("Ruta Foto");
@@ -97,28 +106,39 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		textFieldRuta_Foto.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		textFieldRuta_Foto.setColumns(10);
 		textFieldRuta_Foto.setBounds(470, 478, 489, 41);
+		textFieldRuta_Foto.setBorder(new LineBorder(new Color(255, 192, 203)));
 		contentPane.add(textFieldRuta_Foto);
+		
+		calendar = new JCalendar();
+		calendar.getDayChooser().getDayPanel().setForeground(new Color(255, 192, 203)); // Color de los números del día
+		calendar.setDecorationBackgroundColor(new Color(255, 192, 203)); // Color de fondo decorativo
+		calendar.setDecorationBordersVisible(false); // Ocultar bordes decorativos
+		calendar.setBounds(39, 471, 255, 180); // Posición y tamaño
+		calendar.setBorder(new LineBorder(new Color(255, 192, 203)));
+		contentPane.add(calendar);
+
+
 
 		btnAnadir = new JButton("Añadir");
 		btnAnadir.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnAnadir.setBounds(1060, 630, 152, 41);
+		btnAnadir.setBackground(new Color(255, 220, 230)); // Establecer el color de fondo rosa
 		contentPane.add(btnAnadir);
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnCancelar.setBounds(856, 630, 152, 41);
+		btnCancelar.setBackground(new Color(255, 220, 230)); 
 		contentPane.add(btnCancelar);
-
-		textFieldCumpleaños = new JTextField();
-		textFieldCumpleaños.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		textFieldCumpleaños.setColumns(10);
-		textFieldCumpleaños.setBounds(39, 478, 255, 41);
-		contentPane.add(textFieldCumpleaños);
-
+		
+		
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(Añadir_Personaje.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -19, 1328, 767);
 		contentPane.add(lblNewLabel);
+		
+		
+		
 
 		btnAnadir.addActionListener(this);
 		btnCancelar.addActionListener(this);
@@ -137,14 +157,9 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 					String descripcion = textPaneDescrip.getText();
 					String curiosidad = textPaneCuriosidad.getText();
 					String ruta_foto = String.valueOf(textFieldRuta_Foto.getText());
-					String cumpleString = textFieldCumpleaños.getText();
-					LocalDate cumple = LocalDate.parse("2000-01-01");
-					try {
-						cumple = LocalDate.parse(cumpleString);
-					} catch (DateTimeParseException e1) {
-						JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto", "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
+					
+					Date cumple = calendar.getDate();
+					
 					int opcion = JOptionPane.showConfirmDialog(this,
 							"¿Estás seguro de que deseas añadir este personaje?", "Confirmar",
 							JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);

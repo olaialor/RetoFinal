@@ -1,11 +1,12 @@
 package Modelo;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Personaje {
 	private String nombre;
 	private String descripcion;
-	private LocalDate cumple;
+	private Date cumple;
 	private String curiosidad;
 	private String ruta_foto;
 	private int codigo;
@@ -20,7 +21,7 @@ public class Personaje {
 		this.codigo=0;
 	}
 
-	public Personaje(String nombre, String descripcion, LocalDate cumple, String curiosidad, String ruta_foto, int codigo) {
+	public Personaje(String nombre, String descripcion, Date cumple, String curiosidad, String ruta_foto, int codigo) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.cumple = cumple;
@@ -45,11 +46,11 @@ public class Personaje {
 		this.descripcion = descripción;
 	}
 
-	public LocalDate getCumple() {
+	public Date getCumple() {
 		return cumple;
 	}
 
-	public void setCumple(LocalDate cumple) {
+	public void setCumple(Date cumple) {
 		this.cumple = cumple;
 	}
 

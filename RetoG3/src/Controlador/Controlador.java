@@ -190,7 +190,7 @@ public class Controlador implements Icontrolador {
 			stmt.setInt(1, character.getCodigo());
 			stmt.setString(2, character.getNombre());
 			stmt.setString(3, character.getDescripción());
-			stmt.setDate(4, java.sql.Date.valueOf(character.getCumple()));
+			stmt.setDate(4, new java.sql.Date(character.getCumple().getTime()));
 			stmt.setString(5, character.getCuriosidad());
 			stmt.setString(6, character.getRuta());
 

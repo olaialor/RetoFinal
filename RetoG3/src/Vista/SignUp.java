@@ -126,6 +126,7 @@ public class SignUp extends JFrame implements ActionListener {
 		lblContraseña1.setBounds(328, 437, 191, 13);
 		contentPane.add(lblContraseña1);
 		
+		
 		passwordFieldContraseña2 = new JPasswordField();
 		passwordFieldContraseña2.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
 		passwordFieldContraseña2.setBounds(529, 473, 158, 25);
