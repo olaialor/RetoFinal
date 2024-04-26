@@ -134,7 +134,7 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 		contentPaneStock.add(btnCancelar);
 		
 		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(Añadir_Producto.class.getResource("/Imagenes/FondoAñadir2.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(Añadir_Producto.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -21, 1352, 792);
 		contentPaneStock.add(lblNewLabel);
 		

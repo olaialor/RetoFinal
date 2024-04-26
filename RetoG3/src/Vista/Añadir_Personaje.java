@@ -116,7 +116,7 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		contentPane.add(textFieldCumpleaños);
 
 		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(Añadir_Personaje.class.getResource("/Imagenes/FondoAñadir2.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(Añadir_Personaje.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -19, 1328, 767);
 		contentPane.add(lblNewLabel);
 
