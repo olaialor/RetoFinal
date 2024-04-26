@@ -20,9 +20,9 @@ public class Personaje {
 	public Personaje() {
 		this.nombre = "";
 		this.descripción = "";
-		this.cumple =null;
+		this.cumple = null;
 		this.curiosidad = "";
-		this.codigo=0;
+		this.codigo = 0;
 	}
 
 	public String getNombre() {

@@ -19,7 +19,8 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 		JPanel scrollPaneContainer = new JPanel();
 		scrollPaneContainer.setBounds(194, 113, 862, 583);
-		//scrollPaneContainer.setPreferredSize(new Dimension(800, 600)); // Tamaño deseado del JScrollPane
+		// scrollPaneContainer.setPreferredSize(new Dimension(800, 600)); // Tamaño
+		// deseado del JScrollPane
 
 		// Crear el panel que contendrá las partes
 		JPanel centerPanel = new JPanel();
@@ -36,11 +37,11 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		// Crear JScrollPane para el panel central
 		JScrollPane scrollPane = new JScrollPane(centerPanel);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	    // Ajustar el tamaño del JScrollPane
-	    scrollPane.setPreferredSize(new Dimension(860, 580));
-	    
+		// Ajustar el tamaño del JScrollPane
+		scrollPane.setPreferredSize(new Dimension(860, 580));
+
 		// Agregar el JScrollPane al panel interno
 		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
 
@@ -50,18 +51,17 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		getContentPane().add(mainPanel);
 		pack();
 		setLocationRelativeTo(null);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/logo_wiki3.png")));
 		lblNewLabel.setBounds(236, 21, 756, 82);
 		mainPanel.add(lblNewLabel);
-		
+
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/fondo_wiki2.jpg")));
 		lblFondo.setBounds(-36, 0, 1382, 770);
 		mainPanel.add(lblFondo);
-		
-		
+
 	}
 
 	private JPanel createPanel() {
