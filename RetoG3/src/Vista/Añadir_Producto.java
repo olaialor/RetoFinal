@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Controlador.Controlador;
+import Modelo.Personaje;
+import Modelo.Producto;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -149,31 +151,36 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 		UIManager.put("Panel.background", new Color(160, 202, 238));
 		UIManager.put("OptionPane.messageForeground", Color.BLACK);
 		UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
-		
+		boolean correcto=true;
+		double precio=0.0;
 		if (e.getSource().equals(btnAnadir)) {
 			String personaje= (String) comboBoxNombrePer.getSelectedItem();
 			try {
-			    double precio = Double.parseDouble(textFieldPrecio.getText());
-			    // Hacer algo con el valor de precio
+			    precio = Double.parseDouble(textFieldPrecio.getText());
 			} catch (NumberFormatException e1) {
-			    // Manejar el caso en el que el usuario ingresa un valor no válido
-			    // Por ejemplo, mostrar un mensaje de error al usuario
+			   
 			    JOptionPane.showMessageDialog(null, "Por favor ingresa un precio válido.", "Error", JOptionPane.ERROR_MESSAGE);
+			    correcto=false;
 			}
+			if (correcto) {
+				String ruta=textFieldRutaFoto.getText();
+				String descripcion=textPaneDescripcionProd.getText();
+				int stock= (int) spinnerStock.getValue();
+				int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
+						"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
-			
-
-			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
-					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-
-			if (opcion == JOptionPane.OK_OPTION) {
-				JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
-						JOptionPane.INFORMATION_MESSAGE);
-			} else {
+				if (opcion == JOptionPane.OK_OPTION) {
+					Producto producto= new Producto(personaje, l.nuevoCodigoProd(), precio, descripcion, stock, ruta);
+					l.añadirProducto(producto);
+					JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+				}
+			} else if (e.getSource().equals(btnCancelar)) {
 				JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
 			}
-		} else if (e.getSource().equals(btnCancelar)) {
-			JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
-		}
+			}
+			
 	}
 }

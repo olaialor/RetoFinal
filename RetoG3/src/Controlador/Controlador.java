@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 
 import Modelo.Usuario;
 import Modelo.Personaje;
+import Modelo.Producto;
 
 public class Controlador implements Icontrolador {
 	private Connection con;
@@ -24,8 +25,9 @@ public class Controlador implements Icontrolador {
 	final String OBTENERusername = "SELECT COUNT(*) FROM usuario WHERE username = ?";
 	final String OBTENERpersonaje = "SELECT COUNT(*) FROM Personaje WHERE nombre = ?";
 	final String OBTENERcodigo_max = "SELECT MAX(codigo) FROM Personaje";
-	final String OBTENERnom_personajes= "SELECT nombre from Personaje";
-	final String OBTENERtrabajador= "SELECT * FROM Trabajador WHERE username=?";
+	final String OBTENERnom_personajes = "SELECT nombre from Personaje";
+	final String OBTENERtrabajador = "SELECT * FROM Trabajador WHERE username=?";
+	final String INNSERTproducto = "INSERT INTO producto VALUES (?,?,?,?,?,?)";
 
 	private void openConnection() {
 		try {
@@ -94,10 +96,10 @@ public class Controlador implements Icontrolador {
 			stmt = con.prepareStatement(OBTENERusername);
 			stmt.setString(1, username);
 			rs = stmt.executeQuery();
-			if (rs.next()) 
-				if (rs.getInt(1)==1)
+			if (rs.next())
+				if (rs.getInt(1) == 1)
 					existe = true;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -117,10 +119,10 @@ public class Controlador implements Icontrolador {
 			stmt = con.prepareStatement(OBTENERpersonaje);
 			stmt.setString(1, nombre);
 			rs = stmt.executeQuery();
-			if (rs.next()) 
-				if (rs.getInt(1)==1)
+			if (rs.next())
+				if (rs.getInt(1) == 1)
 					existe = true;
-				
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -166,17 +168,17 @@ public class Controlador implements Icontrolador {
 	}
 
 	public int nuevoCodigo() throws SQLException {
-	    int codigo = 0;
-	    this.openConnection();
-	    String query = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
-	    stmt = con.prepareStatement(query);
-	    ResultSet resultSet = stmt.executeQuery();
-	    if (resultSet.next()) {
-	        codigo = resultSet.getInt("max_codigo") + 1;
-	    }
-	    
-	    this.closeConnection();
-	    return codigo;
+		int codigo = 0;
+		this.openConnection();
+		String query = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
+		stmt = con.prepareStatement(query);
+		ResultSet resultSet = stmt.executeQuery();
+		if (resultSet.next()) {
+			codigo = resultSet.getInt("max_codigo") + 1;
+		}
+
+		this.closeConnection();
+		return codigo;
 	}
 
 	public boolean añadirPersonaje(Personaje character) {
@@ -191,7 +193,7 @@ public class Controlador implements Icontrolador {
 			stmt.setDate(4, java.sql.Date.valueOf(character.getCumple()));
 			stmt.setString(5, character.getCuriosidad());
 			stmt.setString(6, character.getRuta());
-			
+
 			if (stmt.executeUpdate() > 0) {
 				introducido = true;
 
@@ -209,30 +211,30 @@ public class Controlador implements Icontrolador {
 	}
 
 	public ArrayList<String> completarNombrePer() {
-	    ArrayList<String> lista = new ArrayList<>();
-	    ResultSet rs = null;
-	    this.openConnection();
-	    try {
-	        stmt = con.prepareStatement(OBTENERnom_personajes);
-	        rs = stmt.executeQuery();
-	        while (rs.next()) {
-	            String nombrePersonaje = rs.getString(1);
-	            lista.add(nombrePersonaje);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        if (rs != null) {
-	            try {
+		ArrayList<String> lista = new ArrayList<>();
+		ResultSet rs = null;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(OBTENERnom_personajes);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				String nombrePersonaje = rs.getString(1);
+				lista.add(nombrePersonaje);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
 					rs.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	        }
-	        this.closeConnection();
-	    }
-	    return lista;
+			}
+			this.closeConnection();
+		}
+		return lista;
 	}
 
 	public boolean buscarusuario(String usuario) {
@@ -244,10 +246,10 @@ public class Controlador implements Icontrolador {
 			stmt = con.prepareStatement(OBTENERtrabajador);
 			stmt.setString(1, usuario);
 			rs = stmt.executeQuery();
-			if (rs.next()) 
-				//if (rs.getInt(1)==1)
-					existe = true;
-			
+			if (rs.next())
+				// if (rs.getInt(1)==1)
+				existe = true;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -263,7 +265,61 @@ public class Controlador implements Icontrolador {
 		}
 		return existe;
 	}
+
+	public void añadirProducto(Producto producto) {
+		// TODO Auto-generated method stub
+		// cod_producto, precio, descrip_prod, stock, personaje
+
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(INNSERTproducto);
+			stmt.setInt(1, producto.getCod_producto());
+			stmt.setInt(2, (int) producto.getPrecio());
+			stmt.setString(3, producto.getDescripcion());
+			stmt.setInt(4, producto.getStock());
+			stmt.setString(5,producto.getRuta_img());
+			stmt.setString(6, producto.getPersonaje());
+
+			if (stmt.executeUpdate() > 0) {
+				System.out.println("Personaje insertado correctamente");
+			} else {
+				System.out.println("Falló la inserción del personaje");
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de SQL");
+			e.printStackTrace();
+		} finally {
+			this.closeConnection();
+		}
+
 	}
+
+	public int nuevoCodigoProd() {
+		// TODO Auto-generated method stub
+		int codigo = 0;
+		this.openConnection();
+		String query = "SELECT MAX(cod_producto) AS max_codigo FROM Producto";
+		ResultSet rs = null;
+		try {
+			stmt = con.prepareStatement(query);
+			rs = stmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			if (rs.next()) {
+				codigo = rs.getInt("max_codigo") + 1;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		this.closeConnection();
+		return codigo;
+	}
+}
 
 //	public ArrayList<String> completarNombrePer() throws SQLException {
 //		ArrayList<String> lista = new ArrayList<>();
@@ -287,8 +343,7 @@ public class Controlador implements Icontrolador {
 //	    }
 //	    return lista;
 //	}
-	
-	
+
 //	public void completarNombrePer(JComboBox comboBoxNombrePer) throws SQLException {
 //	    ResultSet rs = null;
 //	    boolean existe = false;
@@ -308,6 +363,3 @@ public class Controlador implements Icontrolador {
 //	        this.closeConnection();
 //	    }
 //	}
-
-
-

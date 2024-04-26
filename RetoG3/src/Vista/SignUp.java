@@ -192,7 +192,7 @@ public class SignUp extends JFrame implements ActionListener {
 			String username = textFieldUsername.getText();
 			
 			try {
-				if (l.existeUsuario(username)) {
+				if (!l.existeUsuario(username)) {
 					String password2 = new String(passwordFieldContraseña2.getPassword());
 					String password1 = new String(passwordFieldContraseña1.getPassword());
 					if (password1.equals(password2)) {
