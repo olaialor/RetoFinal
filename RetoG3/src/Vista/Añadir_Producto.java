@@ -125,13 +125,13 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 
 		btnAnadir = new JButton("Añadir");
 		btnAnadir.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
-		btnAnadir.setBounds(1075, 651, 152, 41);
+		btnAnadir.setBounds(1060, 630, 152, 41);
 		btnAnadir.setBackground(new Color(255, 220, 230));
 		contentPaneStock.add(btnAnadir);
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
-		btnCancelar.setBounds(866, 651, 152, 41);
+		btnCancelar.setBounds(856, 630, 152, 41);
 		btnCancelar.setBackground(new Color(255, 220, 230));
 		contentPaneStock.add(btnCancelar);
 		

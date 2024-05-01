@@ -50,7 +50,7 @@ public class LogIn extends JFrame implements ActionListener {
 		panel.setLayout(null);
 		
 		btnLogIn = new JButton("Log In");
-		btnLogIn.setBounds(795, 407, 111, 36);
+		btnLogIn.setBounds(795, 442, 111, 36);
 		panel.add(btnLogIn);
 		btnLogIn.setBackground(new Color(255, 255, 255));
 		btnLogIn.setForeground(new Color(222, 111, 111));
@@ -59,25 +59,25 @@ public class LogIn extends JFrame implements ActionListener {
 		
 		textFieldUsername = new JTextField();
 		textFieldUsername.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
-		textFieldUsername.setBounds(859, 263, 186, 26);
+		textFieldUsername.setBounds(859, 298, 186, 26);
 		panel.add(textFieldUsername);
 		textFieldUsername.setColumns(10);
 		
 		passwordFieldPassword = new JPasswordField();
 		passwordFieldPassword.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
-		passwordFieldPassword.setBounds(859, 327, 186, 26);
+		passwordFieldPassword.setBounds(859, 362, 186, 26);
 		panel.add(passwordFieldPassword);
 		
 		lblPassword = new JLabel("Password:");
 		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPassword.setBounds(675, 327, 174, 21);
+		lblPassword.setBounds(675, 362, 174, 21);
 		panel.add(lblPassword);
 		lblPassword.setForeground(new Color(222, 111, 111));
 		lblPassword.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
 		
 		lblUsername = new JLabel("Username:");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsername.setBounds(675, 264, 174, 21);
+		lblUsername.setBounds(675, 299, 174, 21);
 		panel.add(lblUsername);
 		lblUsername.setForeground(new Color(222, 111, 111));
 		lblUsername.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
@@ -94,17 +94,17 @@ public class LogIn extends JFrame implements ActionListener {
 		lblError.setForeground(new Color(247, 34, 167));
 		lblError.setFont(new Font("Goudy Old Style", Font.PLAIN, 16));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
-		lblError.setBounds(763, 376, 174, 21);
+		lblError.setBounds(763, 411, 174, 21);
 		panel.add(lblError);
 		
 		lblNewLabel_1 = new JLabel("New label");
 		lblNewLabel_1.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/logo.png")));
-		lblNewLabel_1.setBounds(617, 60, 428, 140);
+		lblNewLabel_1.setBounds(617, 110, 428, 140);
 		panel.add(lblNewLabel_1);
 		
 		lblNewLabel_2 = new JLabel("New label");
 		lblNewLabel_2.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/Fondo_Inicio.jpeg")));
-		lblNewLabel_2.setBounds(315, 0, 1250, 781);
+		lblNewLabel_2.setBounds(315, 0,  993, 908);
 		panel.add(lblNewLabel_2);
 	}
 
