@@ -12,6 +12,18 @@ import java.awt.event.ActionListener;
 public class Wiki_Personaje extends JFrame implements ActionListener {
 
 	private Controlador controlador;
+	private JPanel mainPanel;
+	private JLabel lblPersonaje2;
+	private JLabel lblPersonaje;
+	private JPanel scrollPaneContainer;
+	private JPanel centerPanel;
+	private JScrollPane scrollPane;
+	private JLabel lblLogo;
+	private JLabel lblFondo;
+	private JPanel panel2;
+	private String rutaImagen;
+	private ImageIcon imagen;
+	private JLabel imagenLabel;
 
 	public Wiki_Personaje(Controlador controlador) {
 		this.controlador = controlador;
@@ -22,25 +34,25 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1280, 800));
 
-		JPanel mainPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
 		mainPanel.setPreferredSize(new Dimension(1280, 800));
 		mainPanel.setOpaque(false);
 
-		JLabel lblPersonaje2 = new JLabel("");
+		lblPersonaje2 = new JLabel("");
 		lblPersonaje2.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/personaje.png")));
 		lblPersonaje2.setBounds(1038, 542, 404, 228);
 		mainPanel.add(lblPersonaje2);
 
-		JLabel lblPersonaje = new JLabel("New label");
+		lblPersonaje = new JLabel("New label");
 		lblPersonaje.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/personaje2.png")));
 		lblPersonaje.setBounds(-65, 526, 264, 237);
 		mainPanel.add(lblPersonaje);
 
-		JPanel scrollPaneContainer = new JPanel();
+		scrollPaneContainer = new JPanel();
 		scrollPaneContainer.setBounds(194, 113, 862, 583);
 
-		JPanel centerPanel = new JPanel();
+		centerPanel = new JPanel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		centerPanel.setBackground(new Color(255, 245, 248));
 
@@ -54,7 +66,7 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 			centerPanel.add(Box.createVerticalStrut(50));
 		}
 
-		JScrollPane scrollPane = new JScrollPane(centerPanel);
+		scrollPane = new JScrollPane(centerPanel);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -96,16 +108,12 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		pack();
 		setLocationRelativeTo(null);
 
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/logo_wiki3.png")));
-		lblNewLabel.setBounds(236, 21, 756, 82);
-		mainPanel.add(lblNewLabel);
-		JLabel lblLogo = new JLabel("");
+		lblLogo = new JLabel("");
 		lblLogo.setIcon(new ImageIcon(getClass().getResource("/Imagenes/logo_wiki3.png")));
 		lblLogo.setBounds(236, 21, 756, 82);
 		mainPanel.add(lblLogo);
 
-		JLabel lblFondo = new JLabel("");
+		lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(getClass().getResource("/Imagenes/fondo_wiki2.jpg")));
 		lblFondo.setBounds(-36, 0, 1382, 770);
 		mainPanel.add(lblFondo);
@@ -113,16 +121,16 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 	}
 
 	private JPanel createPanel2(Personaje personaje) {
-		JPanel panel2 = new JPanel();
+		panel2 = new JPanel();
 		panel2.setBackground(new Color(255, 245, 248));
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
 
-		String rutaImagen = personaje.getRuta_foto();
-		ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen));
-		JLabel imagenLabel = new JLabel(imagen);
+		rutaImagen = personaje.getRuta_foto();
+		imagen = new ImageIcon(getClass().getResource(rutaImagen));
+		imagenLabel = new JLabel(imagen);
 		imagenLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		imagenLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
-		panel2.add(Box.createHorizontalGlue()); 
+		panel2.add(Box.createHorizontalGlue());
 		panel2.add(imagenLabel);
 		panel2.add(Box.createHorizontalGlue());
 
@@ -166,14 +174,19 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		curi.setFont(new Font("Goudy Old Style", Font.PLAIN, 16));
 		textPanel.add(curi);
 
-		JButton detallesButton = new JButton("Ver productos");
-		detallesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		detallesButton.setFont(new Font("Goudy Old Style", Font.BOLD, 19));
-		detallesButton.setMargin(new Insets(5, 13, 5, 13)); // Ajustar los márgenes
-		detallesButton.setForeground(Color.white);
-		detallesButton.setBackground(new Color(252, 193, 211));
+		JButton btnProd = new JButton("Ver productos");
+		btnProd.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnProd.setFont(new Font("Goudy Old Style", Font.BOLD, 19));
+		btnProd.setMargin(new Insets(5, 13, 5, 13)); // Ajustar los márgenes
+		btnProd.setForeground(Color.white);
+		btnProd.setBackground(new Color(252, 193, 211));
+		btnProd.addActionListener(this);
+		btnProd.setName(String.valueOf(personaje.getCodigo()));
 		textPanel.add(Box.createVerticalStrut(20));
-		textPanel.add(detallesButton);
+		textPanel.add(btnProd);
+		
+
+		
 
 		panel.add(textPanel);
 
@@ -182,6 +195,17 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Método no utilizado
+		// TODO Auto-generated method stub
+		 if (e.getSource().equals("1")) {
+			 System.out.println("Hola");
+		 }
 	}
+
+	//@Override
+	/*public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if (o == btnProd) {
+			LogIn.this.setVisible(false);
+			LogIn.this.dispose();
+	}*/
 }
