@@ -3,6 +3,8 @@ package Vista;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
@@ -20,8 +22,8 @@ public class LogIn extends JFrame implements ActionListener {
 	private JLabel lblPassword;
 	private JLabel lblUsername;
 	private JLabel lblError;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
+	private JLabel lblLogo;
+	private JLabel lblFondo;
 	private Controlador l;
 	
 
@@ -90,21 +92,31 @@ public class LogIn extends JFrame implements ActionListener {
 		btnSignUp.addActionListener(this);
 		
 		lblError = new JLabel("");
-		lblError.setForeground(new Color(247, 34, 167));
+		lblError.setForeground(new Color(222, 111, 111));
 		lblError.setFont(new Font("Goudy Old Style", Font.PLAIN, 16));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
 		lblError.setBounds(763, 376, 174, 21);
 		panel.add(lblError);
 		
-		lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/logo.png")));
-		lblNewLabel_1.setBounds(617, 60, 428, 140);
-		panel.add(lblNewLabel_1);
+		lblLogo = new JLabel("New label");
+		lblLogo.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/logo.png")));
+		lblLogo.setBounds(617, 60, 428, 140);
+		panel.add(lblLogo);
 		
-		lblNewLabel_2 = new JLabel("New label");
-		lblNewLabel_2.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/Fondo_Inicio.jpeg")));
-		lblNewLabel_2.setBounds(315, 0, 1250, 781);
-		panel.add(lblNewLabel_2);
+		lblFondo = new JLabel("New label");
+		lblFondo.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/Fondo_Inicio.jpeg")));
+		lblFondo.setBounds(315, 0, 1250, 781);
+		panel.add(lblFondo);
+		
+		 InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	        ActionMap actionMap = panel.getActionMap();
+	        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "clickSignUp");
+	        actionMap.put("clickSignUp", new AbstractAction() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                btnLogIn.doClick();
+	            }
+	        });
 	}
 
 	@Override
@@ -126,7 +138,7 @@ public class LogIn extends JFrame implements ActionListener {
 			Usuario u = l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
 			if (u!= null) {
 				lblError.setText("ok");
-				Paneles paneles = new Paneles();
+				Paneles paneles = new Paneles(l);
 				paneles.setVisible(true);
 				dispose();
 			} else {
