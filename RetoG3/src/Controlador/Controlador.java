@@ -7,10 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.swing.JComboBox;
-
 import Modelo.Usuario;
+import Modelo.Cliente;
 import Modelo.Personaje;
 import Modelo.Producto;
 
@@ -18,7 +16,8 @@ public class Controlador implements Icontrolador {
 	private Connection con;
 	private PreparedStatement stmt;
 
-	final String OBTENERusuario = "SELECT * FROM Usuario WHERE username=? AND password=?";
+	final String OBTENERusuario = "SELECT u.*,c.num_cuenta FROM Usuario u,Cliente c WHERE u.username=c.username AND u.username=? AND u.password=? ";
+	final String MODIFICARperfil = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
 	final String INNSERTuser = "INSERT INTO usuario VALUES (?,?,?,?,?)";
 	final String INNSERTpersonaje = "INSERT INTO personaje VALUES (?,?,?,?,?,?)";
 	final String INNSERTcliente = "INSERT INTO cliente VALUES (?, ?)";
@@ -54,22 +53,25 @@ public class Controlador implements Icontrolador {
 	}
 
 	@Override
-	public Usuario logIn(String us, String pass) {
+	public Cliente logIn(String us, String pass) {
 		ResultSet rs = null;
-		Usuario u = null;
-		// Abrimos la conexion
+		Cliente c= new Cliente();
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(OBTENERusuario);
-			// Cargamos los parametros
 			stmt.setString(1, us);
 			stmt.setString(2, pass);
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				u = new Usuario();
-				u.setUsername(us);
-				u.setPassword(pass);
+				c = new Cliente();
+				c.setUsername(us);
+				c.setPassword(pass);
+				c.setN_telefono(rs.getInt("telefono"));
+				c.setEmail(rs.getString("email"));
+				c.setDireccion(rs.getString("direccion"));
+				c.setN_cuenta(rs.getString("num_cuenta"));
+				return c;
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de SQL: " + e.getMessage());
@@ -85,7 +87,7 @@ public class Controlador implements Icontrolador {
 			}
 			this.closeConnection();
 		}
-		return u;
+		return c;
 	}
 
 	public boolean existeUsuario(String username) throws SQLException {

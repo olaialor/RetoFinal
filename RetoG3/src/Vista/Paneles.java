@@ -3,17 +3,21 @@ package Vista;
 import javax.swing.*;
 
 import Controlador.Controlador;
+import Modelo.Cliente;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 
 public class Paneles extends JFrame {
+	
 	private Controlador l;
 	public static JTabbedPane tabbedPane;
+	private Cliente cliente;
 
-	public Paneles(Controlador c, boolean administrador)  {
+	public Paneles(Controlador c, boolean administrador, Cliente u)  {
 		this.l = c;
+		this.cliente=u;
 		setTitle("Aplicación con Pestañas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -24,20 +28,22 @@ public class Paneles extends JFrame {
 
 		tabbedPane = new JTabbedPane();
 
-		// Crear un panel y agregar la ventana 1
 		JPanel panel1 = new JPanel();
 		panel1.setLayout(new BorderLayout());
-		Wiki_Personaje ventana1 = new Wiki_Personaje(); // Suponiendo que Ventana1 es un JFrame existente
+		Wiki_Personaje ventana1 = new Wiki_Personaje(); 
 		panel1.add(ventana1.getContentPane(), BorderLayout.CENTER);
 		tabbedPane.addTab("Pestaña 1", panel1);
 
-		// Crear un panel y agregar la ventana 2
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new BorderLayout());
-		Busqueda_Producto ventana2 = new Busqueda_Producto(); // Suponiendo que Ventana2 es un JFrame existente
+		Busqueda_Producto ventana2 = new Busqueda_Producto(); 
 		panel2.add(ventana2.getContentPane(), BorderLayout.CENTER);
 		tabbedPane.addTab("Pestaña 2", panel2);
+		
+		
+		
 		Color customColor = new Color(0xFFC0D3);
+		
 		
 		if (administrador==true){
 			JPanel panel3 = new JPanel();
@@ -57,6 +63,12 @@ public class Paneles extends JFrame {
 	        tabbedPane.setForegroundAt(2, Color.WHITE); 
 	        tabbedPane.setForegroundAt(3, Color.WHITE); 
 
+		}else {
+			JPanel panel5 = new JPanel();
+			panel5.setLayout(new BorderLayout());
+			Usuario perfil = new Usuario(l,cliente);
+			panel5.add(perfil.getContentPane(), BorderLayout.CENTER);
+			tabbedPane.addTab("Mi perfil", panel5);
 		}
 		
 		
@@ -65,11 +77,14 @@ public class Paneles extends JFrame {
 
         tabbedPane.setBackgroundAt(0, customColor); 
         tabbedPane.setBackgroundAt(1, customColor); 
+        tabbedPane.setBackgroundAt(2, customColor); 
         
         
         // Cambiar el color del texto de las pestañas
         tabbedPane.setForegroundAt(0, Color.WHITE);
-        tabbedPane.setForegroundAt(1, Color.WHITE); 
+        tabbedPane.setForegroundAt(1, Color.WHITE);
+        tabbedPane.setForegroundAt(2, Color.WHITE); 
+        
         
         
         Font font = new Font("Goudy Old Style", Font.BOLD, 17); 
@@ -78,8 +93,5 @@ public class Paneles extends JFrame {
 
 		getContentPane().add(tabbedPane);
 	}
-
-	
-
 	
 }
