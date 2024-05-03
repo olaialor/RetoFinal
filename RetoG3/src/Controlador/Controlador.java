@@ -23,6 +23,7 @@ public class Controlador implements Icontrolador {
     final String OBTENERusername = "SELECT COUNT(*) FROM usuario WHERE username = ?";
     final String OBTENERPersonajes = "SELECT * FROM personaje";
     final String OBTENERProductos = "SELECT * FROM producto";
+    final String OBTENERNombrePersonaje = "Select nombre from personaje where codigo = ?";
     
     private void openConnection() {
         try {
@@ -189,14 +190,14 @@ public class Controlador implements Icontrolador {
 
             // Recorremos los resultados y creamos objetos Personaje
             while (rs.next()) {
-                String codigo = rs.getString("Cod_producto");
-                String precio = rs.getString("Precio");
+                int codigo = rs.getInt("Cod_producto");
+                Double precio = rs.getDouble("Precio");
                 String descripcion = rs.getString("Descrip_prod");
                 int stock = rs.getInt("Stock");
                 String ruta_foto = rs.getString("ruta_foto_prod");
                 String nombre = rs.getString("Nombre");
                 
-                // Creamos el objeto Personaje y lo agregamos a la lista
+               
                 Producto producto = new Producto(nombre,codigo,precio, descripcion, stock, ruta_foto);
                 listaProducto.add(producto);
             }
@@ -219,7 +220,44 @@ public class Controlador implements Icontrolador {
         return listaProducto;
 	}
 
+	@Override
+	public String getNombre(int command) {
+	    ResultSet rs = null;
+	    
+	    // Abrimos la conexión
+	    this.openConnection();
+	    
+	    try {
+	        // Preparamos la declaración SQL con el parámetro
+	        stmt = con.prepareStatement(OBTENERNombrePersonaje);
+	        stmt.setInt(1, command); // Setting the parameter
+	        rs = stmt.executeQuery();
 
-
+	        // Verificamos si hay un resultado y obtenemos el nombre
+	        if (rs.next()) {
+	            String nombre = rs.getString("nombre"); 
+	            System.out.println(nombre);
+	            return nombre;
+	        } else {
+	            // Handle the case where no result is found
+	            return null;
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error de SQL: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) {
+	                rs.close();
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	        // Cerramos la conexión
+	        this.closeConnection();
+	    }
+	    return null;
+	}
 
 }

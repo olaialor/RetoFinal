@@ -1,85 +1,90 @@
 package Modelo;
 
-public class Producto extends Personaje{
-	private String cod_producto;
-	private String precio;
+public class Producto {
+	private String personaje;
+	private int cod_producto;
+	private double precio;
 	private String descripcion;
-	private int stock;
-	private String ruta_foto;
+	private int stock;	
+	private String ruta_img;
+	
+	
 
-	public Producto(String nombre, String cod_producto, String precio, String descripcion2, int stock, String ruta_foto2) {
-		super(nombre);
+	
+
+	public Producto(String personaje, int cod_producto, double precio, String descripcion, int stock, String ruta_img) {
+		super();
+		this.personaje = personaje;
 		this.cod_producto = cod_producto;
 		this.precio = precio;
-		descripcion = descripcion2;
+		this.descripcion = descripcion;
 		this.stock = stock;
-		ruta_foto = ruta_foto2;
+		this.ruta_img = ruta_img;
 	}
-
 
 	public Producto() {
-		this.cod_producto = "";
-		this.precio = "";
+		this.cod_producto = 0;
+		this.precio = 0.0;
 		this.descripcion = "";
 		this.stock = 0;
-		this.ruta_foto="";
+		this.ruta_img ="";
 	}
 
-
-	public String getCod_producto() {
+	public int getCod_producto() {
 		return cod_producto;
 	}
 
-
-	public void setCod_producto(String cod_producto) {
+	public void setCod_producto(int cod_producto) {
 		this.cod_producto = cod_producto;
 	}
 
-
-	public String getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
-
-	public void setPrecio(String precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-
 
 	public String getDescripcion() {
 		return descripcion;
 	}
 
-
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
 
 	public int getStock() {
 		return stock;
 	}
 
-
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
 
-
-	public String getRuta_foto() {
-		return ruta_foto;
+	
+	public String getPersonaje() {
+		return personaje;
 	}
 
-
-	public void setRuta_foto(String ruta_foto) {
-		this.ruta_foto = ruta_foto;
+	public void setPersonaje(String personaje) {
+		this.personaje = personaje;
 	}
 
+	public String getRuta_img() {
+		return ruta_img;
+	}
+
+	public void setRuta_img(String ruta_img) {
+		this.ruta_img = ruta_img;
+	}
 
 	@Override
 	public String toString() {
 		return "Producto [cod_producto=" + cod_producto + ", precio=" + precio + ", descripcion=" + descripcion
-				+ ", stock=" + stock + ", ruta_foto=" + ruta_foto + "]";
+				+ ", stock=" + stock + "]";
 	}
+	
+	
 	
 }

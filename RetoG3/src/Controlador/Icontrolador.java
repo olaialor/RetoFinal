@@ -17,4 +17,6 @@ public interface Icontrolador {
 	public boolean SignUp(Usuario user);
 	
 	public List<Producto> getProducto();
+	
+	public String getNombre(int i);
 }

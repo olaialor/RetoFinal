@@ -121,13 +121,13 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 	}
 
 	private JPanel createPanel2(Personaje personaje) {
-		panel2 = new JPanel();
+		JPanel panel2 = new JPanel();
 		panel2.setBackground(new Color(255, 245, 248));
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
 
-		rutaImagen = personaje.getRuta_foto();
-		imagen = new ImageIcon(getClass().getResource(rutaImagen));
-		imagenLabel = new JLabel(imagen);
+		String rutaImagen = personaje.getRuta_foto();
+		ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen));
+		JLabel imagenLabel = new JLabel(imagen);
 		imagenLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		imagenLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		panel2.add(Box.createHorizontalGlue());
@@ -181,13 +181,9 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		btnProd.setForeground(Color.white);
 		btnProd.setBackground(new Color(252, 193, 211));
 		btnProd.addActionListener(this);
-		btnProd.setName(String.valueOf(personaje.getCodigo()));
 		textPanel.add(Box.createVerticalStrut(20));
 		textPanel.add(btnProd);
-		
-
-		
-
+		btnProd.setActionCommand(String.valueOf(personaje.getCodigo()));
 		panel.add(textPanel);
 
 		return panel;
@@ -195,17 +191,16 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		 if (e.getSource().equals("1")) {
-			 System.out.println("Hola");
-		 }
-	}
+		String command = e.getActionCommand();
 
-	//@Override
-	/*public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if (o == btnProd) {
-			LogIn.this.setVisible(false);
-			LogIn.this.dispose();
-	}*/
+		if (command != null) {
+			System.out.println(command);
+			String nombre = controlador.getNombre(Integer.parseInt(command));
+			
+			Busqueda_Producto busqueda_Producto = new Busqueda_Producto(controlador);
+			busqueda_Producto.buclePaneles(nombre);
+			
+
+		}
+	}
 }
