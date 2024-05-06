@@ -53,9 +53,9 @@ public class Controlador implements Icontrolador {
 	}
 
 	@Override
-	public Cliente logIn(String us, String pass) {
+	public Usuario logIn(String us, String pass) {
 		ResultSet rs = null;
-		Cliente c= new Cliente();
+		Usuario user = new Usuario();
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(OBTENERusuario);
@@ -64,14 +64,13 @@ public class Controlador implements Icontrolador {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				c = new Cliente();
-				c.setUsername(us);
-				c.setPassword(pass);
-				c.setN_telefono(rs.getInt("telefono"));
-				c.setEmail(rs.getString("email"));
-				c.setDireccion(rs.getString("direccion"));
-				c.setN_cuenta(rs.getString("num_cuenta"));
-				return c;
+				user = new Cliente();
+				user.setUsername(us);
+				user.setPassword(pass);
+				user.setN_telefono(rs.getInt("telefono"));
+				user.setEmail(rs.getString("email"));
+				user.setDireccion(rs.getString("direccion"));
+				return user;
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de SQL: " + e.getMessage());
@@ -87,7 +86,7 @@ public class Controlador implements Icontrolador {
 			}
 			this.closeConnection();
 		}
-		return c;
+		return user;
 	}
 
 	public boolean existeUsuario(String username) throws SQLException {
@@ -239,18 +238,21 @@ public class Controlador implements Icontrolador {
 		return lista;
 	}
 
-	public boolean buscarusuario(String usuario) {
+	public boolean buscaruTrabajador(String usuario) {
 		// TODO Auto-generated method stub
 		ResultSet rs = null;
-		boolean existe = false;
+		boolean trabajador = false;
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(OBTENERtrabajador);
 			stmt.setString(1, usuario);
 			rs = stmt.executeQuery();
-			if (rs.next())
-				// if (rs.getInt(1)==1)
-				existe = true;
+			if(rs.next()) {
+				trabajador=true;
+			}
+			// if (rs.getInt(1)==1)
+			// rs.next()
+		
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -265,7 +267,7 @@ public class Controlador implements Icontrolador {
 			}
 			this.closeConnection();
 		}
-		return existe;
+		return trabajador;
 	}
 
 	public void añadirProducto(Producto producto) {
@@ -279,7 +281,7 @@ public class Controlador implements Icontrolador {
 			stmt.setInt(2, (int) producto.getPrecio());
 			stmt.setString(3, producto.getDescripcion());
 			stmt.setInt(4, producto.getStock());
-			stmt.setString(5,producto.getRuta_img());
+			stmt.setString(5, producto.getRuta_img());
 			stmt.setString(6, producto.getPersonaje());
 
 			if (stmt.executeUpdate() > 0) {
@@ -320,6 +322,33 @@ public class Controlador implements Icontrolador {
 
 		this.closeConnection();
 		return codigo;
+	}
+
+	@Override
+	public boolean modificarUsuario(String username, String contraseña, int telf, String email, String direc,
+			String cuenta) {
+		// TODO Auto-generated method stub
+		boolean cambios = false;
+		Cliente cl = new Cliente();
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(MODIFICARperfil);
+			stmt.setString(1, contraseña);
+			stmt.setInt(2, telf);
+			stmt.setString(3, email);
+			stmt.setString(4, direc);
+			stmt.setString(5, cuenta);
+			stmt.setString(6, username);
+			if (stmt.executeUpdate() == 1) {
+				cambios = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de SQL");
+			e.printStackTrace();
+		} finally {
+			this.closeConnection();
+		}
+		return cambios;
 	}
 }
 

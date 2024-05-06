@@ -8,7 +8,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
 import Modelo.Cliente;
+import Modelo.Usuario;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,7 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
-public class Usuario extends JFrame implements ActionListener {
+
+public class Mi_Perfil extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -30,18 +34,18 @@ public class Usuario extends JFrame implements ActionListener {
 	private JButton btnAceptar;
 	private JButton btnModificar;
 	private Controlador l;
-	private JTextField textFieldUsuario;
-	private JTextField textFieldTelf;
 	private JTextField textFieldEmail;
 	private JTextField textFieldCuenta;
 	private JPasswordField passwordField;
 	private JLabel lblDireccin;
 	private JTextField textFieldDirec;
-	private Cliente c;
+	private Usuario c;
+	private JTextField textFieldTelf;
+	private JButton btnDarseDeBaja;
 
-	public Usuario(Controlador c, Cliente cliente) {
-		this.l = c;
-		this.c=cliente;
+	Mi_Perfil(Controlador controlador, Usuario u ) {
+		this.l = controlador;
+		this.c = u;
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Añadir_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setTitle("Mi perfil");
@@ -55,97 +59,130 @@ public class Usuario extends JFrame implements ActionListener {
 		contentPane.setLayout(null);
 
 		lblPerfil = new JLabel("");
-		lblPerfil.setIcon(new ImageIcon(Usuario.class.getResource("/Imagenes/ImagenPerfil.png")));
+		lblPerfil.setIcon(new ImageIcon(Mi_Perfil.class.getResource("/Imagenes/ImagenPerfil.png")));
 		lblPerfil.setBounds(31, 62, 250, 260);
 		contentPane.add(lblPerfil);
 
 		lblHeader = new JLabel("");
-		lblHeader.setIcon(new ImageIcon(Usuario.class.getResource("/Imagenes/HeaderUsuario.jpg")));
+		lblHeader.setIcon(new ImageIcon(Mi_Perfil.class.getResource("/Imagenes/HeaderUsuario.jpg")));
 		lblHeader.setBounds(0, 0, 1331, 190);
 		contentPane.add(lblHeader);
 
-		lblUsuario = new JLabel("Nombre de usuario");
-		lblUsuario.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblUsuario.setBounds(291, 200, 210, 35);
+		//lblUsuario = new JLabel(c.getUsername());
+		lblUsuario.setFont(new Font("Goudy Stout", Font.PLAIN, 19));
+		lblUsuario.setBounds(291, 200, 262, 52);
 		contentPane.add(lblUsuario);
 
 		lblContraseña = new JLabel("Contraseña");
 		lblContraseña.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblContraseña.setBounds(59, 364, 172, 52);
+		lblContraseña.setBounds(59, 342, 172, 52);
 		contentPane.add(lblContraseña);
 
 		lblTelf = new JLabel("Num. telefono");
 		lblTelf.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblTelf.setBounds(482, 367, 204, 46);
+		lblTelf.setBounds(482, 345, 204, 46);
 		contentPane.add(lblTelf);
 
 		lblEmail = new JLabel("Email");
 		lblEmail.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblEmail.setBounds(59, 525, 172, 52);
+		lblEmail.setBounds(59, 503, 172, 52);
 		contentPane.add(lblEmail);
 
 		lblCuenta = new JLabel("Num. cuenta");
 		lblCuenta.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblCuenta.setBounds(482, 525, 172, 52);
+		lblCuenta.setBounds(482, 503, 172, 52);
 		contentPane.add(lblCuenta);
 
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnAceptar.setBackground(new Color(255, 220, 230));
-		btnAceptar.setBounds(1071, 637, 152, 41);
+		btnAceptar.setBounds(1073, 641, 152, 41);
 		contentPane.add(btnAceptar);
 
 		btnModificar = new JButton("Modificar");
 		btnModificar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnModificar.setBackground(new Color(255, 220, 230));
-		btnModificar.setBounds(855, 637, 152, 41);
+		btnModificar.setBounds(857, 641, 152, 41);
 		contentPane.add(btnModificar);
 
-		textFieldUsuario = new JTextField();
-		textFieldUsuario.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
-		textFieldUsuario.setBounds(291, 245, 277, 35);
-		contentPane.add(textFieldUsuario);
-		textFieldUsuario.setColumns(10);
+		//textFieldEmail = new JTextField(c.getEmail());
+		textFieldEmail.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
+		textFieldEmail.setColumns(10);
+		textFieldEmail.setBounds(59, 562, 277, 35);
+		contentPane.add(textFieldEmail);
+
+		//textFieldCuenta = new JTextField(c.getN_cuenta());
+		textFieldCuenta.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
+		textFieldCuenta.setColumns(10);
+		textFieldCuenta.setBounds(482, 565, 277, 35);
+		contentPane.add(textFieldCuenta);
+
+		//passwordField = new JPasswordField(c.getPassword());
+		passwordField.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
+		passwordField.setBounds(59, 401, 277, 35);
+		contentPane.add(passwordField);
+
+		lblDireccin = new JLabel("Dirección");
+		lblDireccin.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
+		lblDireccin.setBounds(883, 345, 204, 46);
+		contentPane.add(lblDireccin);
+
+		//textFieldDirec = new JTextField(c.getDireccion());
+		textFieldDirec.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
+		textFieldDirec.setColumns(10);
+		textFieldDirec.setBounds(885, 401, 277, 35);
+		contentPane.add(textFieldDirec);
 
 		textFieldTelf = new JTextField();
 		textFieldTelf.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldTelf.setColumns(10);
-		textFieldTelf.setBounds(482, 423, 277, 35);
+		textFieldTelf.setBounds(482, 401, 277, 35);
+		//textFieldTelf.setText(Integer.toString(c.getN_telefono()));
 		contentPane.add(textFieldTelf);
 
-		textFieldEmail = new JTextField();
-		textFieldEmail.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
-		textFieldEmail.setColumns(10);
-		textFieldEmail.setBounds(59, 584, 277, 35);
-		contentPane.add(textFieldEmail);
+		btnDarseDeBaja = new JButton("Darse de baja");
+		btnDarseDeBaja.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
+		btnDarseDeBaja.setBackground(new Color(255, 220, 230));
+		btnDarseDeBaja.setBounds(1073, 219, 152, 41);
+		contentPane.add(btnDarseDeBaja);
 
-		textFieldCuenta = new JTextField();
-		textFieldCuenta.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
-		textFieldCuenta.setColumns(10);
-		textFieldCuenta.setBounds(482, 587, 277, 35);
-		contentPane.add(textFieldCuenta);
+		btnModificar.addActionListener(this);
+		btnAceptar.addActionListener(this);
+		btnDarseDeBaja.addActionListener(this);
 
-		passwordField = new JPasswordField();
-		passwordField.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
-		passwordField.setBounds(59, 423, 277, 35);
-		contentPane.add(passwordField);
-		
-		lblDireccin = new JLabel("Dirección");
-		lblDireccin.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblDireccin.setBounds(883, 367, 204, 46);
-		contentPane.add(lblDireccin);
-		
-		textFieldDirec = new JTextField();
-		textFieldDirec.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
-		textFieldDirec.setColumns(10);
-		textFieldDirec.setBounds(885, 423, 277, 35);
-		contentPane.add(textFieldDirec);
+		textFieldEmail.setEditable(false);
+		textFieldCuenta.setEditable(false);
+		passwordField.setEditable(false);
+		textFieldTelf.setEditable(false);
+		textFieldDirec.setEditable(false);
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getSource() == btnModificar) {
+			textFieldEmail.setEditable(true);
+			textFieldCuenta.setEditable(true);
+			passwordField.setEditable(true);
+			textFieldTelf.setEditable(true);
+			textFieldDirec.setEditable(true);
+		} else if (e.getSource() == btnAceptar) {
+			int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas guardar los cambios?",
+					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (confirmacion == JOptionPane.OK_OPTION) {
+				String nombre= "";
+				String nuevoEmail = textFieldEmail.getText();
+				String nuevaCuenta = textFieldCuenta.getText();
+				String nuevaContraseña = new String(passwordField.getPassword());
+				int nuevoTelefono = Integer.parseInt(textFieldTelf.getText());
+				String nuevaDireccion = textFieldDirec.getText();
+				l.modificarUsuario(nombre, nuevaContraseña, nuevoTelefono, nuevoEmail, nuevaDireccion, nuevaCuenta);
+				textFieldEmail.setEditable(false);
+				textFieldCuenta.setEditable(false);
+				passwordField.setEditable(false);
+				textFieldTelf.setEditable(false);
+				textFieldDirec.setEditable(false);
+			}
+		}
 	}
 }

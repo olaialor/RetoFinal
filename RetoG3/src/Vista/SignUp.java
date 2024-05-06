@@ -41,15 +41,15 @@ public class SignUp extends JFrame implements ActionListener {
 	private JLabel lblContraseña1;
 	private JLabel lblFondo_Inicio;
 	private Controlador l;
+	private Usuario user;
 	private JLabel lblNewLabel;
-	private Cliente c;
 	private Pattern formatoEmail = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
-	public SignUp(Controlador c, Cliente cliente) {
+	public SignUp(Controlador c,Usuario u) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		// setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/giphy.gif")));
 		this.l = c;
-		this.c = cliente;
+		this.user=u;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 943, 713);
 		contentPane = new JPanel();
@@ -188,7 +188,7 @@ public class SignUp extends JFrame implements ActionListener {
 			SignUp.this.setVisible(false);
 			SignUp.this.dispose();
 			try {
-				LogIn frame = new LogIn(l,c);
+				LogIn frame = new LogIn(l,user);
 				frame.setVisible(true);
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -211,7 +211,7 @@ public class SignUp extends JFrame implements ActionListener {
 								SignUp.this.setVisible(false);
 								SignUp.this.dispose();
 								try {
-									Paneles frame = new Paneles(l, false, c);
+									Paneles frame = new Paneles(l, false, user);
 									frame.setVisible(true);
 								} catch (Exception e1) {
 									e1.printStackTrace();
