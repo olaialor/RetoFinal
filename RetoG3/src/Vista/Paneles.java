@@ -5,13 +5,12 @@ import javax.swing.*;
 import Controlador.Controlador;
 
 import java.awt.*;
-import java.awt.event.*;
 
 public class Paneles extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Controlador l;
-	
+	 static JTabbedPane tabbedPane ;
     public Paneles(Controlador c) {
     	this.l=c;
     	
@@ -22,7 +21,7 @@ public class Paneles extends JFrame {
         setLocationRelativeTo(null);
         setPreferredSize(new Dimension(1280, 830));
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
 
         // Crear un panel y agregar la ventana 1
         JPanel panel1 = new JPanel();
@@ -54,7 +53,12 @@ public class Paneles extends JFrame {
         Font font = new Font("Goudy Old Style", Font.BOLD, 17); 
         tabbedPane.setFont(font); 
 
+        panel1.setVisible(false);
         getContentPane().add(tabbedPane);
+        
+    }
+    public static void setSelectedIndex(int index) {
+        tabbedPane.setSelectedIndex(index);
     }
 
    

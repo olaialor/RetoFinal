@@ -30,6 +30,9 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 	private JLabel precio;
 	private JButton btnCompra;
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public Busqueda_Producto(Controlador controlador) {
 		this.controlador = controlador;
 
@@ -50,7 +53,7 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 		lblPersonaje = new JLabel("New label");
 		lblPersonaje.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
-		lblPersonaje.setBounds(-65, 526, 264, 237);
+		lblPersonaje.setBounds(-170, 350, 400, 600);
 		mainPanel.add(lblPersonaje);
 
 		scrollPaneContainer = new JPanel();
@@ -92,10 +95,75 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		lblFondo.setBounds(-36, 0, 1382, 770);
 		mainPanel.add(lblFondo);
 
+		System.out.println("Nuevo Panel");
 	}
 
+	public Busqueda_Producto(Controlador controlador, String nombre) {
+		this.controlador = controlador;
+
+		setIconImage(
+				Toolkit.getDefaultToolkit().getImage(Wiki_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setPreferredSize(new Dimension(1280, 800));
+
+		mainPanel = new JPanel();
+		mainPanel.setLayout(null);
+		mainPanel.setPreferredSize(new Dimension(1280, 800));
+		mainPanel.setOpaque(false);
+
+		lblPersonaje2 = new JLabel("");
+		lblPersonaje2.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/personaje.png")));
+		lblPersonaje2.setBounds(1038, 542, 404, 228);
+		mainPanel.add(lblPersonaje2);
+
+		lblPersonaje = new JLabel("New label");
+		lblPersonaje.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
+		lblPersonaje.setBounds(-65, 526, 264, 237);
+		mainPanel.add(lblPersonaje);
+
+		scrollPaneContainer = new JPanel();
+		scrollPaneContainer.setBounds(194, 113, 862, 583);
+
+		centerPanel = new JPanel();
+		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+		centerPanel.setBackground(new Color(255, 245, 248));
+
+		System.out.println("productos personaje");
+
+		centerPanel.removeAll(); 
 	
-	
+		buclePaneles(nombre);
+		
+		
+		scrollPane = new JScrollPane(centerPanel);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		scrollPane.setPreferredSize(new Dimension(860, 580));
+
+		scrollPaneContainer.setBackground(Color.white);
+		scrollPane.setPreferredSize(new Dimension(860, 580));
+
+		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
+
+		mainPanel.add(scrollPaneContainer);
+
+		getContentPane().add(mainPanel);
+		pack();
+		setLocationRelativeTo(null);
+
+		lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/logo_tienda4.png")));
+		lblLogo.setBounds(346, 21, 571, 82);
+		mainPanel.add(lblLogo);
+
+		lblFondo = new JLabel("");
+		lblFondo.setIcon(new ImageIcon(getClass().getResource("/Imagenes/fondo_wiki2.jpg")));
+		lblFondo.setBounds(-36, 0, 1382, 770);
+		mainPanel.add(lblFondo);
+
+		System.out.println("Nuevo Panel");
+	}
 
 	public void buclePaneles(String personaje) {
 		List<Producto> productos = controlador.getProducto();
