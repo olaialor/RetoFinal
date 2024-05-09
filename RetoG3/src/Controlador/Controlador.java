@@ -84,7 +84,7 @@ public class Controlador implements Icontrolador {
         return u;
     }
 
-    public boolean existeUsuario(String username) throws SQLException {
+    public boolean existeUsuario(String username) {
         ResultSet rs = null;
         boolean existe =false;
         this.openConnection();
@@ -99,7 +99,12 @@ public class Controlador implements Icontrolador {
             e.printStackTrace();
         } finally {
             if (rs != null) {
-                rs.close();
+                try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
             this.closeConnection();
         }
@@ -236,7 +241,6 @@ public class Controlador implements Icontrolador {
 	        // Verificamos si hay un resultado y obtenemos el nombre
 	        if (rs.next()) {
 	            String nombre = rs.getString("nombre"); 
-	            System.out.println(nombre);
 	            return nombre;
 	        } else {
 	            // Handle the case where no result is found

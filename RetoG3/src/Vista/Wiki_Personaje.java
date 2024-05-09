@@ -187,7 +187,6 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		////
 		btnProd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("holA");
 			}
 		});
 		panel.add(textPanel);
@@ -197,15 +196,13 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
+	    String command = e.getActionCommand();
 
-		if (command != null) {
-			System.out.println(command);
-			
-			String nombre = controlador.getNombre(Integer.parseInt(command));
-			Busqueda_Producto busqueda_Producto = new Busqueda_Producto(controlador, nombre);
-			Paneles.tabbedPane.setSelectedIndex(1);
-			
-		}
+	    if (command != null) {
+	        String nombre = controlador.getNombre(Integer.parseInt(command));
+	        Busqueda_Producto busqueda_Producto = new Busqueda_Producto(controlador, nombre); // Pasa los criterios de filtro
+	        Paneles.tabbedPane.setSelectedIndex(1); // Cambia a la pestaña Busqueda_Producto
+	    }
 	}
+
 }

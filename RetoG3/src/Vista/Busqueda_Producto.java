@@ -1,6 +1,8 @@
 package Vista;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+
 import Controlador.Controlador;
 import Modelo.Personaje;
 import Modelo.Producto;
@@ -14,7 +16,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 	private Controlador controlador;
 	private JPanel mainPanel;
-	private JLabel lblPersonaje2;
 	private JLabel lblPersonaje;
 	private JPanel scrollPaneContainer;
 	private JPanel centerPanel;
@@ -46,14 +47,9 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		mainPanel.setPreferredSize(new Dimension(1280, 800));
 		mainPanel.setOpaque(false);
 
-		lblPersonaje2 = new JLabel("");
-		lblPersonaje2.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/personaje.png")));
-		lblPersonaje2.setBounds(1038, 542, 404, 228);
-		mainPanel.add(lblPersonaje2);
-
-		lblPersonaje = new JLabel("New label");
-		lblPersonaje.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
-		lblPersonaje.setBounds(-170, 350, 400, 600);
+		lblPersonaje = new JLabel("");
+		lblPersonaje.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje4.png")));
+		lblPersonaje.setBounds(-21, 530, 226, 223);
 		mainPanel.add(lblPersonaje);
 
 		scrollPaneContainer = new JPanel();
@@ -74,8 +70,31 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		scrollPaneContainer.setBackground(Color.white);
+		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
 		scrollPane.setPreferredSize(new Dimension(860, 580));
+
+		// Cambiar el color de la barra de desplazamiento
+		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+
+			@Override
+			protected JButton createDecreaseButton(int orientation) {
+				JButton button = super.createDecreaseButton(orientation);
+				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
+				return button;
+			}
+
+			@Override
+			protected JButton createIncreaseButton(int orientation) {
+				JButton button = super.createIncreaseButton(orientation);
+				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
+				return button;
+			}
+
+			@Override
+			protected void configureScrollBarColors() {
+				this.thumbColor = new Color(255, 213, 227);
+			}
+		});
 
 		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
 
@@ -95,7 +114,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		lblFondo.setBounds(-36, 0, 1382, 770);
 		mainPanel.add(lblFondo);
 
-		System.out.println("Nuevo Panel");
 	}
 
 	public Busqueda_Producto(Controlador controlador, String nombre) {
@@ -111,11 +129,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		mainPanel.setPreferredSize(new Dimension(1280, 800));
 		mainPanel.setOpaque(false);
 
-		lblPersonaje2 = new JLabel("");
-		lblPersonaje2.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/personaje.png")));
-		lblPersonaje2.setBounds(1038, 542, 404, 228);
-		mainPanel.add(lblPersonaje2);
-
 		lblPersonaje = new JLabel("New label");
 		lblPersonaje.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
 		lblPersonaje.setBounds(-65, 526, 264, 237);
@@ -128,20 +141,17 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		centerPanel.setBackground(new Color(255, 245, 248));
 
-		System.out.println("productos personaje");
+		centerPanel.removeAll();
 
-		centerPanel.removeAll(); 
-	
 		buclePaneles(nombre);
-		
-		
+
 		scrollPane = new JScrollPane(centerPanel);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		scrollPaneContainer.setBackground(Color.white);
+		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
 		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
@@ -162,7 +172,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		lblFondo.setBounds(-36, 0, 1382, 770);
 		mainPanel.add(lblFondo);
 
-		System.out.println("Nuevo Panel");
 	}
 
 	public void buclePaneles(String personaje) {
@@ -183,14 +192,17 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		panel = new JPanel();
 		panel.setBackground(new Color(255, 245, 248));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.setLayout(new GridLayout(1, 3));
 
 		rutaImagen = producto.getRuta_img();
 		imagen = new ImageIcon(getClass().getResource(rutaImagen));
 		imagenLabel = new JLabel(imagen);
-
+		JPanel imagePanel = new JPanel(new BorderLayout());
+		imagePanel.setBackground(new Color(255, 245, 248));
+		imagePanel.add(imagenLabel, BorderLayout.WEST);
 		panel.add(imagenLabel);
 
+		panel.add(Box.createHorizontalStrut(20));
+		
 		textPanel = new JPanel();
 		textPanel.setBackground(new Color(255, 245, 248));
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
@@ -205,7 +217,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 		panel.add(textPanel);
 
-		// Button column
 		btnCompra = new JButton("Comprar");
 		btnCompra.setFont(new Font("Goudy Old Style", Font.BOLD, 19));
 		btnCompra.setMargin(new Insets(5, 13, 5, 13));
@@ -216,7 +227,11 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 		textPanel.add(Box.createVerticalStrut(20));
 		textPanel.add(btnCompra);
-		btnCompra.addActionListener(this);
+		btnCompra.setActionCommand(String.valueOf(producto.getCod_producto()));
+		btnCompra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 
 		return panel;
 	}
@@ -224,23 +239,23 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-
+		String command = e.getActionCommand();
 		UIManager.put("OptionPane.background", new Color(160, 202, 238));
 		UIManager.put("Panel.background", new Color(160, 202, 238));
 		UIManager.put("OptionPane.messageForeground", Color.BLACK);
 		UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
 
-		if (e.getSource() == btnCompra) {
+		if (command != null) {
 			// Mostrar un mensaje de confirmación
-			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas comprar este producto?",
-					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas comprar este producto?", "",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
 			// Verificar la opción seleccionada por el usuario
 			if (opcion == JOptionPane.OK_OPTION) {
-				JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
+				JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "",
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Operación cancelada.", "", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

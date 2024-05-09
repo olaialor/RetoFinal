@@ -19,4 +19,6 @@ public interface Icontrolador {
 	public List<Producto> getProducto();
 	
 	public String getNombre(int i);
+	
+	public boolean existeUsuario(String username);
 }
