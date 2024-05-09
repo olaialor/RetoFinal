@@ -27,9 +27,6 @@ public class LogIn extends JFrame implements ActionListener {
 	private Controlador l;
 	
 
-	/**
-	 * Create the frame.
-	 */
 	public LogIn(Controlador c) {
 		this.l=c;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogIn.class.getResource("/Imagenes/LazoHelloKitty.png")));
