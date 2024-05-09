@@ -3,6 +3,8 @@ package Vista;
 import javax.swing.*;
 import Controlador.Controlador;
 import java.awt.*;
+
+import Modelo.Trabajador;
 import Modelo.Usuario;
 
 public class Paneles extends JFrame {
@@ -10,11 +12,11 @@ public class Paneles extends JFrame {
 	private Controlador l;
 	public static JTabbedPane tabbedPane;
 	private Usuario user;
-	private boolean esTrabajador;
 
-	public Paneles(Controlador c, boolean administrador, Usuario u) {
+	public Paneles(Controlador c) {
 		this.l = c;
-		this.user = u;
+	
+		Trabajador trab = new Trabajador();
 		setTitle("Aplicación con Pestañas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -39,7 +41,7 @@ public class Paneles extends JFrame {
 
 		Color customColor = new Color(0xFFC0D3);
 
-		if (administrador) {
+		if (trab instanceof Usuario) {
 			JPanel panel3 = new JPanel();
 			panel3.setLayout(new BorderLayout());
 			Añadir_Personaje ventana3 = new Añadir_Personaje(l);

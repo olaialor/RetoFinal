@@ -1,15 +1,14 @@
 package Vista;
 
 import java.awt.Toolkit;
+import Modelo.Cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
-import Modelo.Cliente;
 import Modelo.Usuario;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -68,7 +67,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		lblHeader.setBounds(0, 0, 1331, 190);
 		contentPane.add(lblHeader);
 
-		//lblUsuario = new JLabel(c.getUsername());
+		lblUsuario = new JLabel(c.getUsername());
 		lblUsuario.setFont(new Font("Goudy Stout", Font.PLAIN, 19));
 		lblUsuario.setBounds(291, 200, 262, 52);
 		contentPane.add(lblUsuario);
@@ -105,19 +104,19 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		btnModificar.setBounds(857, 641, 152, 41);
 		contentPane.add(btnModificar);
 
-		//textFieldEmail = new JTextField(c.getEmail());
+		textFieldEmail = new JTextField(c.getEmail());
 		textFieldEmail.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldEmail.setColumns(10);
 		textFieldEmail.setBounds(59, 562, 277, 35);
 		contentPane.add(textFieldEmail);
 
-		//textFieldCuenta = new JTextField(c.getN_cuenta());
+		textFieldCuenta = new JTextField(((Cliente) c).getN_cuenta());
 		textFieldCuenta.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldCuenta.setColumns(10);
 		textFieldCuenta.setBounds(482, 565, 277, 35);
 		contentPane.add(textFieldCuenta);
 
-		//passwordField = new JPasswordField(c.getPassword());
+		passwordField = new JPasswordField(c.getPassword());
 		passwordField.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		passwordField.setBounds(59, 401, 277, 35);
 		contentPane.add(passwordField);
@@ -127,7 +126,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		lblDireccin.setBounds(883, 345, 204, 46);
 		contentPane.add(lblDireccin);
 
-		//textFieldDirec = new JTextField(c.getDireccion());
+		textFieldDirec = new JTextField(c.getDireccion());
 		textFieldDirec.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldDirec.setColumns(10);
 		textFieldDirec.setBounds(885, 401, 277, 35);
@@ -137,7 +136,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		textFieldTelf.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldTelf.setColumns(10);
 		textFieldTelf.setBounds(482, 401, 277, 35);
-		//textFieldTelf.setText(Integer.toString(c.getN_telefono()));
+		textFieldTelf.setText(Integer.toString(c.getN_telefono()));
 		contentPane.add(textFieldTelf);
 
 		btnDarseDeBaja = new JButton("Darse de baja");

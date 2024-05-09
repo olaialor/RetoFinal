@@ -9,7 +9,7 @@ public class principal {
 		// TODO Auto-generated method stub
 		Controlador c=new Controlador();
 		Cliente cl= new Cliente();
-		LogIn frame=new LogIn(c,cl);
+		LogIn frame=new LogIn(c);
 		frame.setVisible(true);
 	}
 }

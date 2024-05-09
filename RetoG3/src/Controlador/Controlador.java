@@ -11,12 +11,13 @@ import Modelo.Usuario;
 import Modelo.Cliente;
 import Modelo.Personaje;
 import Modelo.Producto;
+import Modelo.Trabajador;
 
 public class Controlador implements Icontrolador {
 	private Connection con;
 	private PreparedStatement stmt;
 
-	final String OBTENERusuario = "SELECT u.*,c.num_cuenta FROM Usuario u,Cliente c WHERE u.username=c.username AND u.username=? AND u.password=? ";
+	final String OBTENERusuario = "SELECT * FROM Usuario WHERE username=? AND password=? ";
 	final String MODIFICARperfil = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
 	final String INNSERTuser = "INSERT INTO usuario VALUES (?,?,?,?,?)";
 	final String INNSERTpersonaje = "INSERT INTO personaje VALUES (?,?,?,?,?,?)";
@@ -27,6 +28,9 @@ public class Controlador implements Icontrolador {
 	final String OBTENERnom_personajes = "SELECT nombre from Personaje";
 	final String OBTENERtrabajador = "SELECT * FROM Trabajador WHERE username=?";
 	final String INNSERTproducto = "INSERT INTO producto VALUES (?,?,?,?,?,?)";
+	final String DATOSusuario = "CALL DataUsers(?);"; 
+	final String EScliente = "SELECT COUNT(*) AS count FROM Usuario u JOIN Cliente c ON u.username = c.username WHERE u.username = (?);";
+	final String EXISTEusuario = "SELECT UsernameExists(?);";
 
 	private void openConnection() {
 		try {
@@ -53,63 +57,100 @@ public class Controlador implements Icontrolador {
 	}
 
 	@Override
-	public Usuario logIn(String us, String pass) {
+    public Usuario logIn(String us) {
+        ResultSet rs = null;
+        Usuario u = null;
+        // Abrimos la conexion
+        this.openConnection();
+        try {
+            stmt = con.prepareStatement(OBTENERusuario);
+            // Cargamos los parametros
+            stmt.setString(1, us);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                u = new Usuario();
+                u.setUsername(us);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error de SQL: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
+                e.printStackTrace();
+            }
+            this.closeConnection();
+        }
+        return u;
+    }
+
+
+	public Usuario esCliente(String us) {
+		// TODO Auto-generated method stub
+
 		ResultSet rs = null;
-		Usuario user = new Usuario();
+		Usuario user = null;
 		this.openConnection();
 		try {
-			stmt = con.prepareStatement(OBTENERusuario);
-			stmt.setString(1, us);
-			stmt.setString(2, pass);
-			rs = stmt.executeQuery();
 
-			if (rs.next()) {
-				user = new Cliente();
-				user.setUsername(us);
-				user.setPassword(pass);
-				user.setN_telefono(rs.getInt("telefono"));
-				user.setEmail(rs.getString("email"));
-				user.setDireccion(rs.getString("direccion"));
-				return user;
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de SQL: " + e.getMessage());
+			stmt = con.prepareStatement(EScliente);
+			stmt.setString(1, us);
+			rs = stmt.executeQuery();
+			datosUsuario(us, rs.next());
+
+		} catch (
+
+		SQLException e) {
 			e.printStackTrace();
 		} finally {
+			// Cerrar recursos
 			try {
-				if (rs != null) {
+				if (rs != null)
 					rs.close();
-				}
+				if (stmt != null)
+					stmt.close();
+				if (con != null)
+					con.close();
 			} catch (SQLException e) {
-				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
 				e.printStackTrace();
 			}
-			this.closeConnection();
 		}
+
 		return user;
 	}
 
-	public boolean existeUsuario(String username) throws SQLException {
+	@Override
+	
+	public Usuario datosUsuario(String us, boolean b ) {
+		// TODO Auto-generated method stub
 		ResultSet rs = null;
-		boolean existe = false;
+		Usuario user = null;
 		this.openConnection();
 		try {
-			stmt = con.prepareStatement(OBTENERusername);
-			stmt.setString(1, username);
+			stmt = con.prepareStatement(DATOSusuario);
+			stmt.setString(1, us);
 			rs = stmt.executeQuery();
-			if (rs.next())
-				if (rs.getInt(1) == 1)
-					existe = true;
+			if (b) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				rs.close();
+				user = new Cliente(rs.getString("username"), rs.getString("password"), rs.getInt("telefono"),
+						rs.getString("direccion"), rs.getString("email"), rs.getString("num_cuenta"));
+			} else {
+
+				user = new Trabajador(rs.getString("username"), rs.getString("password"), rs.getInt("telefono"),
+						rs.getString("direccion"), rs.getString("email"), rs.getInt("nss"));
+
 			}
-			this.closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return existe;
+
+		return null;
 	}
 
 	public boolean existePersonaje(String nombre) throws SQLException {
@@ -247,12 +288,11 @@ public class Controlador implements Icontrolador {
 			stmt = con.prepareStatement(OBTENERtrabajador);
 			stmt.setString(1, usuario);
 			rs = stmt.executeQuery();
-			if(rs.next()) {
-				trabajador=true;
+			if (rs.next()) {
+				trabajador = true;
 			}
 			// if (rs.getInt(1)==1)
 			// rs.next()
-		
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -350,47 +390,28 @@ public class Controlador implements Icontrolador {
 		}
 		return cambios;
 	}
+
+	public boolean existeUsuario(String username) {
+		boolean existe = false;
+		ResultSet rs = null;
+		
+		try {
+			this.openConnection();
+
+			PreparedStatement stmt = con.prepareStatement(EXISTEusuario);
+			stmt.setString(1, username);
+			rs = stmt.executeQuery();
+
+			// Si la consulta devuelve algún resultado, significa que el usuario existe
+			if (rs.next()) {
+				existe = rs.getBoolean(1);
+			}
+
+			this.closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace(); // Manejo de errores, puedes cambiar esto según tus necesidades
+		}
+		return existe;
+	}
+
 }
-
-//	public ArrayList<String> completarNombrePer() throws SQLException {
-//		ArrayList<String> lista = new ArrayList<>();
-//				
-//	    ResultSet rs = null;
-//	    boolean existe = false;
-//	    this.openConnection();
-//	    try {
-//	        stmt = con.prepareStatement(OBTENERnom_personajes);
-//	        rs = stmt.executeQuery();
-//	        while (rs.next()) {
-//	            rs.getString(1);
-//	            lista.add(userName)	 ;       }
-//	    } catch (SQLException e) {
-//	        e.printStackTrace();
-//	    } finally {
-//	        if (rs != null) {
-//	            rs.close();
-//	        }
-//	        this.closeConnection();
-//	    }
-//	    return lista;
-//	}
-
-//	public void completarNombrePer(JComboBox comboBoxNombrePer) throws SQLException {
-//	    ResultSet rs = null;
-//	    boolean existe = false;
-//	    this.openConnection();
-//	    try {
-//	        stmt = con.prepareStatement(OBTENERpersonaje);
-//	        rs = stmt.executeQuery();
-//	        while (rs.next()) {
-//	            comboBoxNombrePer.addItem(rs.getString(1));
-//	        }
-//	    } catch (SQLException e) {
-//	        e.printStackTrace();
-//	    } finally {
-//	        if (rs != null) {
-//	            rs.close();
-//	        }
-//	        this.closeConnection();
-//	    }
-//	}
