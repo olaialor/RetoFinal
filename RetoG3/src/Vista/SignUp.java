@@ -194,9 +194,8 @@ public class SignUp extends JFrame implements ActionListener {
 			}
 		} else if (o == btnSignUp) {
 			String username = textFieldUsername.getText();
-
 			try {
-				if (!l.existeUsuario(username)) {
+				if (l.existeUsuario(username)) {
 					String password2 = new String(passwordFieldContraseña2.getPassword());
 					String password1 = new String(passwordFieldContraseña1.getPassword());
 					if (password1.equals(password2)) {
@@ -216,7 +215,6 @@ public class SignUp extends JFrame implements ActionListener {
 									e1.printStackTrace();
 								}
 							}
-
 						} else {
 							lblError.setText("Formato del email no valido.");
 						}

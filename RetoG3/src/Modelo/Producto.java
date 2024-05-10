@@ -7,10 +7,7 @@ public class Producto {
 	private String descripcion;
 	private int stock;	
 	private String ruta_img;
-	
-	
 
-	
 
 	public Producto(String personaje, int cod_producto, double precio, String descripcion, int stock, String ruta_img) {
 		super();

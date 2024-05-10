@@ -1,4 +1,5 @@
 package Controlador;
+
 //Versión verificada
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import Modelo.Usuario;
 import Modelo.Cliente;
 import Modelo.Personaje;
@@ -17,20 +20,21 @@ public class Controlador implements Icontrolador {
 	private Connection con;
 	private PreparedStatement stmt;
 
-	final String OBTENERusuario = "SELECT * FROM Usuario WHERE username=? AND password=? ";
-	final String MODIFICARperfil = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
+	final String OBTENERusuario = "SELECT * FROM Usuario WHERE username=? AND password=?";
 	final String INNSERTuser = "INSERT INTO usuario VALUES (?,?,?,?,?)";
-	final String INNSERTpersonaje = "INSERT INTO personaje VALUES (?,?,?,?,?,?)";
 	final String INNSERTcliente = "INSERT INTO cliente VALUES (?, ?)";
 	final String OBTENERusername = "SELECT COUNT(*) FROM usuario WHERE username = ?";
+	final String OBTENERPersonajes = "SELECT * FROM personaje";
+	final String OBTENERProductos = "SELECT * FROM producto";
+	final String OBTENERNombrePersonaje = "Select nombre from personaje where codigo = ?";
+	final String EXISTEusuario = "SELECT COUNT(*) AS existe FROM Usuario WHERE username = ?";
 	final String OBTENERpersonaje = "SELECT COUNT(*) FROM Personaje WHERE nombre = ?";
-	final String OBTENERcodigo_max = "SELECT MAX(codigo) FROM Personaje";
+	final String INNSERTpersonaje = "INSERT INTO personaje VALUES (?,?,?,?,?,?)";
 	final String OBTENERnom_personajes = "SELECT nombre from Personaje";
-	final String OBTENERtrabajador = "SELECT * FROM Trabajador WHERE username=?";
 	final String INNSERTproducto = "INSERT INTO producto VALUES (?,?,?,?,?,?)";
-	final String DATOSusuario = "CALL DataUsers(?);"; 
-	final String EScliente = "SELECT COUNT(*) AS count FROM Usuario u JOIN Cliente c ON u.username = c.username WHERE u.username = (?);";
-	final String EXISTEusuario = "SELECT UsernameExists(?);";
+	final String NUEVOCod_prod = "SELECT MAX(cod_producto) AS max_codigo FROM Producto";
+	final String NUEVOCod_per = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
+	final String MODIFICARperfil = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
 
 	private void openConnection() {
 		try {
@@ -56,124 +60,79 @@ public class Controlador implements Icontrolador {
 		}
 	}
 
+	/*
+	 * public Usuario esCliente(String us) { // TODO Auto-generated method stub
+	 * 
+	 * ResultSet rs = null; Usuario user = null; this.openConnection(); try {
+	 * 
+	 * stmt = con.prepareStatement(EScliente); stmt.setString(1, us); rs =
+	 * stmt.executeQuery(); datosUsuario(us, rs.next());
+	 * 
+	 * } catch (
+	 * 
+	 * SQLException e) { e.printStackTrace(); } finally { // Cerrar recursos try {
+	 * if (rs != null) rs.close(); if (stmt != null) stmt.close(); if (con != null)
+	 * con.close(); } catch (SQLException e) { e.printStackTrace(); } }
+	 * 
+	 * return user; }
+	 * 
+	 */
+
+	/*
+	 * @Override
+	 * 
+	 * public Usuario datosUsuario(String us, boolean b ) { // TODO Auto-generated
+	 * method stub ResultSet rs = null; Usuario user = null; this.openConnection();
+	 * try { stmt = con.prepareStatement(DATOSusuario); stmt.setString(1, us); rs =
+	 * stmt.executeQuery(); if (b) {
+	 * 
+	 * user = new Cliente(rs.getString("username"), rs.getString("password"),
+	 * rs.getInt("telefono"), rs.getString("direccion"), rs.getString("email"),
+	 * rs.getString("num_cuenta")); } else {
+	 * 
+	 * user = new Trabajador(rs.getString("username"), rs.getString("password"),
+	 * rs.getInt("telefono"), rs.getString("direccion"), rs.getString("email"),
+	 * rs.getInt("nss"));
+	 * 
+	 * } } catch (SQLException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * return null; }
+	 */
+
 	@Override
-    public Usuario logIn(String us) {
-        ResultSet rs = null;
-        Usuario u = null;
-        // Abrimos la conexion
-        this.openConnection();
-        try {
-            stmt = con.prepareStatement(OBTENERusuario);
-            // Cargamos los parametros
-            stmt.setString(1, us);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                u = new Usuario();
-                u.setUsername(us);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error de SQL: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
-                e.printStackTrace();
-            }
-            this.closeConnection();
-        }
-        return u;
-    }
-
-
-	public Usuario esCliente(String us) {
-		// TODO Auto-generated method stub
-
+	public Usuario logIn(String us, String pass) {
 		ResultSet rs = null;
-		Usuario user = null;
+		Usuario u = null;
+		// Abrimos la conexion
 		this.openConnection();
 		try {
-
-			stmt = con.prepareStatement(EScliente);
+			stmt = con.prepareStatement(OBTENERusuario);
+			// Cargamos los parametros
 			stmt.setString(1, us);
+			stmt.setString(2, pass);
 			rs = stmt.executeQuery();
-			datosUsuario(us, rs.next());
 
-		} catch (
-
-		SQLException e) {
+			if (rs.next()) {
+				u = new Usuario();
+				u.setUsername(us);
+				u.setPassword(pass);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de SQL: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
-			// Cerrar recursos
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (con != null)
-					con.close();
+				}
 			} catch (SQLException e) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
 				e.printStackTrace();
-			}
-		}
-
-		return user;
-	}
-
-	@Override
-	
-	public Usuario datosUsuario(String us, boolean b ) {
-		// TODO Auto-generated method stub
-		ResultSet rs = null;
-		Usuario user = null;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(DATOSusuario);
-			stmt.setString(1, us);
-			rs = stmt.executeQuery();
-			if (b) {
-
-				user = new Cliente(rs.getString("username"), rs.getString("password"), rs.getInt("telefono"),
-						rs.getString("direccion"), rs.getString("email"), rs.getString("num_cuenta"));
-			} else {
-
-				user = new Trabajador(rs.getString("username"), rs.getString("password"), rs.getInt("telefono"),
-						rs.getString("direccion"), rs.getString("email"), rs.getInt("nss"));
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	public boolean existePersonaje(String nombre) throws SQLException {
-		ResultSet rs = null;
-		boolean existe = false;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(OBTENERpersonaje);
-			stmt.setString(1, nombre);
-			rs = stmt.executeQuery();
-			if (rs.next())
-				if (rs.getInt(1) == 1)
-					existe = true;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				rs.close();
 			}
 			this.closeConnection();
 		}
-		return existe;
+		return u;
 	}
 
 	@Override
@@ -189,8 +148,6 @@ public class Controlador implements Icontrolador {
 			stmt.setString(5, user.getDireccion());
 			if (stmt.executeUpdate() > 0) {
 				introducido = true;
-
-				System.out.println("Usuario insertado correctamente");
 			} else {
 				System.out.println("Falló la inserción del usuario");
 			}
@@ -204,8 +161,129 @@ public class Controlador implements Icontrolador {
 	}
 
 	@Override
-	public Personaje getPersonaje(int Codigo, String nombre, String descripcion, Date cumple, String curiosidad) {
+	public List<Personaje> getPersonajes() {
+		List<Personaje> listaPersonajes = new ArrayList<>();
+		ResultSet rs = null;
+
+		// Abrimos la conexión
+		this.openConnection();
+
+		try {
+			stmt = con.prepareStatement(OBTENERPersonajes);
+			rs = stmt.executeQuery();
+
+			// Recorremos los resultados y creamos objetos Personaje
+			while (rs.next()) {
+				int codigo = rs.getInt("Codigo");
+				String nombre = rs.getString("Nombre");
+				String descripcion = rs.getString("Descripcion");
+				Date cumpleaños = rs.getDate("Cumpleaños");
+				String ruta_foto = rs.getString("ruta_foto");
+				String curiosidad = rs.getString("Curiosidad");
+
+				// Creamos el objeto Personaje y lo agregamos a la lista
+				Personaje personaje = new Personaje(nombre, descripcion, cumpleaños, curiosidad, ruta_foto, codigo);
+				listaPersonajes.add(personaje);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de SQL: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
+				e.printStackTrace();
+			}
+			// Cerramos la conexión
+			this.closeConnection();
+		}
+
+		return listaPersonajes;
+	}
+
+	@Override
+	public List<Producto> getProducto() {
 		// TODO Auto-generated method stub
+		List<Producto> listaProducto = new ArrayList<>();
+		ResultSet rs = null;
+
+		// Abrimos la conexión
+		this.openConnection();
+
+		try {
+			stmt = con.prepareStatement(OBTENERProductos);
+			rs = stmt.executeQuery();
+
+			// Recorremos los resultados y creamos objetos Personaje
+			while (rs.next()) {
+				int codigo = rs.getInt("Cod_producto");
+				Double precio = rs.getDouble("Precio");
+				String descripcion = rs.getString("Descrip_prod");
+				int stock = rs.getInt("Stock");
+				String ruta_foto = rs.getString("ruta_foto_prod");
+				String nombre = rs.getString("Nombre");
+
+				Producto producto = new Producto(nombre, codigo, precio, descripcion, stock, ruta_foto);
+				listaProducto.add(producto);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de SQL: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
+				e.printStackTrace();
+			}
+			// Cerramos la conexión
+			this.closeConnection();
+		}
+
+		return listaProducto;
+	}
+
+	@Override
+	public String getNombre(int command) {
+		ResultSet rs = null;
+
+		// Abrimos la conexión
+		this.openConnection();
+
+		try {
+			// Preparamos la declaración SQL con el parámetro
+			stmt = con.prepareStatement(OBTENERNombrePersonaje);
+			stmt.setInt(1, command); // Setting the parameter
+			rs = stmt.executeQuery();
+
+			// Verificamos si hay un resultado y obtenemos el nombre
+			if (rs.next()) {
+				String nombre = rs.getString("nombre");
+				return nombre;
+			} else {
+				// Handle the case where no result is found
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error de SQL: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
+				e.printStackTrace();
+			}
+			// Cerramos la conexión
+			this.closeConnection();
+		}
 		return null;
 	}
 
@@ -223,6 +301,37 @@ public class Controlador implements Icontrolador {
 		return codigo;
 	}
 
+	// Añadir Personaje
+	@Override
+	public boolean existePersonaje(String nombre) {
+		ResultSet rs = null;
+		boolean existe = false;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(OBTENERpersonaje);
+			stmt.setString(1, nombre);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				if (rs.getInt(1) == 1)
+					existe = true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			this.closeConnection();
+		}
+		return existe;
+	}
+
+	// Añadir Personaje
+	@Override
 	public boolean añadirPersonaje(Personaje character) {
 		// TODO Auto-generated method stub
 		boolean introducido = false;
@@ -231,10 +340,11 @@ public class Controlador implements Icontrolador {
 			stmt = con.prepareStatement(INNSERTpersonaje);
 			stmt.setInt(1, character.getCodigo());
 			stmt.setString(2, character.getNombre());
-			stmt.setString(3, character.getDescripción());
-			stmt.setDate(4, new java.sql.Date(character.getCumple().getTime()));
+			stmt.setString(3, character.getDescripcion());
+			stmt.setDate(4, new java.sql.Date(character.getCumpleaños().getTime()));
 			stmt.setString(5, character.getCuriosidad());
 			stmt.setString(6, character.getRuta());
+			
 
 			if (stmt.executeUpdate() > 0) {
 				introducido = true;
@@ -252,6 +362,27 @@ public class Controlador implements Icontrolador {
 		return introducido;
 	}
 
+	// Añadir Personaje
+	@Override
+	public int nuevoCodigoPer() {
+		int codigo = 0;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(NUEVOCod_per);
+			ResultSet resultSet = stmt.executeQuery();
+			if (resultSet.next()) {
+				codigo = resultSet.getInt("max_codigo") + 1;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.closeConnection();
+		return codigo;
+	}
+
+	// Añadir Producto
+	@Override
 	public ArrayList<String> completarNombrePer() {
 		ArrayList<String> lista = new ArrayList<>();
 		ResultSet rs = null;
@@ -279,37 +410,47 @@ public class Controlador implements Icontrolador {
 		return lista;
 	}
 
-	public boolean buscaruTrabajador(String usuario) {
-		// TODO Auto-generated method stub
-		ResultSet rs = null;
-		boolean trabajador = false;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(OBTENERtrabajador);
-			stmt.setString(1, usuario);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				trabajador = true;
-			}
-			// if (rs.getInt(1)==1)
-			// rs.next()
+	/*
+	 * public boolean buscaruTrabajador(String usuario) { // TODO Auto-generated
+	 * method stub ResultSet rs = null; boolean trabajador = false;
+	 * this.openConnection(); try { stmt = con.prepareStatement(OBTENERtrabajador);
+	 * stmt.setString(1, usuario); rs = stmt.executeQuery(); if (rs.next()) {
+	 * trabajador = true; } // if (rs.getInt(1)==1) // rs.next()
+	 * 
+	 * } catch (SQLException e) { e.printStackTrace(); } finally { if (rs != null) {
+	 * try { rs.close(); } catch (SQLException e) { // TODO Auto-generated catch
+	 * block e.printStackTrace(); } } this.closeConnection(); } return trabajador; }
+	 */
 
+	// Añadir Producto
+	@Override
+	public int nuevoCodigoProd() {
+		// TODO Auto-generated method stub
+		int codigo = 0;
+		this.openConnection();
+		ResultSet rs = null;
+		try {
+			stmt = con.prepareStatement(NUEVOCod_prod);
+			rs = stmt.executeQuery();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			this.closeConnection();
 		}
-		return trabajador;
+		try {
+			if (rs.next()) {
+				codigo = rs.getInt("max_codigo") + 1;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		this.closeConnection();
+		return codigo;
 	}
 
+	// Añadir Producto
+	@Override
 	public void añadirProducto(Producto producto) {
 		// TODO Auto-generated method stub
 		// cod_producto, precio, descrip_prod, stock, personaje
@@ -336,32 +477,6 @@ public class Controlador implements Icontrolador {
 			this.closeConnection();
 		}
 
-	}
-
-	public int nuevoCodigoProd() {
-		// TODO Auto-generated method stub
-		int codigo = 0;
-		this.openConnection();
-		String query = "SELECT MAX(cod_producto) AS max_codigo FROM Producto";
-		ResultSet rs = null;
-		try {
-			stmt = con.prepareStatement(query);
-			rs = stmt.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			if (rs.next()) {
-				codigo = rs.getInt("max_codigo") + 1;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		this.closeConnection();
-		return codigo;
 	}
 
 	@Override
@@ -391,25 +506,30 @@ public class Controlador implements Icontrolador {
 		return cambios;
 	}
 
+	@Override
 	public boolean existeUsuario(String username) {
-		boolean existe = false;
 		ResultSet rs = null;
-		
+		boolean existe = false;
+		this.openConnection();
 		try {
-			this.openConnection();
-
-			PreparedStatement stmt = con.prepareStatement(EXISTEusuario);
+			stmt = con.prepareStatement(OBTENERusername);
 			stmt.setString(1, username);
 			rs = stmt.executeQuery();
-
-			// Si la consulta devuelve algún resultado, significa que el usuario existe
 			if (rs.next()) {
-				existe = rs.getBoolean(1);
+				existe = true;
 			}
-
-			this.closeConnection();
 		} catch (SQLException e) {
-			e.printStackTrace(); // Manejo de errores, puedes cambiar esto según tus necesidades
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			this.closeConnection();
 		}
 		return existe;
 	}

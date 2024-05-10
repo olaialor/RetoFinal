@@ -7,27 +7,34 @@ public class Personaje {
 	private String nombre;
 	private String descripcion;
 	private Date cumple;
+
+	private Date cumpleaños;
+
 	private String curiosidad;
 	private String ruta_foto;
 	private int codigo;
 
+	public Personaje(String nombre, String descripcion, Date cumpleaños, String curiosidad, String ruta_foto,
+			int codigo) {
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.cumpleaños = cumpleaños;
+		this.curiosidad = curiosidad;
+		this.ruta_foto = ruta_foto;
+		this.codigo = codigo;
+	}
 
 	public Personaje() {
 		this.nombre = "";
 		this.descripcion = "";
-		this.cumple =null;
+		this.cumpleaños = null;
 		this.curiosidad = "";
-		this.ruta_foto="";
-		this.codigo=0;
+		this.ruta_foto = "";
+		this.codigo = 0;
 	}
 
-	public Personaje(String nombre, String descripcion, Date cumple, String curiosidad, String ruta_foto, int codigo) {
+	public Personaje(String nombre) {
 		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.cumple = cumple;
-		this.curiosidad = curiosidad;
-		this.ruta_foto = ruta_foto;
-		this.codigo = codigo;
 	}
 
 	public String getNombre() {
@@ -38,20 +45,20 @@ public class Personaje {
 		this.nombre = nombre;
 	}
 
-	public String getDescripción() {
+	public String getDescripcion() {
 		return descripcion;
 	}
 
-	public void setDescripción(String descripción) {
-		this.descripcion = descripción;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public Date getCumple() {
-		return cumple;
+	public Date getCumpleaños() {
+		return cumpleaños;
 	}
 
-	public void setCumple(Date cumple) {
-		this.cumple = cumple;
+	public void setCumpleaños(Date cumpleaños) {
+		this.cumpleaños = cumpleaños;
 	}
 
 	public String getCuriosidad() {
@@ -60,6 +67,14 @@ public class Personaje {
 
 	public void setCuriosidad(String curiosidad) {
 		this.curiosidad = curiosidad;
+	}
+
+	public String getRuta_foto() {
+		return ruta_foto;
+	}
+
+	public void setRuta_foto(String ruta_foto) {
+		this.ruta_foto = ruta_foto;
 	}
 
 	public int getCodigo() {
@@ -80,9 +95,8 @@ public class Personaje {
 
 	@Override
 	public String toString() {
-		return "Personaje [nombre=" + nombre + ", descripción=" + descripcion + ", cumple=" + cumple + ", curiosidad="
+		return "Personaje [nombre=" + nombre + ", descripción=" + descripcion + ", cumpleaños=" + cumpleaños + ", curiosidad="
 				+ curiosidad + ", ruta=" + ruta_foto + ", codigo=" + codigo + "]";
 	}
 
-	
 }

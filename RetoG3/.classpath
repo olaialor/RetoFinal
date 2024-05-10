@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="src/librerias/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="lib" path="src/librerias/mysql-connector-java-8.0.15 (2).jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
