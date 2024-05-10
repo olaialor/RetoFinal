@@ -16,7 +16,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 	private Controlador controlador;
 	private JPanel mainPanel;
-	private JLabel lblPersonaje;
 	private JPanel scrollPaneContainer;
 	private JPanel centerPanel;
 	private JScrollPane scrollPane;
@@ -30,6 +29,7 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 	private JLabel descrip;
 	private JLabel precio;
 	private JButton btnCompra;
+	private JLabel lblPersonaje5;
 
 	/**
 	 * @wbp.parser.constructor
@@ -46,11 +46,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		mainPanel.setLayout(null);
 		mainPanel.setPreferredSize(new Dimension(1280, 800));
 		mainPanel.setOpaque(false);
-
-		lblPersonaje = new JLabel("");
-		lblPersonaje.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje4.png")));
-		lblPersonaje.setBounds(-21, 530, 226, 223);
-		mainPanel.add(lblPersonaje);
 
 		scrollPaneContainer = new JPanel();
 		scrollPaneContainer.setBounds(194, 113, 862, 583);
@@ -73,7 +68,8 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		// Cambiar el color de la barra de desplazamiento
+	/*
+	 * 	// Cambiar el color de la barra de desplazamiento
 		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 
 			@Override
@@ -96,6 +92,7 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 			}
 		});
 
+	 */
 		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
 
 		mainPanel.add(scrollPaneContainer);
@@ -108,11 +105,18 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		lblLogo.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/logo_tienda4.png")));
 		lblLogo.setBounds(346, 21, 571, 82);
 		mainPanel.add(lblLogo);
+		
+		lblPersonaje5 = new JLabel("");
+		lblPersonaje5.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
+		lblPersonaje5.setBounds(-76, 506, 299, 229);
+		mainPanel.add(lblPersonaje5);
 
 		lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(getClass().getResource("/Imagenes/fondo_wiki2.jpg")));
 		lblFondo.setBounds(-36, 0, 1382, 770);
 		mainPanel.add(lblFondo);
+		
+		
 
 	}
 
@@ -128,11 +132,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		mainPanel.setLayout(null);
 		mainPanel.setPreferredSize(new Dimension(1280, 800));
 		mainPanel.setOpaque(false);
-
-		lblPersonaje = new JLabel("New label");
-		lblPersonaje.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
-		lblPersonaje.setBounds(-65, 526, 264, 237);
-		mainPanel.add(lblPersonaje);
 
 		scrollPaneContainer = new JPanel();
 		scrollPaneContainer.setBounds(194, 113, 862, 583);
@@ -259,5 +258,4 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 			}
 		}
 	}
-
 }

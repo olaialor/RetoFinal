@@ -23,32 +23,53 @@ public class Paneles extends JFrame {
 
         tabbedPane = new JTabbedPane();
 
-        // Crear un panel y agregar la ventana 1
         JPanel panel1 = new JPanel();
         panel1.setBackground(Color.RED);
         panel1.setLayout(new BorderLayout());
-        Wiki_Personaje ventana1 = new Wiki_Personaje(l); // Suponiendo que Ventana1 es un JFrame existente
+        Wiki_Personaje ventana1 = new Wiki_Personaje(l);
         panel1.add(ventana1.getContentPane(), BorderLayout.CENTER);
         tabbedPane.addTab("Personajes", panel1);
        
 
-        // Crear un panel y agregar la ventana 2
         JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout());
-        Busqueda_Producto ventana2 = new Busqueda_Producto(l); // Suponiendo que Ventana2 es un JFrame existente
+        Busqueda_Producto ventana2 = new Busqueda_Producto(l);
         panel2.add(ventana2.getContentPane(), BorderLayout.CENTER);
         tabbedPane.addTab("Tienda", panel2);
 
-     // Cambiar el color de fondo de las pestañas
-        Color customColor = new Color(0xFFC0D3);
+        JPanel panel3 = new JPanel();
+		panel3.setLayout(new BorderLayout());
+		Añadir_Personaje ventana3 = new Añadir_Personaje(l);
+		panel3.add(ventana3.getContentPane(), BorderLayout.CENTER);
+		tabbedPane.addTab("Añadir Presonaje", panel3);
+
+		JPanel panel4 = new JPanel();
+		panel4.setLayout(new BorderLayout());
+		Añadir_Producto ventana4 = new Añadir_Producto(l);
+		panel4.add(ventana4.getContentPane(), BorderLayout.CENTER);
+		tabbedPane.addTab("Añadir Producto", panel4);
+		
+		JPanel panel5 = new JPanel();
+		panel5.setLayout(new BorderLayout());
+		Mi_Perfil perfil = new Mi_Perfil(l);
+		panel5.add(perfil.getContentPane(), BorderLayout.CENTER);
+		tabbedPane.addTab("Mi perfil", panel5);
+
+		Color customColor = new Color(0xFFC0D3);
+		tabbedPane.setBackgroundAt(2, customColor);
+		tabbedPane.setBackgroundAt(3, customColor);
+		tabbedPane.setForegroundAt(2, Color.WHITE);
+		tabbedPane.setForegroundAt(3, Color.WHITE);
+		
 
         tabbedPane.setBackgroundAt(0, customColor); 
         tabbedPane.setBackgroundAt(1, customColor); 
+        tabbedPane.setBackgroundAt(4, customColor); 
 
         
-        // Cambiar el color del texto de las pestañas
         tabbedPane.setForegroundAt(0, Color.WHITE);
-        tabbedPane.setForegroundAt(1, Color.WHITE); 
+        tabbedPane.setForegroundAt(1, Color.WHITE);
+        tabbedPane.setForegroundAt(4, Color.WHITE); 
         
         Font font = new Font("Goudy Old Style", Font.BOLD, 17); 
         tabbedPane.setFont(font); 
