@@ -29,6 +29,7 @@ public class LogIn extends JFrame implements ActionListener {
 	private JButton btnRevelar;
 	private JButton btnOcultar;
 	private Cliente c;
+	private Usuario usuario;
 
 	/**
 	 * Create the frame.
@@ -158,7 +159,7 @@ public void actionPerformed(ActionEvent e) {
 		LogIn.this.setVisible(false);
 		LogIn.this.dispose();
 		try {
-			SignUp frame = new SignUp(l);
+			SignUp frame = new SignUp(l, usuario);
 			frame.setVisible(true);
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -168,11 +169,11 @@ public void actionPerformed(ActionEvent e) {
 
 	Object os = e.getSource();
 	if (os == btnLogIn) {
-		Usuario u=l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
+		Usuario usuario=l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
 	
-		if (u!= null) {
+		if (usuario!= null) {
 			lblError.setText("ok");
-			Paneles paneles = new Paneles(l);
+			Paneles paneles = new Paneles(l, usuario);
 			paneles.setVisible(true);
 			dispose();
 		} else {

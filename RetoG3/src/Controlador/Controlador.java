@@ -11,8 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 import Modelo.Usuario;
+import Modelo.Cliente;
 import Modelo.Personaje;
 import Modelo.Producto;
+import Modelo.Trabajador;
 
 public class Controlador implements Icontrolador {
 	private Connection con;
@@ -32,8 +34,10 @@ public class Controlador implements Icontrolador {
 	final String INNSERTproducto = "INSERT INTO producto VALUES (?,?,?,?,?,?)";
 	final String NUEVOCod_prod = "SELECT MAX(cod_producto) AS max_codigo FROM Producto";
 	final String NUEVOCod_per = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
-	final String MODIFICARperfil = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
-
+	final String MODIFICARperfil = "UPDATE Usuario AS u JOIN Cliente AS c ON u.username = c.username SET u.password = ?, u.telefono = ?, u.email = ?, u.direccion = ?, c.num_cuenta = ? WHERE u.username = ?";
+	final String USERSdata = "CALL UsersData(?,?)";
+	final String EScliente = "SELECT COUNT(*) AS count FROM Usuario u JOIN Cliente c ON u.username = c.username WHERE u.username = (?);";
+	final String MODIFICARperfiles = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
 	private void openConnection() {
 		try {
 			String url = "jdbc:mysql://localhost:3306/Sanrio?serverTimezone=Europe/Madrid&useSSL=false";
@@ -101,20 +105,33 @@ public class Controlador implements Icontrolador {
 	@Override
 	public Usuario logIn(String us, String pass) {
 		ResultSet rs = null;
-		Usuario u = null;
-		// Abrimos la conexion
+		Usuario usuario=null;
+		ResultSet rs1 = null;
 		this.openConnection();
 		try {
-			stmt = con.prepareStatement(OBTENERusuario);
-			// Cargamos los parametros
+			stmt = con.prepareStatement(USERSdata);
+
 			stmt.setString(1, us);
 			stmt.setString(2, pass);
 			rs = stmt.executeQuery();
 
-			if (rs.next()) {
-				u = new Usuario();
-				u.setUsername(us);
-				u.setPassword(pass);
+			
+			if (rs.next() && rs.getString(1)!= null) {
+				
+				stmt = con.prepareStatement(EScliente);
+				stmt.setString(1, us);
+				rs1 = stmt.executeQuery();
+				
+				if (rs1.next()&& rs1.getBoolean(1)==true) {
+					usuario = new Cliente(rs.getString("username"), rs.getString("password"),Integer.parseInt(rs.getString("telefono")), rs.getString("direccion"), rs.getString("email"), rs.getString("num_cuenta"));
+				} else {
+					usuario = new Trabajador(rs.getString("username"), rs.getString("password"),Integer.parseInt(rs.getString("telefono")), rs.getString("direccion"), rs.getString("email"), Integer.parseInt(rs.getString("nss")));
+				
+				}
+				System.out.println(usuario);
+			} else {
+
+				System.out.println("Nombre de usuario o contraseña incorrectos.");
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de SQL: " + e.getMessage());
@@ -130,8 +147,11 @@ public class Controlador implements Icontrolador {
 			}
 			this.closeConnection();
 		}
-		return u;
+		return usuario;
+		
 	}
+
+	
 
 	@Override
 	public boolean SignUp(Usuario user) {
@@ -342,7 +362,6 @@ public class Controlador implements Icontrolador {
 			stmt.setDate(4, new java.sql.Date(character.getCumpleaños().getTime()));
 			stmt.setString(5, character.getCuriosidad());
 			stmt.setString(6, character.getRuta());
-			
 
 			if (stmt.executeUpdate() > 0) {
 				introducido = true;
@@ -408,17 +427,6 @@ public class Controlador implements Icontrolador {
 		return lista;
 	}
 
-	/*
-	 * public boolean buscaruTrabajador(String usuario) { // TODO Auto-generated
-	 * method stub ResultSet rs = null; boolean trabajador = false;
-	 * this.openConnection(); try { stmt = con.prepareStatement(OBTENERtrabajador);
-	 * stmt.setString(1, usuario); rs = stmt.executeQuery(); if (rs.next()) {
-	 * trabajador = true; } // if (rs.getInt(1)==1) // rs.next()
-	 * 
-	 * } catch (SQLException e) { e.printStackTrace(); } finally { if (rs != null) {
-	 * try { rs.close(); } catch (SQLException e) { // TODO Auto-generated catch
-	 * block e.printStackTrace(); } } this.closeConnection(); } return trabajador; }
-	 */
 
 	// Añadir Producto
 	@Override
@@ -484,7 +492,7 @@ public class Controlador implements Icontrolador {
 		boolean cambios = false;
 		this.openConnection();
 		try {
-			stmt = con.prepareStatement(MODIFICARperfil);
+			stmt = con.prepareStatement(MODIFICARperfiles);
 			stmt.setString(1, contraseña);
 			stmt.setInt(2, telf);
 			stmt.setString(3, email);
@@ -529,6 +537,12 @@ public class Controlador implements Icontrolador {
 			this.closeConnection();
 		}
 		return existe;
+	}
+
+	@Override
+	public void eliminarUsuario() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

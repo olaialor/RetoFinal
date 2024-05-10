@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import Controlador.Controlador;
 import Modelo.Cliente;
+import Modelo.Trabajador;
 import Modelo.Usuario;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -44,11 +45,13 @@ public class SignUp extends JFrame implements ActionListener {
 	private Usuario user;
 	private JLabel lblNewLabel;
 	private Pattern formatoEmail = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+	private Usuario usuario;
 
-	public SignUp(Controlador c) {
+	public SignUp(Controlador c, Usuario usuario) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		// setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/giphy.gif")));
 		this.l = c;
+		this.usuario=usuario;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 943, 713);
 		contentPane = new JPanel();
@@ -206,10 +209,12 @@ public class SignUp extends JFrame implements ActionListener {
 							String n_cuenta = textFieldNCuenta.getText();
 							Usuario user = new Cliente(username, password1, n_telefono, direccion, email, n_cuenta);
 							if (l.SignUp(user)) {
+								usuario = new Cliente(username, password1,n_telefono, direccion,email, n_cuenta);
+							
 								SignUp.this.setVisible(false);
 								SignUp.this.dispose();
 								try {
-									Paneles frame = new Paneles(l);
+									Paneles frame = new Paneles(l,usuario);
 									frame.setVisible(true);
 								} catch (Exception e1) {
 									e1.printStackTrace();
