@@ -23,6 +23,7 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 		// Crear el panel que contendrá las partes
 		JPanel centerPanel = new JPanel();
+		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
 		// Agregar las partes al panel central
 		for (int i = 0; i < 20; i++) { // Agregamos más partes para demostrar el funcionamiento del scrollbar
@@ -34,7 +35,6 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 		// Crear JScrollPane para el panel central
 		JScrollPane scrollPane = new JScrollPane(centerPanel);
-		centerPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 

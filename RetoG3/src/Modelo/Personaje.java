@@ -22,12 +22,17 @@ public class Personaje {
 	public Personaje() {
 		this.nombre = "";
 		this.descripcion = "";
+		this.curiosidad = "";
+		this.descripcion = "";
 		this.cumpleaños = null;
 		this.curiosidad = "";
 		this.ruta_foto = "";
 		this.codigo = 0;
 	}
 
+	public Personaje(String nombre) {
+		this.nombre = nombre;
+	}
 	public String getNombre() {
 		return nombre;
 	}

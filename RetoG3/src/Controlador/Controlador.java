@@ -11,6 +11,7 @@ import java.util.List;
 
 import Modelo.Usuario;
 import Modelo.Personaje;
+import Modelo.Producto;
 
 public class Controlador implements Icontrolador {
     private Connection con;
@@ -21,6 +22,7 @@ public class Controlador implements Icontrolador {
     final String INNSERTcliente = "INSERT INTO cliente VALUES (?, ?)";
     final String OBTENERusername = "SELECT COUNT(*) FROM usuario WHERE username = ?";
     final String OBTENERPersonajes = "SELECT * FROM personaje";
+    final String OBTENERProductos = "SELECT * FROM producto";
     
     private void openConnection() {
         try {
@@ -172,6 +174,51 @@ public class Controlador implements Icontrolador {
         
         return listaPersonajes;
     }
+
+	@Override
+	public List<Producto> getProducto() {
+		// TODO Auto-generated method stub
+		List<Producto> listaProducto = new ArrayList<>();
+        ResultSet rs = null;
+        
+        // Abrimos la conexión
+        this.openConnection();
+        
+        try {
+            stmt = con.prepareStatement(OBTENERProductos);
+            rs = stmt.executeQuery();
+
+            // Recorremos los resultados y creamos objetos Personaje
+            while (rs.next()) {
+                String codigo = rs.getString("Cod_producto");
+                String precio = rs.getString("Precio");
+                String descripcion = rs.getString("Descrip_prod");
+                int stock = rs.getInt("Stock");
+                String ruta_foto = rs.getString("ruta_foto_prod");
+                String nombre = rs.getString("Nombre");
+                
+                // Creamos el objeto Personaje y lo agregamos a la lista
+                Producto producto = new Producto(nombre,codigo,precio, descripcion, stock, ruta_foto);
+                listaProducto.add(producto);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error de SQL: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
+                e.printStackTrace();
+            }
+            // Cerramos la conexión
+            this.closeConnection();
+        }
+        
+        return listaProducto;
+	}
 
 
 }
