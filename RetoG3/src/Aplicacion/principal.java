@@ -1,7 +1,6 @@
 package Aplicacion;
 
 import Controlador.Controlador;
-import Modelo.Cliente;
 import Vista.LogIn;
 
 public class principal {

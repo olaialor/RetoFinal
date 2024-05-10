@@ -1,14 +1,12 @@
 package Vista;
 
 import java.awt.Toolkit;
-import Modelo.Cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
-import Modelo.Usuario;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -38,7 +36,6 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 	private JPasswordField passwordField;
 	private JLabel lblDireccin;
 	private JTextField textFieldDirec;
-	private Usuario c;
 	private JTextField textFieldTelf;
 	private JButton btnDarseDeBaja;
 

@@ -11,10 +11,8 @@ import java.util.Date;
 import java.util.List;
 
 import Modelo.Usuario;
-import Modelo.Cliente;
 import Modelo.Personaje;
 import Modelo.Producto;
-import Modelo.Trabajador;
 
 public class Controlador implements Icontrolador {
 	private Connection con;
@@ -484,7 +482,6 @@ public class Controlador implements Icontrolador {
 			String cuenta) {
 		// TODO Auto-generated method stub
 		boolean cambios = false;
-		Cliente cl = new Cliente();
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(MODIFICARperfil);

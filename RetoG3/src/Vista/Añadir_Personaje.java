@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,11 +21,6 @@ import javax.swing.border.LineBorder;
 import Controlador.Controlador;
 import Modelo.Personaje;
 import com.toedter.calendar.JCalendar;
-
-import com.toedter.calendar.JCalendar;
-
-import Controlador.Controlador;
-import Modelo.Personaje;
 
 public class Añadir_Personaje extends JFrame implements ActionListener {
 
