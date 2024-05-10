@@ -38,6 +38,7 @@ public class Controlador implements Icontrolador {
 	final String USERSdata = "CALL UsersData(?,?)";
 	final String EScliente = "SELECT COUNT(*) AS count FROM Usuario u JOIN Cliente c ON u.username = c.username WHERE u.username = (?);";
 	final String MODIFICARperfiles = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
+	final String ELIMINARUsuario = "CALL EliminarCliente(?);";
 	private void openConnection() {
 		try {
 			String url = "jdbc:mysql://localhost:3306/Sanrio?serverTimezone=Europe/Madrid&useSSL=false";
@@ -540,9 +541,22 @@ public class Controlador implements Icontrolador {
 	}
 
 	@Override
-	public void eliminarUsuario() {
-		// TODO Auto-generated method stub
-		
+	public void eliminarUsuario(String nombreUsuario) {
+	    this.openConnection();
+	    try {
+	        stmt = con.prepareStatement(ELIMINARUsuario);
+	        stmt.setString(1, nombreUsuario);
+	        stmt.executeUpdate();
+	        
+	        System.out.println("El usuario ha sido eliminado correctamente.");
+	    } catch (SQLException e) {
+	        System.out.println("Error de SQL al eliminar el usuario: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        this.closeConnection();
+	    }
 	}
+
+	
 
 }

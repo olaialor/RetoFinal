@@ -143,11 +143,12 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		textFieldTelf.setText(Integer.toString(usuario.getN_telefono()));
 		contentPane.add(textFieldTelf);
 		
-		JButton btnDarseDeBaja_1 = new JButton("Darse de baja");
-		btnDarseDeBaja_1.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
-		btnDarseDeBaja_1.setBackground(new Color(255, 220, 230));
-		btnDarseDeBaja_1.setBounds(1073, 244, 152, 41);
-		contentPane.add(btnDarseDeBaja_1);
+		btnDarseDeBaja = new JButton("Darse de baja");
+		btnDarseDeBaja.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
+		btnDarseDeBaja.setBackground(new Color(255, 220, 230));
+		btnDarseDeBaja.setBounds(1073, 244, 152, 41);
+		contentPane.add(btnDarseDeBaja);
+		btnDarseDeBaja.addActionListener(this);
 	}
 
 	@Override
@@ -175,7 +176,20 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 				textFieldTelf.setEditable(false);
 				textFieldDirec.setEditable(false);
 				JOptionPane.showMessageDialog(this, "Cambios guadados correctamente.", "", JOptionPane.ERROR_MESSAGE);
-
+			}
+		}else if(e.getSource() == btnDarseDeBaja) {
+			int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que desea eliminar su cuenta?",
+					"", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (confirmacion == JOptionPane.OK_OPTION) {
+				l.eliminarUsuario(usuario.getUsername());
+				
+				try {
+					
+					SignUp frame = new SignUp(l, usuario);
+					frame.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}

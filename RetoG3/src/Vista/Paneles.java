@@ -52,7 +52,7 @@ public class Paneles extends JFrame {
      		panel3.setLayout(new BorderLayout());
      		Añadir_Personaje ventana3 = new Añadir_Personaje(l);
      		panel3.add(ventana3.getContentPane(), BorderLayout.CENTER);
-     		tabbedPane.addTab("Añadir Presonaje", panel3);
+     		tabbedPane.addTab("Añadir Personaje", panel3);
 
      		JPanel panel4 = new JPanel();
      		panel4.setLayout(new BorderLayout());
@@ -96,6 +96,11 @@ public class Paneles extends JFrame {
     public static void setSelectedIndex(int index) {
         tabbedPane.setSelectedIndex(index);
     }
+    
+    public void cerrar_Paneles () {
+    	Paneles.this.setVisible(false);
+		Paneles.this.dispose();
+	}
 
    
 }

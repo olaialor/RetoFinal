@@ -45,6 +45,6 @@ public interface Icontrolador {
 	public boolean modificarUsuario(String username, String contraseña, int telf, String email, String direc,
 			String cuenta);
 
-	public void eliminarUsuario();
+	public void eliminarUsuario(String nombreUsuario);
 }
 
