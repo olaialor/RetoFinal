@@ -22,6 +22,10 @@ public class Trabajador extends Usuario {
 	public void setNss(int nss) {
 		this.nss = nss;
 	}
+
+	@Override
+	public String toString() {
+		return "Trabajador [nss=" + nss + "]";
+	}
 	
-		
 }

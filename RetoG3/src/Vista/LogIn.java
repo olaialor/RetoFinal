@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
+import Modelo.Cliente;
 import Modelo.Usuario;
 
 public class LogIn extends JFrame implements ActionListener {
@@ -25,18 +26,19 @@ public class LogIn extends JFrame implements ActionListener {
 	private JLabel lblLogo;
 	private JLabel lblFondo;
 	private Controlador l;
-	
+	private JButton btnRevelar;
+	private JButton btnOcultar;
+	private Cliente c;
 
 	/**
 	 * Create the frame.
 	 */
 	public LogIn(Controlador c) {
-		this.l=c;
+		this.l = c;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogIn.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 943, 713);
-		
-		
+
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(254, 190, 253));
 		contentPane.setForeground(new Color(255, 255, 255));
@@ -44,45 +46,45 @@ public class LogIn extends JFrame implements ActionListener {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		panel = new JPanel();
 		panel.setBounds(-348, 0, 1277, 676);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
+
 		btnLogIn = new JButton("Log In");
-		btnLogIn.setBounds(795, 407, 111, 36);
+		btnLogIn.setBounds(776, 443, 111, 36);
 		panel.add(btnLogIn);
 		btnLogIn.setBackground(new Color(255, 255, 255));
 		btnLogIn.setForeground(new Color(222, 111, 111));
 		btnLogIn.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnLogIn.addActionListener(this);
-		
+
 		textFieldUsername = new JTextField();
 		textFieldUsername.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
-		textFieldUsername.setBounds(859, 263, 186, 26);
+		textFieldUsername.setBounds(833, 272, 186, 26);
 		panel.add(textFieldUsername);
 		textFieldUsername.setColumns(10);
-		
+
 		passwordFieldPassword = new JPasswordField();
 		passwordFieldPassword.setFont(new Font("Goudy Old Style", Font.PLAIN, 17));
-		passwordFieldPassword.setBounds(859, 327, 186, 26);
+		passwordFieldPassword.setBounds(833, 336, 186, 26);
 		panel.add(passwordFieldPassword);
-		
+
 		lblPassword = new JLabel("Password:");
 		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPassword.setBounds(675, 327, 174, 21);
+		lblPassword.setBounds(649, 336, 174, 21);
 		panel.add(lblPassword);
 		lblPassword.setForeground(new Color(222, 111, 111));
 		lblPassword.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		
+
 		lblUsername = new JLabel("Username:");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsername.setBounds(675, 264, 174, 21);
+		lblUsername.setBounds(649, 273, 174, 21);
 		panel.add(lblUsername);
 		lblUsername.setForeground(new Color(222, 111, 111));
 		lblUsername.setFont(new Font("Goudy Stout", Font.PLAIN, 15));
-		
+
 		btnSignUp = new JButton("Sign Up");
 		btnSignUp.setBounds(1048, 572, 111, 36);
 		panel.add(btnSignUp);
@@ -90,62 +92,93 @@ public class LogIn extends JFrame implements ActionListener {
 		btnSignUp.setForeground(new Color(222, 111, 111));
 		btnSignUp.setFont(new Font("Goudy Old Style", Font.BOLD, 18));
 		btnSignUp.addActionListener(this);
-		
+
 		lblError = new JLabel("");
 		lblError.setForeground(new Color(222, 111, 111));
 		lblError.setFont(new Font("Goudy Old Style", Font.PLAIN, 16));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
-		lblError.setBounds(763, 376, 174, 21);
+		lblError.setBounds(745, 397, 174, 36);
 		panel.add(lblError);
-		
+
+		btnRevelar = new JButton("");
+		btnRevelar.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/ojo1.png")));
+		btnRevelar.addActionListener(this);
+		btnRevelar.setBounds(1029, 336, 34, 26);
+		btnRevelar.setBackground(new Color(255, 255, 255));
+		panel.add(btnRevelar);
+
+		btnOcultar = new JButton("");
+		btnOcultar.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/esconder.png")));
+		btnOcultar.addActionListener(this);
+		btnOcultar.setBounds(1029, 336, 34, 26);
+		panel.add(btnOcultar);
+		btnOcultar.setBackground(new Color(255, 255, 255));
+		btnOcultar.setVisible(false);
+
 		lblLogo = new JLabel("New label");
 		lblLogo.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/logo.png")));
 		lblLogo.setBounds(617, 60, 428, 140);
 		panel.add(lblLogo);
-		
+
 		lblFondo = new JLabel("New label");
 		lblFondo.setIcon(new ImageIcon(LogIn.class.getResource("/Imagenes/Fondo_Inicio.jpeg")));
 		lblFondo.setBounds(315, 0, 1250, 781);
 		panel.add(lblFondo);
-		
-		 InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-	        ActionMap actionMap = panel.getActionMap();
-	        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "clickSignUp");
-	        actionMap.put("clickSignUp", new AbstractAction() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                btnLogIn.doClick();
-	            }
-	        });
+
+		InputMap inputMap = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = panel.getActionMap();
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "clickSignUp");
+		actionMap.put("clickSignUp", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnLogIn.doClick();
+			}
+		});
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object o = e.getSource();
-		if (o == btnSignUp) {
-			LogIn.this.setVisible(false);
-			LogIn.this.dispose();
-			try {
-				SignUp frame = new SignUp(l);
-				frame.setVisible(true);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			
-		}
-		Object os = e.getSource();
-		if (os == btnLogIn) {
-			Usuario u = l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
-			if (u!= null) {
-				lblError.setText("ok");
-				Paneles paneles = new Paneles(l);
-				paneles.setVisible(true);
-				dispose();
-			} else {
-				lblError.setText("ERROR, Inserta de nuevo");
-			}
-		}
-		// TODO Auto-generated method stub
+@Override
+public void actionPerformed(ActionEvent e) {
+			boolean passwordVisible = true;
+	Object source = e.getSource();
+
+	if (source == btnRevelar) {
+
+		passwordFieldPassword.setEchoChar((char) 0);
+		btnOcultar.setVisible(true);
+		btnRevelar.setVisible(false);
+
+	}else if (source == btnOcultar) {
+
+		passwordFieldPassword.setEchoChar('\u2022');
+		btnOcultar.setVisible(false);
+		btnRevelar.setVisible(true);
 	}
+	if (source == btnSignUp) {
+		// Ocultar el marco actual y abrir el marco de registro
+		LogIn.this.setVisible(false);
+		LogIn.this.dispose();
+		try {
+			SignUp frame = new SignUp(l);
+			frame.setVisible(true);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
+	}
+
+	Object os = e.getSource();
+	if (os == btnLogIn) {
+		Usuario u=l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
+	
+		if (u!= null) {
+			lblError.setText("ok");
+			Paneles paneles = new Paneles(l);
+			paneles.setVisible(true);
+			dispose();
+		} else {
+			lblError.setText("ERROR, Inserta de nuevo");
+		}
+	}
+}
 	
 }
