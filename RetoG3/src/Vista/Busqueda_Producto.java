@@ -68,8 +68,12 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
+<<<<<<< HEAD
 	
 	  	// Cambiar el color de la barra de desplazamiento
+=======
+	 	// Cambiar el color de la barra de desplazamiento
+>>>>>>> 163920fdecd89d119a535956cf511468d78d3def
 		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 
 			@Override
@@ -251,7 +255,7 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 
 			// Verificar la opción seleccionada por el usuario
 			if (opcion == JOptionPane.OK_OPTION) {
-				JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "",
+				JOptionPane.showMessageDialog(this, "Producto comprado correctamente.", "",
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(this, "Operación cancelada.", "", JOptionPane.ERROR_MESSAGE);

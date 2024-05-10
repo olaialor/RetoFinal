@@ -1,5 +1,6 @@
 package Vista;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -19,10 +20,9 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import com.toedter.calendar.JCalendar;
-
 import Controlador.Controlador;
 import Modelo.Personaje;
+import com.toedter.calendar.JCalendar;
 
 public class Añadir_Personaje extends JFrame implements ActionListener {
 
@@ -149,6 +149,7 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
 	    UIManager.put("OptionPane.background", new Color(160, 202, 238));
 	    UIManager.put("Panel.background", new Color(160, 202, 238));
 	    UIManager.put("OptionPane.messageForeground", Color.BLACK);
@@ -201,6 +202,53 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 	    } else if (e.getSource().equals(btnCancelar)) {
 	        JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
 	    }
+=======
+		UIManager.put("OptionPane.background", new Color(160, 202, 238));
+		UIManager.put("Panel.background", new Color(160, 202, 238));
+		UIManager.put("OptionPane.messageForeground", Color.BLACK);
+		UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
+		if (e.getSource().equals(btnAnadir)) {
+			String nombre = textFieldNombre_Personaje.getText();
+			try {
+				if (!l.existePersonaje(nombre)) {
+					String descripcion = textPaneDescrip.getText();
+					String curiosidad = textPaneCuriosidad.getText();
+					String ruta_foto = String.valueOf(textFieldRuta_Foto.getText());
+					
+					Date cumple = calendar.getDate();
+					
+					int opcion = JOptionPane.showConfirmDialog(this,
+							"¿Estás seguro de que deseas añadir este personaje?", "Confirmar",
+							JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+					if (opcion == JOptionPane.OK_OPTION) {
+						int codigo = l.nuevoCodigo();
+						Personaje character = new Personaje(nombre, descripcion, cumple, curiosidad, ruta_foto, codigo);
+						l.añadirPersonaje(character);
+
+						JOptionPane.showMessageDialog(this, "Personaje añadido correctamente.", "Éxito",JOptionPane.INFORMATION_MESSAGE);
+						 try {
+							Paneles.tabbedPane.setSelectedIndex(0);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+					} else {
+						JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado",
+								JOptionPane.ERROR_MESSAGE);
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(this, "El personaje ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} else if (e.getSource().equals(btnCancelar)) {
+			JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+		}
+>>>>>>> 163920fdecd89d119a535956cf511468d78d3def
 	}
 
 

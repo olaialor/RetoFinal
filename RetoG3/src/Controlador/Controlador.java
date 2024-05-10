@@ -1,6 +1,7 @@
 
 package Controlador;
 
+//Versión verificada
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +15,7 @@ import Modelo.Usuario;
 import Modelo.Cliente;
 import Modelo.Personaje;
 import Modelo.Producto;
+import Modelo.Trabajador;
 
 public class Controlador implements Icontrolador {
 	private Connection con;
@@ -33,8 +35,11 @@ public class Controlador implements Icontrolador {
 	final String INNSERTproducto = "INSERT INTO producto VALUES (?,?,?,?,?,?)";
 	final String NUEVOCod_prod = "SELECT MAX(cod_producto) AS max_codigo FROM Producto";
 	final String NUEVOCod_per = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
-	final String MODIFICARperfil = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
-
+	final String MODIFICARperfil = "UPDATE Usuario AS u JOIN Cliente AS c ON u.username = c.username SET u.password = ?, u.telefono = ?, u.email = ?, u.direccion = ?, c.num_cuenta = ? WHERE u.username = ?";
+	final String USERSdata = "CALL UsersData(?,?)";
+	final String EScliente = "SELECT COUNT(*) AS count FROM Usuario u JOIN Cliente c ON u.username = c.username WHERE u.username = (?);";
+	final String MODIFICARperfiles = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
+	final String ELIMINARUsuario = "CALL EliminarCliente(?);";
 	private void openConnection() {
 		try {
 			String url = "jdbc:mysql://localhost:3306/Sanrio?serverTimezone=Europe/Madrid&useSSL=false";
@@ -59,23 +64,76 @@ public class Controlador implements Icontrolador {
 		}
 	}
 
+	/*
+	 * public Usuario esCliente(String us) { // TODO Auto-generated method stub
+	 * 
+	 * ResultSet rs = null; Usuario user = null; this.openConnection(); try {
+	 * 
+	 * stmt = con.prepareStatement(EScliente); stmt.setString(1, us); rs =
+	 * stmt.executeQuery(); datosUsuario(us, rs.next());
+	 * 
+	 * } catch (
+	 * 
+	 * SQLException e) { e.printStackTrace(); } finally { // Cerrar recursos try {
+	 * if (rs != null) rs.close(); if (stmt != null) stmt.close(); if (con != null)
+	 * con.close(); } catch (SQLException e) { e.printStackTrace(); } }
+	 * 
+	 * return user; }
+	 * 
+	 */
+
+	/*
+	 * @Override
+	 * 
+	 * public Usuario datosUsuario(String us, boolean b ) { // TODO Auto-generated
+	 * method stub ResultSet rs = null; Usuario user = null; this.openConnection();
+	 * try { stmt = con.prepareStatement(DATOSusuario); stmt.setString(1, us); rs =
+	 * stmt.executeQuery(); if (b) {
+	 * 
+	 * user = new Cliente(rs.getString("username"), rs.getString("password"),
+	 * rs.getInt("telefono"), rs.getString("direccion"), rs.getString("email"),
+	 * rs.getString("num_cuenta")); } else {
+	 * 
+	 * user = new Trabajador(rs.getString("username"), rs.getString("password"),
+	 * rs.getInt("telefono"), rs.getString("direccion"), rs.getString("email"),
+	 * rs.getInt("nss"));
+	 * 
+	 * } } catch (SQLException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * return null; }
+	 */
+
 	@Override
 	public Usuario logIn(String us, String pass) {
 		ResultSet rs = null;
-		Usuario u = null;
-		// Abrimos la conexion
+		Usuario usuario=null;
+		ResultSet rs1 = null;
 		this.openConnection();
 		try {
-			stmt = con.prepareStatement(OBTENERusuario);
-			// Cargamos los parametros
+			stmt = con.prepareStatement(USERSdata);
+
 			stmt.setString(1, us);
 			stmt.setString(2, pass);
 			rs = stmt.executeQuery();
 
-			if (rs.next()) {
-				u = new Usuario();
-				u.setUsername(us);
-				u.setPassword(pass);
+			
+			if (rs.next() && rs.getString(1)!= null) {
+				
+				stmt = con.prepareStatement(EScliente);
+				stmt.setString(1, us);
+				rs1 = stmt.executeQuery();
+				
+				if (rs1.next()&& rs1.getBoolean(1)==true) {
+					usuario = new Cliente(rs.getString("username"), rs.getString("password"),Integer.parseInt(rs.getString("telefono")), rs.getString("direccion"), rs.getString("email"), rs.getString("num_cuenta"));
+				} else {
+					usuario = new Trabajador(rs.getString("username"), rs.getString("password"),Integer.parseInt(rs.getString("telefono")), rs.getString("direccion"), rs.getString("email"), Integer.parseInt(rs.getString("nss")));
+				
+				}
+				System.out.println(usuario);
+			} else {
+
+				System.out.println("Nombre de usuario o contraseña incorrectos.");
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de SQL: " + e.getMessage());
@@ -91,8 +149,11 @@ public class Controlador implements Icontrolador {
 			}
 			this.closeConnection();
 		}
-		return u;
+		return usuario;
+		
 	}
+
+	
 
 	@Override
 	public boolean SignUp(Usuario user) {
@@ -117,34 +178,6 @@ public class Controlador implements Icontrolador {
 			this.closeConnection();
 		}
 		return introducido;
-	}
-
-	@Override
-	public boolean existeUsuario(String username) {
-		ResultSet rs = null;
-		boolean existe = false;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(OBTENERusername);
-			stmt.setString(1, username);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				existe = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			this.closeConnection();
-		}
-		return existe;
 	}
 
 	@Override
@@ -274,6 +307,20 @@ public class Controlador implements Icontrolador {
 		return null;
 	}
 
+	public int nuevoCodigo() throws SQLException {
+		int codigo = 0;
+		this.openConnection();
+		String query = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
+		stmt = con.prepareStatement(query);
+		ResultSet resultSet = stmt.executeQuery();
+		if (resultSet.next()) {
+			codigo = resultSet.getInt("max_codigo") + 1;
+		}
+
+		this.closeConnection();
+		return codigo;
+	}
+
 	// Añadir Personaje
 	@Override
 	public boolean existePersonaje(String nombre) {
@@ -316,7 +363,7 @@ public class Controlador implements Icontrolador {
 			stmt.setString(3, character.getDescripcion());
 			stmt.setDate(4, new java.sql.Date(character.getCumpleaños().getTime()));
 			stmt.setString(5, character.getCuriosidad());
-			stmt.setString(6, character.getRuta_foto());
+			stmt.setString(6, character.getRuta());
 
 			if (stmt.executeUpdate() > 0) {
 				introducido = true;
@@ -379,6 +426,7 @@ public class Controlador implements Icontrolador {
 		}
 		return lista;
 	}
+
 
 	// Añadir Producto
 	@Override
@@ -444,10 +492,9 @@ public class Controlador implements Icontrolador {
 			String cuenta) {
 		// TODO Auto-generated method stub
 		boolean cambios = false;
-		Cliente cl = new Cliente();
 		this.openConnection();
 		try {
-			stmt = con.prepareStatement(MODIFICARperfil);
+			stmt = con.prepareStatement(MODIFICARperfiles);
 			stmt.setString(1, contraseña);
 			stmt.setInt(2, telf);
 			stmt.setString(3, email);
@@ -465,4 +512,55 @@ public class Controlador implements Icontrolador {
 		}
 		return cambios;
 	}
+<<<<<<< HEAD
+=======
+
+	@Override
+	public boolean existeUsuario(String username) {
+		ResultSet rs = null;
+		boolean existe = false;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(OBTENERusername);
+			stmt.setString(1, username);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				existe = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			this.closeConnection();
+		}
+		return existe;
+	}
+
+	@Override
+	public void eliminarUsuario(String nombreUsuario) {
+	    this.openConnection();
+	    try {
+	        stmt = con.prepareStatement(ELIMINARUsuario);
+	        stmt.setString(1, nombreUsuario);
+	        stmt.executeUpdate();
+	        
+	        System.out.println("El usuario ha sido eliminado correctamente.");
+	    } catch (SQLException e) {
+	        System.out.println("Error de SQL al eliminar el usuario: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        this.closeConnection();
+	    }
+	}
+
+	
+
+>>>>>>> 163920fdecd89d119a535956cf511468d78d3def
 }

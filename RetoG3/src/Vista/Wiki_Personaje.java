@@ -46,7 +46,7 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 		lblPersonaje = new JLabel("New label");
 		lblPersonaje.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/personaje2.png")));
-		lblPersonaje.setBounds(-65, 526, 264, 237);
+		lblPersonaje.setBounds(-65, 526, 254, 237);
 		mainPanel.add(lblPersonaje);
 
 		scrollPaneContainer = new JPanel();

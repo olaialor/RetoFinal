@@ -1,23 +1,25 @@
 package Vista;
 
 import java.awt.Toolkit;
-import Modelo.Cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import Controlador.Controlador;
-import Modelo.Usuario;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import Controlador.Controlador;
+import Modelo.Cliente;
+import Modelo.Usuario;
+
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-
 
 public class Mi_Perfil extends JFrame implements ActionListener {
 
@@ -33,26 +35,26 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 	private JButton btnAceptar;
 	private JButton btnModificar;
 	private Controlador l;
+	private JTextField textFieldUsuario;
+	private JTextField textFieldTelf;
 	private JTextField textFieldEmail;
 	private JTextField textFieldCuenta;
 	private JPasswordField passwordField;
 	private JLabel lblDireccin;
 	private JTextField textFieldDirec;
-	private Usuario c;
-	private JTextField textFieldTelf;
+	private Cliente usuario;
 	private JButton btnDarseDeBaja;
 
-	Mi_Perfil(Controlador controlador ) {
-		this.l = controlador;
-		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Añadir_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
+	public Mi_Perfil(Controlador c, Usuario usuario) {
+		this.l = c;
+		this.usuario = (Cliente) usuario;
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Mi_Perfil.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setTitle("Mi perfil");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 768);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(new Color(255, 245, 248));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
@@ -66,19 +68,19 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		lblHeader.setBounds(0, 0, 1331, 190);
 		contentPane.add(lblHeader);
 
-		lblUsuario = new JLabel();
+		lblUsuario = new JLabel(usuario.getUsername());
 		lblUsuario.setFont(new Font("Goudy Stout", Font.PLAIN, 19));
 		lblUsuario.setBounds(291, 200, 262, 52);
 		contentPane.add(lblUsuario);
 
 		lblContraseña = new JLabel("Contraseña");
 		lblContraseña.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblContraseña.setBounds(59, 342, 172, 52);
+		lblContraseña.setBounds(59, 364, 172, 52);
 		contentPane.add(lblContraseña);
 
 		lblTelf = new JLabel("Num. telefono");
 		lblTelf.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblTelf.setBounds(482, 345, 204, 46);
+		lblTelf.setBounds(482, 342, 204, 46);
 		contentPane.add(lblTelf);
 
 		lblEmail = new JLabel("Email");
@@ -95,65 +97,58 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		btnAceptar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnAceptar.setBackground(new Color(255, 220, 230));
 		btnAceptar.setBounds(1073, 641, 152, 41);
+		btnAceptar.addActionListener(this);
 		contentPane.add(btnAceptar);
 
 		btnModificar = new JButton("Modificar");
 		btnModificar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnModificar.setBackground(new Color(255, 220, 230));
 		btnModificar.setBounds(857, 641, 152, 41);
+		btnModificar.addActionListener(this);
 		contentPane.add(btnModificar);
 
-		textFieldEmail = new JTextField();
+		textFieldEmail = new JTextField(usuario.getEmail());
 		textFieldEmail.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldEmail.setColumns(10);
 		textFieldEmail.setBounds(59, 562, 277, 35);
 		contentPane.add(textFieldEmail);
 
-		textFieldCuenta = new JTextField();
+		textFieldCuenta = new JTextField(((Cliente) usuario).getN_cuenta());
 		textFieldCuenta.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldCuenta.setColumns(10);
 		textFieldCuenta.setBounds(482, 565, 277, 35);
 		contentPane.add(textFieldCuenta);
 
-		passwordField = new JPasswordField();
+		passwordField = new JPasswordField(usuario.getPassword());
 		passwordField.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		passwordField.setBounds(59, 401, 277, 35);
 		contentPane.add(passwordField);
 
 		lblDireccin = new JLabel("Dirección");
 		lblDireccin.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
-		lblDireccin.setBounds(883, 345, 204, 46);
+		lblDireccin.setBounds(883, 367, 204, 46);
 		contentPane.add(lblDireccin);
 
-		textFieldDirec = new JTextField();
+		textFieldDirec = new JTextField(usuario.getDireccion());
 		textFieldDirec.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldDirec.setColumns(10);
 		textFieldDirec.setBounds(885, 401, 277, 35);
 		contentPane.add(textFieldDirec);
 
-		textFieldTelf = new JTextField();
+		textFieldTelf = new JTextField(usuario.getN_telefono());
 		textFieldTelf.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldTelf.setColumns(10);
 		textFieldTelf.setBounds(482, 401, 277, 35);
-		// textFieldTelf.setText(Integer.toString(c.getN_telefono()));
+		textFieldTelf.setText(Integer.toString(usuario.getN_telefono()));
+		textFieldTelf.setText(Integer.toString(usuario.getN_telefono()));
 		contentPane.add(textFieldTelf);
-
+		
 		btnDarseDeBaja = new JButton("Darse de baja");
 		btnDarseDeBaja.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnDarseDeBaja.setBackground(new Color(255, 220, 230));
-		btnDarseDeBaja.setBounds(1073, 219, 152, 41);
+		btnDarseDeBaja.setBounds(1073, 244, 152, 41);
 		contentPane.add(btnDarseDeBaja);
-
-		btnModificar.addActionListener(this);
-		btnAceptar.addActionListener(this);
 		btnDarseDeBaja.addActionListener(this);
-
-		textFieldEmail.setEditable(false);
-		textFieldCuenta.setEditable(false);
-		passwordField.setEditable(false);
-		textFieldTelf.setEditable(false);
-		textFieldDirec.setEditable(false);
-
 	}
 
 	@Override
@@ -168,18 +163,33 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 			int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas guardar los cambios?",
 					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (confirmacion == JOptionPane.OK_OPTION) {
-				String nombre= "";
 				String nuevoEmail = textFieldEmail.getText();
 				String nuevaCuenta = textFieldCuenta.getText();
 				String nuevaContraseña = new String(passwordField.getPassword());
 				int nuevoTelefono = Integer.parseInt(textFieldTelf.getText());
 				String nuevaDireccion = textFieldDirec.getText();
-				l.modificarUsuario(nombre, nuevaContraseña, nuevoTelefono, nuevoEmail, nuevaDireccion, nuevaCuenta);
+				boolean cambiosGuardados = l.modificarUsuario(usuario.getUsername(), nuevaContraseña, nuevoTelefono,
+						nuevoEmail, nuevaDireccion, nuevaCuenta);
 				textFieldEmail.setEditable(false);
 				textFieldCuenta.setEditable(false);
 				passwordField.setEditable(false);
 				textFieldTelf.setEditable(false);
 				textFieldDirec.setEditable(false);
+				JOptionPane.showMessageDialog(this, "Cambios guadados correctamente.", "", JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(e.getSource() == btnDarseDeBaja) {
+			int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que desea eliminar su cuenta?",
+					"", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (confirmacion == JOptionPane.OK_OPTION) {
+				l.eliminarUsuario(usuario.getUsername());
+				
+				try {
+					
+					SignUp frame = new SignUp(l, usuario);
+					frame.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
