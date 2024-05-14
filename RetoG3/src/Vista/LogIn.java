@@ -25,17 +25,16 @@ public class LogIn extends JFrame implements ActionListener {
 	private JLabel lblError;
 	private JLabel lblLogo;
 	private JLabel lblFondo;
-	private Controlador l;
+	private Controlador controlador;
 	private JButton btnRevelar;
 	private JButton btnOcultar;
-	private Cliente c;
 	private Usuario usuario;
 
 	/**
 	 * Create the frame.
 	 */
-	public LogIn(Controlador c) {
-		this.l = c;
+	public LogIn(Controlador controlador) {
+		this.controlador = controlador;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogIn.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 943, 713);
@@ -137,49 +136,49 @@ public class LogIn extends JFrame implements ActionListener {
 		});
 	}
 
-@Override
-public void actionPerformed(ActionEvent e) {
-			boolean passwordVisible = true;
-	Object source = e.getSource();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		boolean passwordVisible = true;
+		Object source = e.getSource();
 
-	if (source == btnRevelar) {
+		if (source == btnRevelar) {
 
-		passwordFieldPassword.setEchoChar((char) 0);
-		btnOcultar.setVisible(true);
-		btnRevelar.setVisible(false);
+			passwordFieldPassword.setEchoChar((char) 0);
+			btnOcultar.setVisible(true);
+			btnRevelar.setVisible(false);
 
-	}else if (source == btnOcultar) {
+		} else if (source == btnOcultar) {
 
-		passwordFieldPassword.setEchoChar('\u2022');
-		btnOcultar.setVisible(false);
-		btnRevelar.setVisible(true);
-	}
-	if (source == btnSignUp) {
-		// Ocultar el marco actual y abrir el marco de registro
-		LogIn.this.setVisible(false);
-		LogIn.this.dispose();
-		try {
-			SignUp frame = new SignUp(l, usuario);
-			frame.setVisible(true);
-		} catch (Exception e1) {
-			e1.printStackTrace();
+			passwordFieldPassword.setEchoChar('\u2022');
+			btnOcultar.setVisible(false);
+			btnRevelar.setVisible(true);
+		}
+		if (source == btnSignUp) {
+			// Ocultar el marco actual y abrir el marco de registro
+			LogIn.this.setVisible(false);
+			LogIn.this.dispose();
+			try {
+				SignUp frame = new SignUp(controlador, usuario);
+				frame.setVisible(true);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
 		}
 
-	}
+		Object os = e.getSource();
+		if (os == btnLogIn) {
+			Usuario usuario = controlador.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
 
-	Object os = e.getSource();
-	if (os == btnLogIn) {
-		Usuario usuario=l.logIn(textFieldUsername.getText(), new String(passwordFieldPassword.getPassword()));
-	
-		if (usuario!= null) {
-			lblError.setText("ok");
-			Paneles paneles = new Paneles(l, usuario);
-			paneles.setVisible(true);
-			dispose();
-		} else {
-			lblError.setText("ERROR, Inserta de nuevo");
+			if (usuario != null) {
+				lblError.setText("ok");
+				Paneles paneles = new Paneles(controlador, usuario);
+				paneles.setVisible(true);
+				dispose();
+			} else {
+				lblError.setText("ERROR, Inserta de nuevo");
+			}
 		}
 	}
-}
-	
+
 }

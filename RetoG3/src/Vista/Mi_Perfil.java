@@ -34,7 +34,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 	private JLabel lblCuenta;
 	private JButton btnAceptar;
 	private JButton btnModificar;
-	private Controlador l;
+	private Controlador controlador;
 	private JTextField textFieldUsuario;
 	private JTextField textFieldTelf;
 	private JTextField textFieldEmail;
@@ -44,9 +44,11 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 	private JTextField textFieldDirec;
 	private Cliente usuario;
 	private JButton btnDarseDeBaja;
+	private Paneles paneles;
 
-	public Mi_Perfil(Controlador c, Usuario usuario) {
-		this.l = c;
+	public Mi_Perfil(Controlador c, Usuario usuario, Paneles paneles) {
+		this.controlador = controlador;
+		this.paneles = paneles;
 		this.usuario = (Cliente) usuario;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Mi_Perfil.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setTitle("Mi perfil");
@@ -142,7 +144,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		textFieldTelf.setText(Integer.toString(usuario.getN_telefono()));
 		textFieldTelf.setText(Integer.toString(usuario.getN_telefono()));
 		contentPane.add(textFieldTelf);
-		
+
 		btnDarseDeBaja = new JButton("Darse de baja");
 		btnDarseDeBaja.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnDarseDeBaja.setBackground(new Color(255, 220, 230));
@@ -168,25 +170,38 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 				String nuevaContraseña = new String(passwordField.getPassword());
 				int nuevoTelefono = Integer.parseInt(textFieldTelf.getText());
 				String nuevaDireccion = textFieldDirec.getText();
-				boolean cambiosGuardados = l.modificarUsuario(usuario.getUsername(), nuevaContraseña, nuevoTelefono,
+				boolean cambiosGuardados = controlador.modificarUsuario(usuario.getUsername(), nuevaContraseña, nuevoTelefono,
 						nuevoEmail, nuevaDireccion, nuevaCuenta);
 				textFieldEmail.setEditable(false);
 				textFieldCuenta.setEditable(false);
 				passwordField.setEditable(false);
 				textFieldTelf.setEditable(false);
 				textFieldDirec.setEditable(false);
-				JOptionPane.showMessageDialog(this, "Cambios guadados correctamente.", "", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Cambios guardados correctamente.", "Éxito",
+						JOptionPane.INFORMATION_MESSAGE);
+
 			}
-		}else if(e.getSource() == btnDarseDeBaja) {
-			int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que desea eliminar su cuenta?",
-					"", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+		} else if (e.getSource() == btnDarseDeBaja) {
+			int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que desea eliminar su cuenta?", "",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (confirmacion == JOptionPane.OK_OPTION) {
-				l.eliminarUsuario(usuario.getUsername());
-				
+				controlador.eliminarUsuario(usuario.getUsername());
+
 				try {
-					
-					SignUp frame = new SignUp(l, usuario);
-					frame.setVisible(true);
+
+					if (confirmacion == JOptionPane.OK_OPTION) {
+						controlador.eliminarUsuario(usuario.getUsername());
+
+						try {
+							SignUp frame = new SignUp(controlador, usuario);
+							frame.setVisible(true);
+							
+							paneles.CerrarPaneles();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

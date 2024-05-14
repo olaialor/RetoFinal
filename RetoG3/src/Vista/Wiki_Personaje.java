@@ -177,14 +177,13 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		JButton btnProd = new JButton("Ver productos");
 		btnProd.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnProd.setFont(new Font("Goudy Old Style", Font.BOLD, 19));
-		btnProd.setMargin(new Insets(5, 13, 5, 13)); // Ajustar los márgenes
+		btnProd.setMargin(new Insets(5, 13, 5, 13)); 
 		btnProd.setForeground(Color.white);
 		btnProd.setBackground(new Color(252, 193, 211));
 		btnProd.addActionListener(this);
 		textPanel.add(Box.createVerticalStrut(20));
 		textPanel.add(btnProd);
 		btnProd.setActionCommand(String.valueOf(personaje.getCodigo()));
-		////
 		btnProd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -200,8 +199,8 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 	    if (command != null) {
 	        String nombre = controlador.getNombre(Integer.parseInt(command));
-	        Busqueda_Producto busqueda_Producto = new Busqueda_Producto(controlador, nombre); // Pasa los criterios de filtro
-	        Paneles.tabbedPane.setSelectedIndex(1); // Cambia a la pestaña Busqueda_Producto
+	        Busqueda_Producto busqueda_Producto = new Busqueda_Producto(controlador, nombre); 
+	        Paneles.tabbedPane.setSelectedIndex(1);
 	    }
 	}
 

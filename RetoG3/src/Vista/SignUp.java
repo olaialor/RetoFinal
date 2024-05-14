@@ -42,7 +42,6 @@ public class SignUp extends JFrame implements ActionListener {
 	private JLabel lblContraseña1;
 	private JLabel lblFondo_Inicio;
 	private Controlador l;
-	private Usuario user;
 	private JLabel lblNewLabel;
 	private Pattern formatoEmail = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 	private Usuario usuario;
@@ -51,7 +50,7 @@ public class SignUp extends JFrame implements ActionListener {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		// setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/giphy.gif")));
 		this.l = c;
-		this.usuario=usuario;
+		this.usuario = usuario;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 943, 713);
 		contentPane = new JPanel();
@@ -198,7 +197,9 @@ public class SignUp extends JFrame implements ActionListener {
 		} else if (o == btnSignUp) {
 			String username = textFieldUsername.getText();
 			try {
-				if (l.existeUsuario(username)) {
+				if (l.existePersonaje(username)) { // Verifica si el personaje existe
+					lblError.setText("Error. El personaje ya existe.");
+				} else { // Si el personaje no existe, realiza las comprobaciones adicionales
 					String password2 = new String(passwordFieldContraseña2.getPassword());
 					String password1 = new String(passwordFieldContraseña1.getPassword());
 					if (password1.equals(password2)) {
@@ -207,32 +208,30 @@ public class SignUp extends JFrame implements ActionListener {
 							int n_telefono = Integer.valueOf(textFieldTelefono.getText());
 							String direccion = textFieldDireccion.getText();
 							String n_cuenta = textFieldNCuenta.getText();
-							Usuario user = new Cliente(username, password1, n_telefono, direccion, email, n_cuenta);
-							if (l.SignUp(user)) {
-								usuario = new Cliente(username, password1,n_telefono, direccion,email, n_cuenta);
-							
+							usuario = new Cliente(username, password1, n_telefono, direccion, email, n_cuenta);
+							if (l.SignUp(usuario)) {
 								SignUp.this.setVisible(false);
 								SignUp.this.dispose();
 								try {
-									Paneles frame = new Paneles(l,usuario);
+									Paneles frame = new Paneles(l, usuario);
 									frame.setVisible(true);
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
+							} else {
+								lblError.setText("Error. La contraseña no coincide.");
 							}
 						} else {
-							lblError.setText("Formato del email no valido.");
+							lblError.setText("Formato del email no válido.");
 						}
 					} else {
-						lblError.setText("Error. La contraseña no coincide");
+						lblError.setText("Error. La contraseña no coincide.");
 					}
-				} else {
-					lblError.setText("Error. Ese ussername esta ya registrado.");
 				}
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+
 		}
 	}
 }

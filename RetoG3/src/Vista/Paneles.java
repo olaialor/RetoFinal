@@ -16,11 +16,11 @@ import java.awt.*;
 public class Paneles extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Controlador l;
+	private Controlador controlador;
 	 static JTabbedPane tabbedPane ;
 	 private Usuario usuario;
-    public Paneles(Controlador c, Usuario usuario) {
-    	this.l=c;
+    public Paneles(Controlador controlador, Usuario usuario) {
+    	this.controlador=controlador;
     	this.usuario=usuario;
         setTitle("SANRIO");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,15 +33,15 @@ public class Paneles extends JFrame {
 
         JPanel panel1 = new JPanel();
         panel1.setBackground(Color.RED);
-        panel1.setLayout(new BorderLayout());
-        Wiki_Personaje ventana1 = new Wiki_Personaje(l);
+         panel1.setLayout(new BorderLayout());
+        Wiki_Personaje ventana1 = new Wiki_Personaje(controlador);
         panel1.add(ventana1.getContentPane(), BorderLayout.CENTER);
         tabbedPane.addTab("Personajes", panel1);
        
 
         JPanel panel2 = new JPanel();
         panel2.setLayout(new BorderLayout());
-        Busqueda_Producto ventana2 = new Busqueda_Producto(l);
+        Busqueda_Producto ventana2 = new Busqueda_Producto(controlador);
         panel2.add(ventana2.getContentPane(), BorderLayout.CENTER);
         tabbedPane.addTab("Tienda", panel2);
         
@@ -50,13 +50,13 @@ public class Paneles extends JFrame {
         if(usuario instanceof Trabajador) {
         	 JPanel panel3 = new JPanel();
      		panel3.setLayout(new BorderLayout());
-     		Añadir_Personaje ventana3 = new Añadir_Personaje(l);
+     		Añadir_Personaje ventana3 = new Añadir_Personaje(controlador);
      		panel3.add(ventana3.getContentPane(), BorderLayout.CENTER);
      		tabbedPane.addTab("Añadir Personaje", panel3);
 
      		JPanel panel4 = new JPanel();
      		panel4.setLayout(new BorderLayout());
-     		Añadir_Producto ventana4 = new Añadir_Producto(l);
+     		Añadir_Producto ventana4 = new Añadir_Producto(controlador);
      		panel4.add(ventana4.getContentPane(), BorderLayout.CENTER);
      		tabbedPane.addTab("Añadir Producto", panel4);
      		
@@ -70,7 +70,7 @@ public class Paneles extends JFrame {
         }else {
         	JPanel panel5 = new JPanel();
     		panel5.setLayout(new BorderLayout());
-    		Mi_Perfil perfil = new Mi_Perfil(l, usuario);
+    		Mi_Perfil perfil = new Mi_Perfil(controlador, usuario, this);
     		panel5.add(perfil.getContentPane(), BorderLayout.CENTER);
     		tabbedPane.addTab("Mi perfil", panel5);
 
@@ -93,15 +93,11 @@ public class Paneles extends JFrame {
         getContentPane().add(tabbedPane);
         
     }
-    public static void setSelectedIndex(int index) {
-        tabbedPane.setSelectedIndex(index);
-    }
     
-    public void cerrar_Paneles () {
-    	Paneles.this.setVisible(false);
-		Paneles.this.dispose();
-	}
-
+    public void CerrarPaneles() {
+    	this.setVisible(false);
+		dispose();
+    }
    
 }
 

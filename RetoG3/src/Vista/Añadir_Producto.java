@@ -44,7 +44,7 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 	private JLabel lblStock;
 	private JButton btnAnadir;
 	private JButton btnCancelar;
-	private Controlador l;
+	private Controlador controlador;
 	private JLabel lblNewLabel;
 
 	/**
@@ -54,8 +54,8 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public Añadir_Producto(Controlador c) {
-		this.l = c;
+	public Añadir_Producto(Controlador controlador) {
+		this.controlador = controlador;
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Añadir_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,7 +102,7 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 		comboBoxNombrePer.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		comboBoxNombrePer.setBounds(50, 68, 255, 41);
 		contentPaneStock.add(comboBoxNombrePer);
-		ArrayList<String> miUserLista=l.completarNombrePer();
+		ArrayList<String> miUserLista=controlador.completarNombrePer();
 		for(String str : miUserLista) {
 			comboBoxNombrePer.addItem(str);
 		}
@@ -172,15 +172,15 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 						"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.OK_OPTION) {
-					Producto producto= new Producto(personaje, l.nuevoCodigoProd(), precio, descripcion, stock, ruta);
-					l.añadirProducto(producto);
+					Producto producto= new Producto(personaje, controlador.nuevoCodigoProd(), precio, descripcion, stock, ruta);
+					controlador.añadirProducto(producto);
 					JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
 				}
 			} else if (e.getSource().equals(btnCancelar)) {
-				JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Precio no válido.", "Cancelado", JOptionPane.ERROR_MESSAGE);
 			}
 			}
 			

@@ -1,6 +1,5 @@
 package Controlador;
 
-//Versión verificada
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -63,45 +62,7 @@ public class Controlador implements Icontrolador {
 		}
 	}
 
-	/*
-	 * public Usuario esCliente(String us) { // TODO Auto-generated method stub
-	 * 
-	 * ResultSet rs = null; Usuario user = null; this.openConnection(); try {
-	 * 
-	 * stmt = con.prepareStatement(EScliente); stmt.setString(1, us); rs =
-	 * stmt.executeQuery(); datosUsuario(us, rs.next());
-	 * 
-	 * } catch (
-	 * 
-	 * SQLException e) { e.printStackTrace(); } finally { // Cerrar recursos try {
-	 * if (rs != null) rs.close(); if (stmt != null) stmt.close(); if (con != null)
-	 * con.close(); } catch (SQLException e) { e.printStackTrace(); } }
-	 * 
-	 * return user; }
-	 * 
-	 */
 
-	/*
-	 * @Override
-	 * 
-	 * public Usuario datosUsuario(String us, boolean b ) { // TODO Auto-generated
-	 * method stub ResultSet rs = null; Usuario user = null; this.openConnection();
-	 * try { stmt = con.prepareStatement(DATOSusuario); stmt.setString(1, us); rs =
-	 * stmt.executeQuery(); if (b) {
-	 * 
-	 * user = new Cliente(rs.getString("username"), rs.getString("password"),
-	 * rs.getInt("telefono"), rs.getString("direccion"), rs.getString("email"),
-	 * rs.getString("num_cuenta")); } else {
-	 * 
-	 * user = new Trabajador(rs.getString("username"), rs.getString("password"),
-	 * rs.getInt("telefono"), rs.getString("direccion"), rs.getString("email"),
-	 * rs.getInt("nss"));
-	 * 
-	 * } } catch (SQLException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); }
-	 * 
-	 * return null; }
-	 */
 
 	@Override
 	public Usuario logIn(String us, String pass) {
@@ -129,13 +90,11 @@ public class Controlador implements Icontrolador {
 					usuario = new Trabajador(rs.getString("username"), rs.getString("password"),Integer.parseInt(rs.getString("telefono")), rs.getString("direccion"), rs.getString("email"), Integer.parseInt(rs.getString("nss")));
 				
 				}
-				System.out.println(usuario);
 			} else {
 
-				System.out.println("Nombre de usuario o contraseña incorrectos.");
 			}
 		} catch (SQLException e) {
-			System.out.println("Error de SQL: " + e.getMessage());
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -323,31 +282,31 @@ public class Controlador implements Icontrolador {
 	// Añadir Personaje
 	@Override
 	public boolean existePersonaje(String nombre) {
-		ResultSet rs = null;
-		boolean existe = false;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(OBTENERpersonaje);
-			stmt.setString(1, nombre);
-			rs = stmt.executeQuery();
-			if (rs.next())
-				if (rs.getInt(1) == 1)
-					existe = true;
+	    ResultSet rs = null;
+	    boolean existe = false;
+	    this.openConnection(); 
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			this.closeConnection();
-		}
-		return existe;
+	    try {
+	        stmt = con.prepareStatement(OBTENERpersonaje);
+	        stmt.setString(1, nombre); // Establece el valor del primer parámetro en la consulta preparada
+	        rs = stmt.executeQuery(); 
+	        if (rs.next()) 
+	            existe = rs.getInt(1) > 0; // Comprueba si el recuento es mayor que cero para determinar si el personaje existe
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	    } finally {
+	        if (rs != null) {
+	            try {
+	                rs.close(); 
+	            } catch (SQLException e) {
+	                e.printStackTrace(); 
+	            }
+	        }
+	        this.closeConnection(); 
+	    }
+	    return existe; 
 	}
+
 
 	// Añadir Personaje
 	@Override
@@ -367,7 +326,7 @@ public class Controlador implements Icontrolador {
 			if (stmt.executeUpdate() > 0) {
 				introducido = true;
 
-				System.out.println("Personaje insertado correctamente");
+			
 			} else {
 				System.out.println("Falló la inserción del personaje");
 			}
@@ -472,11 +431,7 @@ public class Controlador implements Icontrolador {
 			stmt.setString(5, producto.getRuta_img());
 			stmt.setString(6, producto.getPersonaje());
 
-			if (stmt.executeUpdate() > 0) {
-				System.out.println("Personaje insertado correctamente");
-			} else {
-				System.out.println("Falló la inserción del personaje");
-			}
+			
 		} catch (SQLException e) {
 			System.out.println("Error de SQL");
 			e.printStackTrace();
@@ -547,8 +502,6 @@ public class Controlador implements Icontrolador {
 	        stmt = con.prepareStatement(ELIMINARUsuario);
 	        stmt.setString(1, nombreUsuario);
 	        stmt.executeUpdate();
-	        
-	        System.out.println("El usuario ha sido eliminado correctamente.");
 	    } catch (SQLException e) {
 	        System.out.println("Error de SQL al eliminar el usuario: " + e.getMessage());
 	        e.printStackTrace();

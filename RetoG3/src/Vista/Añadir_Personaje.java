@@ -1,6 +1,5 @@
 package Vista;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -40,11 +39,11 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 	private JLabel lblNewLabel;
 	private JButton btnAnadir;
 	private JButton btnCancelar;
-	private Controlador l;
+	private Controlador controlador;
 	private JCalendar calendar;
 
-	public Añadir_Personaje(Controlador c) {
-		this.l = c;
+	public Añadir_Personaje(Controlador controlador) {
+		this.controlador = controlador;
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Añadir_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,37 +104,31 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		textFieldRuta_Foto.setBounds(470, 478, 489, 41);
 		textFieldRuta_Foto.setBorder(new LineBorder(new Color(255, 192, 203)));
 		contentPane.add(textFieldRuta_Foto);
-		
+
 		calendar = new JCalendar();
-		calendar.getDayChooser().getDayPanel().setForeground(new Color(255, 192, 203)); // Color de los números del día
-		calendar.setDecorationBackgroundColor(new Color(255, 192, 203)); // Color de fondo decorativo
-		calendar.setDecorationBordersVisible(false); // Ocultar bordes decorativos
-		calendar.setBounds(39, 471, 255, 180); // Posición y tamaño
+		calendar.getDayChooser().getDayPanel().setForeground(new Color(255, 192, 203));
+		calendar.setDecorationBackgroundColor(new Color(255, 192, 203)); 
+		calendar.setDecorationBordersVisible(false);
+		calendar.setBounds(39, 471, 255, 180); 
 		calendar.setBorder(new LineBorder(new Color(255, 192, 203)));
 		contentPane.add(calendar);
-
-
 
 		btnAnadir = new JButton("Añadir");
 		btnAnadir.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnAnadir.setBounds(1060, 630, 152, 41);
-		btnAnadir.setBackground(new Color(255, 220, 230)); // Establecer el color de fondo rosa
+		btnAnadir.setBackground(new Color(255, 220, 230));
 		contentPane.add(btnAnadir);
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
 		btnCancelar.setBounds(856, 630, 152, 41);
-		btnCancelar.setBackground(new Color(255, 220, 230)); 
+		btnCancelar.setBackground(new Color(255, 220, 230));
 		contentPane.add(btnCancelar);
-		
-		
+
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(Añadir_Personaje.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -19, 1328, 767);
 		contentPane.add(lblNewLabel);
-		
-		
-		
 
 		btnAnadir.addActionListener(this);
 		btnCancelar.addActionListener(this);
@@ -150,30 +143,31 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		if (e.getSource().equals(btnAnadir)) {
 			String nombre = textFieldNombre_Personaje.getText();
 			try {
-				if (!l.existePersonaje(nombre)) {
+				if (!controlador.existePersonaje(nombre)) {
 					String descripcion = textPaneDescrip.getText();
 					String curiosidad = textPaneCuriosidad.getText();
 					String ruta_foto = String.valueOf(textFieldRuta_Foto.getText());
-					
+
 					Date cumple = calendar.getDate();
-					
+
 					int opcion = JOptionPane.showConfirmDialog(this,
 							"¿Estás seguro de que deseas añadir este personaje?", "Confirmar",
 							JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
 					if (opcion == JOptionPane.OK_OPTION) {
-						int codigo = l.nuevoCodigo();
+						int codigo = controlador.nuevoCodigo();
 						Personaje character = new Personaje(nombre, descripcion, cumple, curiosidad, ruta_foto, codigo);
-						l.añadirPersonaje(character);
+						controlador.añadirPersonaje(character);
 
-						JOptionPane.showMessageDialog(this, "Personaje añadido correctamente.", "Éxito",JOptionPane.INFORMATION_MESSAGE);
-						 try {
+						JOptionPane.showMessageDialog(this, "Personaje añadido correctamente.", "Éxito",
+								JOptionPane.INFORMATION_MESSAGE);
+						try {
 							Paneles.tabbedPane.setSelectedIndex(0);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						
+
 					} else {
 						JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado",
 								JOptionPane.ERROR_MESSAGE);
