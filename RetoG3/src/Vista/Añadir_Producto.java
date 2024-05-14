@@ -1,19 +1,16 @@
 package Vista;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Controlador.Controlador;
-import Modelo.Personaje;
 import Modelo.Producto;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
@@ -38,7 +35,7 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 	private JLabel lblDescripcionProd;
 	private JLabel lblPrecio;
 	private JTextArea textPaneDescripcionProd;
-	private JComboBox comboBoxNombrePer;
+	private JComboBox<String> comboBoxNombrePer;
 	private JLabel lblNombrePer;
 	private JSpinner spinnerStock;
 	private JLabel lblStock;
@@ -98,7 +95,7 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 		textPaneDescripcionProd.setBounds(51, 318, 652, 184);
 		contentPaneStock.add(textPaneDescripcionProd);
 
-		comboBoxNombrePer = new JComboBox();
+		comboBoxNombrePer = new JComboBox<String>();
 		comboBoxNombrePer.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		comboBoxNombrePer.setBounds(50, 68, 255, 41);
 		contentPaneStock.add(comboBoxNombrePer);

@@ -16,20 +16,20 @@ import Modelo.Producto;
 import Modelo.Trabajador;
 
 public class Controlador implements Icontrolador {
-	private Connection con;
-	private PreparedStatement stmt;
+	private Connection conexion;
+	private PreparedStatement sentencia;
 
 	final String OBTENERusuario = "SELECT * FROM Usuario WHERE username=? AND password=?";
 	final String INNSERTuser = "INSERT INTO usuario VALUES (?,?,?,?,?)";
 	final String INNSERTcliente = "INSERT INTO cliente VALUES (?, ?)";
 	final String OBTENERusername = "SELECT COUNT(*) FROM usuario WHERE username = ?";
-	final String OBTENERPersonajes = "SELECT * FROM personaje";
-	final String OBTENERProductos = "SELECT * FROM producto";
-	final String OBTENERNombrePersonaje = "Select nombre from personaje where codigo = ?";
 	final String EXISTEusuario = "SELECT COUNT(*) AS existe FROM Usuario WHERE username = ?";
 	final String OBTENERpersonaje = "SELECT COUNT(*) FROM Personaje WHERE nombre = ?";
+	final String OBTENERPersonajes = "SELECT * FROM personaje";
 	final String INNSERTpersonaje = "INSERT INTO personaje VALUES (?,?,?,?,?,?)";
 	final String OBTENERnom_personajes = "SELECT nombre from Personaje";
+	final String OBTENERNombrePersonaje = "Select nombre from personaje where codigo = ?";
+	final String OBTENERProductos = "SELECT * FROM producto";
 	final String INNSERTproducto = "INSERT INTO producto VALUES (?,?,?,?,?,?)";
 	final String NUEVOCod_prod = "SELECT MAX(cod_producto) AS max_codigo FROM Producto";
 	final String NUEVOCod_per = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
@@ -38,478 +38,398 @@ public class Controlador implements Icontrolador {
 	final String EScliente = "SELECT COUNT(*) AS count FROM Usuario u JOIN Cliente c ON u.username = c.username WHERE u.username = (?);";
 	final String MODIFICARperfiles = "UPDATE  Usuario u, Cliente c SET u.password=?, u.telefono=?, u.email=?, u.direccion=?, c.num_cuenta=? WHERE u.username=c.username AND u.username=?";
 	final String ELIMINARUsuario = "CALL EliminarCliente(?);";
-	private void openConnection() {
+
+	private void abrirConexion() {
 		try {
 			String url = "jdbc:mysql://localhost:3306/Sanrio?serverTimezone=Europe/Madrid&useSSL=false";
-			con = DriverManager.getConnection(url, "root", "abcd*1234");
-		} catch (SQLException e) {
-			System.out.println("Error al intentar abrir la BD: " + e.getMessage());
-			e.printStackTrace();
+			conexion = DriverManager.getConnection(url, "root", "abcd*1234");
+		} catch (SQLException error) {
+			System.out.println("Error al intentar abrir la BD: " + error.getMessage());
+			error.printStackTrace();
 		}
 	}
 
-	private void closeConnection() {
+	private void cerrarConexion() {
 		try {
-			if (stmt != null) {
-				stmt.close();
+			if (sentencia != null) {
+				sentencia.close();
 			}
-			if (con != null) {
-				con.close();
+			if (conexion != null) {
+				conexion.close();
 			}
-		} catch (SQLException e) {
-			System.out.println("Error al intentar cerrar la conexión: " + e.getMessage());
-			e.printStackTrace();
+		} catch (SQLException error) {
+			System.out.println("Error al intentar cerrar la conexión: " + error.getMessage());
+			error.printStackTrace();
 		}
 	}
-
-
 
 	@Override
 	public Usuario logIn(String us, String pass) {
-		ResultSet rs = null;
-		Usuario usuario=null;
-		ResultSet rs1 = null;
-		this.openConnection();
+		ResultSet resultado = null;
+		Usuario usuario = null;
+		ResultSet resultado1 = null;
+		this.abrirConexion();
 		try {
-			stmt = con.prepareStatement(USERSdata);
-
-			stmt.setString(1, us);
-			stmt.setString(2, pass);
-			rs = stmt.executeQuery();
-
-			
-			if (rs.next() && rs.getString(1)!= null) {
-				
-				stmt = con.prepareStatement(EScliente);
-				stmt.setString(1, us);
-				rs1 = stmt.executeQuery();
-				
-				if (rs1.next()&& rs1.getBoolean(1)==true) {
-					usuario = new Cliente(rs.getString("username"), rs.getString("password"),Integer.parseInt(rs.getString("telefono")), rs.getString("direccion"), rs.getString("email"), rs.getString("num_cuenta"));
+			sentencia = conexion.prepareStatement(USERSdata);
+			sentencia.setString(1, us);
+			sentencia.setString(2, pass);
+			resultado = sentencia.executeQuery();
+			if (resultado.next() && resultado.getString(1) != null) {
+				sentencia = conexion.prepareStatement(EScliente);
+				sentencia.setString(1, us);
+				resultado1 = sentencia.executeQuery();
+				if (resultado1.next() && resultado1.getBoolean(1) == true) {
+					usuario = new Cliente(resultado.getString("username"), resultado.getString("password"),
+							Integer.parseInt(resultado.getString("telefono")), resultado.getString("direccion"),
+							resultado.getString("email"), resultado.getString("num_cuenta"));
 				} else {
-					usuario = new Trabajador(rs.getString("username"), rs.getString("password"),Integer.parseInt(rs.getString("telefono")), rs.getString("direccion"), rs.getString("email"), Integer.parseInt(rs.getString("nss")));
-				
+					usuario = new Trabajador(resultado.getString("username"), resultado.getString("password"),
+							Integer.parseInt(resultado.getString("telefono")), resultado.getString("direccion"),
+							resultado.getString("email"), Integer.parseInt(resultado.getString("nss")));
 				}
 			} else {
-
 			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+		} catch (SQLException error) {
+			System.out.println(error.getMessage());
+			error.printStackTrace();
 		} finally {
 			try {
-				if (rs != null) {
-					rs.close();
+				if (resultado != null) {
+					resultado.close();
 				}
-			} catch (SQLException e) {
-				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
-				e.printStackTrace();
+			} catch (SQLException error) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + error.getMessage());
+				error.printStackTrace();
 			}
-			this.closeConnection();
+			this.cerrarConexion();
 		}
 		return usuario;
-		
 	}
-
-	
 
 	@Override
 	public boolean SignUp(Usuario user) {
 		boolean introducido = false;
-		this.openConnection();
+		this.abrirConexion();
 		try {
-			stmt = con.prepareStatement(INNSERTuser);
-			stmt.setString(1, user.getUsername());
-			stmt.setString(2, user.getPassword());
-			stmt.setInt(3, user.getN_telefono());
-			stmt.setString(4, user.getEmail());
-			stmt.setString(5, user.getDireccion());
-			if (stmt.executeUpdate() > 0) {
+			sentencia = conexion.prepareStatement(INNSERTuser);
+			sentencia.setString(1, user.getUsername());
+			sentencia.setString(2, user.getPassword());
+			sentencia.setInt(3, user.getN_telefono());
+			sentencia.setString(4, user.getEmail());
+			sentencia.setString(5, user.getDireccion());
+			if (sentencia.executeUpdate() > 0) {
 				introducido = true;
 			} else {
 				System.out.println("Falló la inserción del usuario");
 			}
-		} catch (SQLException e) {
+		} catch (SQLException error) {
 			System.out.println("Error de SQL");
-			e.printStackTrace();
+			error.printStackTrace();
 		} finally {
-			this.closeConnection();
+			this.cerrarConexion();
 		}
 		return introducido;
-	}
-
-	@Override
-	public List<Personaje> getPersonajes() {
-		List<Personaje> listaPersonajes = new ArrayList<>();
-		ResultSet rs = null;
-
-		// Abrimos la conexión
-		this.openConnection();
-
-		try {
-			stmt = con.prepareStatement(OBTENERPersonajes);
-			rs = stmt.executeQuery();
-
-			// Recorremos los resultados y creamos objetos Personaje
-			while (rs.next()) {
-				int codigo = rs.getInt("Codigo");
-				String nombre = rs.getString("Nombre");
-				String descripcion = rs.getString("Descripcion");
-				Date cumpleaños = rs.getDate("Cumpleaños");
-				String ruta_foto = rs.getString("ruta_foto");
-				String curiosidad = rs.getString("Curiosidad");
-
-				// Creamos el objeto Personaje y lo agregamos a la lista
-				Personaje personaje = new Personaje(nombre, descripcion, cumpleaños, curiosidad, ruta_foto, codigo);
-				listaPersonajes.add(personaje);
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de SQL: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
-				e.printStackTrace();
-			}
-			// Cerramos la conexión
-			this.closeConnection();
-		}
-
-		return listaPersonajes;
-	}
-
-	@Override
-	public List<Producto> getProducto() {
-		// TODO Auto-generated method stub
-		List<Producto> listaProducto = new ArrayList<>();
-		ResultSet rs = null;
-
-		// Abrimos la conexión
-		this.openConnection();
-
-		try {
-			stmt = con.prepareStatement(OBTENERProductos);
-			rs = stmt.executeQuery();
-
-			// Recorremos los resultados y creamos objetos Personaje
-			while (rs.next()) {
-				int codigo = rs.getInt("Cod_producto");
-				Double precio = rs.getDouble("Precio");
-				String descripcion = rs.getString("Descrip_prod");
-				int stock = rs.getInt("Stock");
-				String ruta_foto = rs.getString("ruta_foto_prod");
-				String nombre = rs.getString("Nombre");
-
-				Producto producto = new Producto(nombre, codigo, precio, descripcion, stock, ruta_foto);
-				listaProducto.add(producto);
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de SQL: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
-				e.printStackTrace();
-			}
-			// Cerramos la conexión
-			this.closeConnection();
-		}
-
-		return listaProducto;
-	}
-
-	@Override
-	public String getNombre(int command) {
-		ResultSet rs = null;
-
-		// Abrimos la conexión
-		this.openConnection();
-
-		try {
-			// Preparamos la declaración SQL con el parámetro
-			stmt = con.prepareStatement(OBTENERNombrePersonaje);
-			stmt.setInt(1, command); // Setting the parameter
-			rs = stmt.executeQuery();
-
-			// Verificamos si hay un resultado y obtenemos el nombre
-			if (rs.next()) {
-				String nombre = rs.getString("nombre");
-				return nombre;
-			} else {
-				// Handle the case where no result is found
-				return null;
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de SQL: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("Error de SQL al cerrar el ResultSet: " + e.getMessage());
-				e.printStackTrace();
-			}
-			// Cerramos la conexión
-			this.closeConnection();
-		}
-		return null;
-	}
-
-	public int nuevoCodigo() throws SQLException {
-		int codigo = 0;
-		this.openConnection();
-		String query = "SELECT MAX(codigo) AS max_codigo FROM Personaje";
-		stmt = con.prepareStatement(query);
-		ResultSet resultSet = stmt.executeQuery();
-		if (resultSet.next()) {
-			codigo = resultSet.getInt("max_codigo") + 1;
-		}
-
-		this.closeConnection();
-		return codigo;
-	}
-
-	// Añadir Personaje
-	@Override
-	public boolean existePersonaje(String nombre) {
-	    ResultSet rs = null;
-	    boolean existe = false;
-	    this.openConnection(); 
-
-	    try {
-	        stmt = con.prepareStatement(OBTENERpersonaje);
-	        stmt.setString(1, nombre); // Establece el valor del primer parámetro en la consulta preparada
-	        rs = stmt.executeQuery(); 
-	        if (rs.next()) 
-	            existe = rs.getInt(1) > 0; // Comprueba si el recuento es mayor que cero para determinar si el personaje existe
-	    } catch (SQLException e) {
-	        e.printStackTrace(); 
-	    } finally {
-	        if (rs != null) {
-	            try {
-	                rs.close(); 
-	            } catch (SQLException e) {
-	                e.printStackTrace(); 
-	            }
-	        }
-	        this.closeConnection(); 
-	    }
-	    return existe; 
-	}
-
-
-	// Añadir Personaje
-	@Override
-	public boolean añadirPersonaje(Personaje character) {
-		// TODO Auto-generated method stub
-		boolean introducido = false;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(INNSERTpersonaje);
-			stmt.setInt(1, character.getCodigo());
-			stmt.setString(2, character.getNombre());
-			stmt.setString(3, character.getDescripcion());
-			stmt.setDate(4, new java.sql.Date(character.getCumpleaños().getTime()));
-			stmt.setString(5, character.getCuriosidad());
-			stmt.setString(6, character.getRuta());
-
-			if (stmt.executeUpdate() > 0) {
-				introducido = true;
-
-			
-			} else {
-				System.out.println("Falló la inserción del personaje");
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de SQL");
-			e.printStackTrace();
-		} finally {
-			this.closeConnection();
-		}
-		return introducido;
-	}
-
-	// Añadir Personaje
-	@Override
-	public int nuevoCodigoPer() {
-		int codigo = 0;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(NUEVOCod_per);
-			ResultSet resultSet = stmt.executeQuery();
-			if (resultSet.next()) {
-				codigo = resultSet.getInt("max_codigo") + 1;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.closeConnection();
-		return codigo;
-	}
-
-	// Añadir Producto
-	@Override
-	public ArrayList<String> completarNombrePer() {
-		ArrayList<String> lista = new ArrayList<>();
-		ResultSet rs = null;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(OBTENERnom_personajes);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				String nombrePersonaje = rs.getString(1);
-				lista.add(nombrePersonaje);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			this.closeConnection();
-		}
-		return lista;
-	}
-
-
-	// Añadir Producto
-	@Override
-	public int nuevoCodigoProd() {
-		// TODO Auto-generated method stub
-		int codigo = 0;
-		this.openConnection();
-		ResultSet rs = null;
-		try {
-			stmt = con.prepareStatement(NUEVOCod_prod);
-			rs = stmt.executeQuery();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			if (rs.next()) {
-				codigo = rs.getInt("max_codigo") + 1;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		this.closeConnection();
-		return codigo;
-	}
-
-	// Añadir Producto
-	@Override
-	public void añadirProducto(Producto producto) {
-		// TODO Auto-generated method stub
-		// cod_producto, precio, descrip_prod, stock, personaje
-
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(INNSERTproducto);
-			stmt.setInt(1, producto.getCod_producto());
-			stmt.setInt(2, (int) producto.getPrecio());
-			stmt.setString(3, producto.getDescripcion());
-			stmt.setInt(4, producto.getStock());
-			stmt.setString(5, producto.getRuta_img());
-			stmt.setString(6, producto.getPersonaje());
-
-			
-		} catch (SQLException e) {
-			System.out.println("Error de SQL");
-			e.printStackTrace();
-		} finally {
-			this.closeConnection();
-		}
-
-	}
-
-	@Override
-	public boolean modificarUsuario(String username, String contraseña, int telf, String email, String direc,
-			String cuenta) {
-		// TODO Auto-generated method stub
-		boolean cambios = false;
-		this.openConnection();
-		try {
-			stmt = con.prepareStatement(MODIFICARperfiles);
-			stmt.setString(1, contraseña);
-			stmt.setInt(2, telf);
-			stmt.setString(3, email);
-			stmt.setString(4, direc);
-			stmt.setString(5, cuenta);
-			stmt.setString(6, username);
-			if (stmt.executeUpdate() == 1) {
-				cambios = true;
-			}
-		} catch (SQLException e) {
-			System.out.println("Error de SQL");
-			e.printStackTrace();
-		} finally {
-			this.closeConnection();
-		}
-		return cambios;
 	}
 
 	@Override
 	public boolean existeUsuario(String username) {
-		ResultSet rs = null;
+		ResultSet resultado = null;
 		boolean existe = false;
-		this.openConnection();
+		this.abrirConexion();
 		try {
-			stmt = con.prepareStatement(OBTENERusername);
-			stmt.setString(1, username);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
+			sentencia = conexion.prepareStatement(OBTENERusername);
+			sentencia.setString(1, username);
+			resultado = sentencia.executeQuery();
+			if (resultado.next()) {
 				existe = true;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException error) {
+			error.printStackTrace();
 		} finally {
-			if (rs != null) {
+			if (resultado != null) {
 				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					resultado.close();
+				} catch (SQLException error) {
+					error.printStackTrace();
 				}
 			}
-			this.closeConnection();
+			this.cerrarConexion();
 		}
 		return existe;
 	}
 
 	@Override
 	public void eliminarUsuario(String nombreUsuario) {
-	    this.openConnection();
-	    try {
-	        stmt = con.prepareStatement(ELIMINARUsuario);
-	        stmt.setString(1, nombreUsuario);
-	        stmt.executeUpdate();
-	    } catch (SQLException e) {
-	        System.out.println("Error de SQL al eliminar el usuario: " + e.getMessage());
-	        e.printStackTrace();
-	    } finally {
-	        this.closeConnection();
-	    }
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(ELIMINARUsuario);
+			sentencia.setString(1, nombreUsuario);
+			sentencia.executeUpdate();
+		} catch (SQLException error) {
+			System.out.println("Error de SQL al eliminar el usuario: " + error.getMessage());
+			error.printStackTrace();
+		} finally {
+			this.cerrarConexion();
+		}
 	}
 
-	
+	@Override
+	public boolean modificarUsuario(String username, String contraseña, int telf, String email, String direc,
+			String cuenta) {
+		boolean cambios = false;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(MODIFICARperfiles);
+			sentencia.setString(1, contraseña);
+			sentencia.setInt(2, telf);
+			sentencia.setString(3, email);
+			sentencia.setString(4, direc);
+			sentencia.setString(5, cuenta);
+			sentencia.setString(6, username);
+			if (sentencia.executeUpdate() == 1) {
+				cambios = true;
+			}
+		} catch (SQLException error) {
+			System.out.println("Error de SQL");
+			error.printStackTrace();
+		} finally {
+			this.cerrarConexion();
+		}
+		return cambios;
+	}
+
+	@Override
+	public List<Personaje> getPersonajes() {
+		List<Personaje> listaPersonajes = new ArrayList<>();
+		ResultSet resultado = null;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(OBTENERPersonajes);
+			resultado = sentencia.executeQuery();
+			while (resultado.next()) {
+				int codigo = resultado.getInt("Codigo");
+				String nombre = resultado.getString("Nombre");
+				String descripcion = resultado.getString("Descripcion");
+				Date cumpleaños = resultado.getDate("Cumpleaños");
+				String ruta_foto = resultado.getString("ruta_foto");
+				String curiosidad = resultado.getString("Curiosidad");
+				Personaje personaje = new Personaje(nombre, descripcion, cumpleaños, curiosidad, ruta_foto, codigo);
+				listaPersonajes.add(personaje);
+			}
+		} catch (SQLException error) {
+			System.out.println("Error de SQL: " + error.getMessage());
+			error.printStackTrace();
+		} finally {
+			try {
+				if (resultado != null) {
+					resultado.close();
+				}
+			} catch (SQLException error) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + error.getMessage());
+				error.printStackTrace();
+			}
+			this.cerrarConexion();
+		}
+		return listaPersonajes;
+	}
+
+	@Override
+	public boolean añadirPersonaje(Personaje character) {
+		boolean introducido = false;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(INNSERTpersonaje);
+			sentencia.setInt(1, character.getCodigo());
+			sentencia.setString(2, character.getNombre());
+			sentencia.setString(3, character.getDescripcion());
+			sentencia.setDate(4, new java.sql.Date(character.getCumpleaños().getTime()));
+			sentencia.setString(5, character.getCuriosidad());
+			sentencia.setString(6, character.getRuta());
+			if (sentencia.executeUpdate() > 0) {
+				introducido = true;
+			} else {
+				System.out.println("Falló la inserción del personaje");
+			}
+		} catch (SQLException error) {
+			System.out.println("Error de SQL");
+			error.printStackTrace();
+		} finally {
+			this.cerrarConexion();
+		}
+		return introducido;
+	}
+
+	@Override
+	public boolean existePersonaje(String nombre) {
+		ResultSet resultado = null;
+		boolean existe = false;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(OBTENERpersonaje);
+			sentencia.setString(1, nombre);
+			resultado = sentencia.executeQuery();
+			if (resultado.next())
+				existe = resultado.getInt(1) > 0;
+		} catch (SQLException error) {
+			error.printStackTrace();
+		} finally {
+			if (resultado != null) {
+				try {
+					resultado.close();
+				} catch (SQLException error) {
+					error.printStackTrace();
+				}
+			}
+			this.cerrarConexion();
+		}
+		return existe;
+	}
+
+	@Override
+	public int nuevoCodigoPer() {
+		int codigo = 0;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(NUEVOCod_per);
+			ResultSet resultSet = sentencia.executeQuery();
+			if (resultSet.next()) {
+				codigo = resultSet.getInt("max_codigo") + 1;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+		this.cerrarConexion();
+		return codigo;
+	}
+
+	@Override
+	public ArrayList<String> completarNombrePer() {
+		ArrayList<String> lista = new ArrayList<>();
+		ResultSet resultado = null;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(OBTENERnom_personajes);
+			resultado = sentencia.executeQuery();
+			while (resultado.next()) {
+				String nombrePersonaje = resultado.getString(1);
+				lista.add(nombrePersonaje);
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		} finally {
+			if (resultado != null) {
+				try {
+					resultado.close();
+				} catch (SQLException error) {
+					error.printStackTrace();
+				}
+			}
+			this.cerrarConexion();
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Producto> getProducto() {
+		List<Producto> listaProducto = new ArrayList<>();
+		ResultSet resultado = null;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(OBTENERProductos);
+			resultado = sentencia.executeQuery();
+			while (resultado.next()) {
+				int codigo = resultado.getInt("Cod_producto");
+				Double precio = resultado.getDouble("Precio");
+				String descripcion = resultado.getString("Descrip_prod");
+				int stock = resultado.getInt("Stock");
+				String ruta_foto = resultado.getString("ruta_foto_prod");
+				String nombre = resultado.getString("Nombre");
+				Producto producto = new Producto(nombre, codigo, precio, descripcion, stock, ruta_foto);
+				listaProducto.add(producto);
+			}
+		} catch (SQLException error) {
+			System.out.println("Error de SQL: " + error.getMessage());
+			error.printStackTrace();
+		} finally {
+			try {
+				if (resultado != null) {
+					resultado.close();
+				}
+			} catch (SQLException error) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + error.getMessage());
+				error.printStackTrace();
+			}
+			this.cerrarConexion();
+		}
+		return listaProducto;
+	}
+
+	@Override
+	public String getNombre(int command) {
+		ResultSet resultado = null;
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(OBTENERNombrePersonaje);
+			sentencia.setInt(1, command);
+			resultado = sentencia.executeQuery();
+			if (resultado.next()) {
+				String nombre = resultado.getString("nombre");
+				return nombre;
+			} else {
+				return null;
+			}
+		} catch (SQLException error) {
+			System.out.println("Error de SQL: " + error.getMessage());
+			error.printStackTrace();
+		} finally {
+			try {
+				if (resultado != null) {
+					resultado.close();
+				}
+			} catch (SQLException error) {
+				System.out.println("Error de SQL al cerrar el ResultSet: " + error.getMessage());
+				error.printStackTrace();
+			}
+			this.cerrarConexion();
+		}
+		return null;
+	}
+
+	@Override
+	public void añadirProducto(Producto producto) {
+		this.abrirConexion();
+		try {
+			sentencia = conexion.prepareStatement(INNSERTproducto);
+			sentencia.setInt(1, producto.getCod_producto());
+			sentencia.setInt(2, (int) producto.getPrecio());
+			sentencia.setString(3, producto.getDescripcion());
+			sentencia.setInt(4, producto.getStock());
+			sentencia.setString(5, producto.getRuta_img());
+			sentencia.setString(6, producto.getPersonaje());
+		} catch (SQLException error) {
+			System.out.println("Error de SQL");
+			error.printStackTrace();
+		} finally {
+			this.cerrarConexion();
+		}
+	}
+
+	@Override
+	public int nuevoCodigoProd() {
+		int codigo = 0;
+		this.abrirConexion();
+		ResultSet resultado = null;
+		try {
+			sentencia = conexion.prepareStatement(NUEVOCod_prod);
+			resultado = sentencia.executeQuery();
+			if (resultado.next()) {
+				codigo = resultado.getInt("max_codigo") + 1;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+		this.cerrarConexion();
+		return codigo;
+	}
 
 }

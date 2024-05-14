@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import Controlador.Controlador;
-import Modelo.Cliente;
 import Modelo.Usuario;
 
 public class LogIn extends JFrame implements ActionListener {
@@ -129,6 +128,11 @@ public class LogIn extends JFrame implements ActionListener {
 		ActionMap actionMap = panel.getActionMap();
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "clickSignUp");
 		actionMap.put("clickSignUp", new AbstractAction() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				btnLogIn.doClick();
@@ -138,7 +142,6 @@ public class LogIn extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		boolean passwordVisible = true;
 		Object source = e.getSource();
 
 		if (source == btnRevelar) {
@@ -154,7 +157,7 @@ public class LogIn extends JFrame implements ActionListener {
 			btnRevelar.setVisible(true);
 		}
 		if (source == btnSignUp) {
-			// Ocultar el marco actual y abrir el marco de registro
+			
 			LogIn.this.setVisible(false);
 			LogIn.this.dispose();
 			try {

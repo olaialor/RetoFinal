@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import Controlador.Controlador;
 import Modelo.Personaje;
+
 import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,10 @@ import java.awt.event.ActionListener;
 
 public class Wiki_Personaje extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Controlador controlador;
 	private JPanel mainPanel;
 	private JLabel lblPersonaje2;
@@ -20,11 +25,6 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 	private JScrollPane scrollPane;
 	private JLabel lblLogo;
 	private JLabel lblFondo;
-	private JPanel panel2;
-	private String rutaImagen;
-	private ImageIcon imagen;
-	private JLabel imagenLabel;
-
 	public Wiki_Personaje(Controlador controlador) {
 		this.controlador = controlador;
 
@@ -70,27 +70,26 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		// Ajustar el tamaño del JScrollPane
+		
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		// Agregar el JScrollPane al panel interno
-		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
+		scrollPaneContainer.setBackground(Color.white);
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		// Cambiar el color de la barra de desplazamiento
+	
 		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 
 			@Override
 			protected JButton createDecreaseButton(int orientation) {
 				JButton button = super.createDecreaseButton(orientation);
-				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
+				button.setBackground(new Color(255, 213, 227)); 
 				return button;
 			}
 
 			@Override
 			protected JButton createIncreaseButton(int orientation) {
 				JButton button = super.createIncreaseButton(orientation);
-				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
+				button.setBackground(new Color(255, 213, 227));
 				return button;
 			}
 
@@ -177,13 +176,14 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		JButton btnProd = new JButton("Ver productos");
 		btnProd.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnProd.setFont(new Font("Goudy Old Style", Font.BOLD, 19));
-		btnProd.setMargin(new Insets(5, 13, 5, 13)); 
+		btnProd.setMargin(new Insets(5, 13, 5, 13)); // Ajustar los márgenes
 		btnProd.setForeground(Color.white);
 		btnProd.setBackground(new Color(252, 193, 211));
 		btnProd.addActionListener(this);
 		textPanel.add(Box.createVerticalStrut(20));
 		textPanel.add(btnProd);
 		btnProd.setActionCommand(String.valueOf(personaje.getCodigo()));
+		
 		btnProd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -199,8 +199,8 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 	    if (command != null) {
 	        String nombre = controlador.getNombre(Integer.parseInt(command));
-	        Busqueda_Producto busqueda_Producto = new Busqueda_Producto(controlador, nombre); 
-	        Paneles.tabbedPane.setSelectedIndex(1);
+	        Paneles.filtrar(controlador, nombre, null);
+	        
 	    }
 	}
 

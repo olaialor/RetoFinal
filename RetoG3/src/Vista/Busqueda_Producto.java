@@ -14,6 +14,10 @@ import java.awt.event.ActionListener;
 
 public class Busqueda_Producto extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Controlador controlador;
 	private JPanel mainPanel;
 	private JPanel scrollPaneContainer;
@@ -30,147 +34,90 @@ public class Busqueda_Producto extends JFrame implements ActionListener {
 	private JLabel precio;
 	private JButton btnCompra;
 	private JLabel lblPersonaje5;
+	
+	 public Busqueda_Producto(Controlador controlador, String nombre) {
+	        this.controlador = controlador;
+	        initializeFrame();
+	        buclePaneles(nombre);
+	    }
 
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public Busqueda_Producto(Controlador controlador) {
-		this.controlador = controlador;
+	    public Busqueda_Producto(Controlador controlador) {
+	        this.controlador = controlador;
+	        initializeFrame();
+	        List<Personaje> personajes = controlador.getPersonajes();
+	        for (Personaje pers : personajes) {
+	            buclePaneles(pers.getNombre());
+	        }
+	    }
 
-		setIconImage(
-				Toolkit.getDefaultToolkit().getImage(Wiki_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(1280, 800));
+	    private void initializeFrame() {
+	        setIconImage(Toolkit.getDefaultToolkit().getImage(Wiki_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
+	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        setPreferredSize(new Dimension(1280, 800));
 
-		mainPanel = new JPanel();
-		mainPanel.setLayout(null);
-		mainPanel.setPreferredSize(new Dimension(1280, 800));
-		mainPanel.setOpaque(false);
+	        mainPanel = new JPanel();
+	        mainPanel.setLayout(null);
+	        mainPanel.setPreferredSize(new Dimension(1280, 800));
+	        mainPanel.setOpaque(false);
 
-		scrollPaneContainer = new JPanel();
-		scrollPaneContainer.setBounds(194, 113, 862, 583);
+	        scrollPaneContainer = new JPanel();
+	        scrollPaneContainer.setBounds(194, 113, 862, 583);
 
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-		centerPanel.setBackground(new Color(255, 245, 248));
+	        centerPanel = new JPanel();
+	        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+	        centerPanel.setBackground(new Color(255, 245, 248));
 
-		List<Personaje> personajes = controlador.getPersonajes();
-		for (Personaje pers : personajes) {
-			buclePaneles(pers.getNombre());
-		}
+	        scrollPane = new JScrollPane(centerPanel);
+	        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	        scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		scrollPane = new JScrollPane(centerPanel);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	        scrollPaneContainer.setBackground(Color.white);
+	        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+	            @Override
+	            protected JButton createDecreaseButton(int orientation) {
+	                JButton button = super.createDecreaseButton(orientation);
+	                button.setBackground(new Color(255, 213, 227));
+	                return button;
+	            }
 
-		scrollPane.setPreferredSize(new Dimension(860, 580));
+	            @Override
+	            protected JButton createIncreaseButton(int orientation) {
+	                JButton button = super.createIncreaseButton(orientation);
+	                button.setBackground(new Color(255, 213, 227));
+	                return button;
+	            }
 
-		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
-		scrollPane.setPreferredSize(new Dimension(860, 580));
+	            @Override
+	            protected void configureScrollBarColors() {
+	                this.thumbColor = new Color(255, 213, 227);
+	            }
+	        });
 
-	 	// Cambiar el color de la barra de desplazamiento
-		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+	        scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
+	        mainPanel.add(scrollPaneContainer);
+	        getContentPane().add(mainPanel);
+	        pack();
+	        setLocationRelativeTo(null);
 
-			@Override
-			protected JButton createDecreaseButton(int orientation) {
-				JButton button = super.createDecreaseButton(orientation);
-				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
-				return button;
-			}
+	        lblLogo = new JLabel("");
+	        lblLogo.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/logo_tienda4.png")));
+	        lblLogo.setBounds(346, 21, 571, 82);
+	        mainPanel.add(lblLogo);
 
-			@Override
-			protected JButton createIncreaseButton(int orientation) {
-				JButton button = super.createIncreaseButton(orientation);
-				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
-				return button;
-			}
+	        lblPersonaje5 = new JLabel("");
+	        lblPersonaje5.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
+	        lblPersonaje5.setBounds(-76, 506, 299, 229);
+	        mainPanel.add(lblPersonaje5);
 
-			@Override
-			protected void configureScrollBarColors() {
-				this.thumbColor = new Color(255, 213, 227);
-			}
-		});
+	        lblFondo = new JLabel("");
+	        lblFondo.setIcon(new ImageIcon(getClass().getResource("/Imagenes/fondo_wiki2.jpg")));
+	        lblFondo.setBounds(-36, 0, 1382, 770);
+	        mainPanel.add(lblFondo);
+	    }
 
-	 
-		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
 
-		mainPanel.add(scrollPaneContainer);
-
-		getContentPane().add(mainPanel);
-		pack();
-		setLocationRelativeTo(null);
-
-		lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/logo_tienda4.png")));
-		lblLogo.setBounds(346, 21, 571, 82);
-		mainPanel.add(lblLogo);
-		
-		lblPersonaje5 = new JLabel("");
-		lblPersonaje5.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/personaje3.png")));
-		lblPersonaje5.setBounds(-76, 506, 299, 229);
-		mainPanel.add(lblPersonaje5);
-
-		lblFondo = new JLabel("");
-		lblFondo.setIcon(new ImageIcon(getClass().getResource("/Imagenes/fondo_wiki2.jpg")));
-		lblFondo.setBounds(-36, 0, 1382, 770);
-		mainPanel.add(lblFondo);
-		
-		
-
-	}
-
-	public Busqueda_Producto(Controlador controlador, String nombre) {
-		this.controlador = controlador;
-
-		setIconImage(
-				Toolkit.getDefaultToolkit().getImage(Wiki_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(1280, 800));
-
-		mainPanel = new JPanel();
-		mainPanel.setLayout(null);
-		mainPanel.setPreferredSize(new Dimension(1280, 800));
-		mainPanel.setOpaque(false);
-
-		scrollPaneContainer = new JPanel();
-		scrollPaneContainer.setBounds(194, 113, 862, 583);
-
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-		centerPanel.setBackground(new Color(255, 245, 248));
-
-		centerPanel.removeAll();
-
-		buclePaneles(nombre);
-
-		scrollPane = new JScrollPane(centerPanel);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-		scrollPane.setPreferredSize(new Dimension(860, 580));
-
-		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
-		scrollPane.setPreferredSize(new Dimension(860, 580));
-
-		scrollPaneContainer.add(scrollPane, BorderLayout.CENTER);
-
-		mainPanel.add(scrollPaneContainer);
-
-		getContentPane().add(mainPanel);
-		pack();
-		setLocationRelativeTo(null);
-
-		lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon(Busqueda_Producto.class.getResource("/Imagenes/logo_tienda4.png")));
-		lblLogo.setBounds(346, 21, 571, 82);
-		mainPanel.add(lblLogo);
-
-		lblFondo = new JLabel("");
-		lblFondo.setIcon(new ImageIcon(getClass().getResource("/Imagenes/fondo_wiki2.jpg")));
-		lblFondo.setBounds(-36, 0, 1382, 770);
-		mainPanel.add(lblFondo);
-
-	}
+	
 
 	public void buclePaneles(String personaje) {
 		List<Producto> productos = controlador.getProducto();

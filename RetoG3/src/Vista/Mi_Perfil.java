@@ -35,7 +35,6 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 	private JButton btnAceptar;
 	private JButton btnModificar;
 	private Controlador controlador;
-	private JTextField textFieldUsuario;
 	private JTextField textFieldTelf;
 	private JTextField textFieldEmail;
 	private JTextField textFieldCuenta;
@@ -46,7 +45,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 	private JButton btnDarseDeBaja;
 	private Paneles paneles;
 
-	public Mi_Perfil(Controlador c, Usuario usuario, Paneles paneles) {
+	public Mi_Perfil(Controlador controlador, Usuario usuario, Paneles paneles) {
 		this.controlador = controlador;
 		this.paneles = paneles;
 		this.usuario = (Cliente) usuario;
@@ -170,7 +169,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 				String nuevaContraseña = new String(passwordField.getPassword());
 				int nuevoTelefono = Integer.parseInt(textFieldTelf.getText());
 				String nuevaDireccion = textFieldDirec.getText();
-				boolean cambiosGuardados = controlador.modificarUsuario(usuario.getUsername(), nuevaContraseña, nuevoTelefono,
+				controlador.modificarUsuario(usuario.getUsername(), nuevaContraseña, nuevoTelefono,
 						nuevoEmail, nuevaDireccion, nuevaCuenta);
 				textFieldEmail.setEditable(false);
 				textFieldCuenta.setEditable(false);

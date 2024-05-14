@@ -1,19 +1,16 @@
 package Modelo;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Personaje {
 	private String nombre;
 	private String descripcion;
-	private Date cumple;
-
 	private Date cumpleaños;
-
 	private String curiosidad;
 	private String ruta_foto;
 	private int codigo;
 
+	
 	public Personaje(String nombre, String descripcion, Date cumpleaños, String curiosidad, String ruta_foto,
 			int codigo) {
 		this.nombre = nombre;

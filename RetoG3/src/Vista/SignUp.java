@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import Controlador.Controlador;
 import Modelo.Cliente;
-import Modelo.Trabajador;
 import Modelo.Usuario;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -18,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
 import java.awt.Color;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
+
 
 public class SignUp extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
