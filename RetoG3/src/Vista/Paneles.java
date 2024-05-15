@@ -43,13 +43,12 @@ public class Paneles extends JFrame {
 			i++;
 			JPanel panel3 = new JPanel();
 			panel3.setLayout(new BorderLayout());
-			Añadir_Personaje ventana3 = new Añadir_Personaje(controlador);
+			Anadir_Personaje ventana3 = new Anadir_Personaje(controlador);
 			panel3.add(ventana3.getContentPane(), BorderLayout.CENTER);
 			tabbedPane.addTab("Añadir Personaje", panel3);
-
 			JPanel panel4 = new JPanel();
 			panel4.setLayout(new BorderLayout());
-			Añadir_Producto ventana4 = new Añadir_Producto(controlador);
+			Anadir_Producto ventana4 = new Anadir_Producto(controlador, this, usuario);
 			panel4.add(ventana4.getContentPane(), BorderLayout.CENTER);
 			tabbedPane.addTab("Añadir Producto", panel4);
 
@@ -84,7 +83,7 @@ public class Paneles extends JFrame {
 
 	}
 
-	public void CerrarPaneles() {
+	public void cerrarPaneles() {
 		this.setVisible(false);
 		dispose();
 	}
@@ -103,4 +102,7 @@ public class Paneles extends JFrame {
 		Paneles.tabbedPane.setSelectedIndex(i);
 
 	}
+	
+		
+	
 }

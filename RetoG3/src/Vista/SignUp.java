@@ -40,15 +40,15 @@ public class SignUp extends JFrame implements ActionListener {
 	private JLabel lblContraseña2;
 	private JLabel lblContraseña1;
 	private JLabel lblFondo_Inicio;
-	private Controlador l;
+	private Controlador controlador;
 	private JLabel lblNewLabel;
 	private Pattern formatoEmail = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 	private Usuario usuario;
 
-	public SignUp(Controlador c, Usuario usuario) {
+	public SignUp(Controlador controlador, Usuario usuario) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/LazoHelloKitty.png")));
-		// setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/giphy.gif")));
-		this.l = c;
+		
+		this.controlador = controlador;
 		this.usuario = usuario;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 943, 713);
@@ -188,7 +188,7 @@ public class SignUp extends JFrame implements ActionListener {
 			SignUp.this.setVisible(false);
 			SignUp.this.dispose();
 			try {
-				LogIn frame = new LogIn(l);
+				LogIn frame = new LogIn(controlador);
 				frame.setVisible(true);
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -196,7 +196,7 @@ public class SignUp extends JFrame implements ActionListener {
 		} else if (o == btnSignUp) {
 			String username = textFieldUsername.getText();
 			try {
-				if (l.existePersonaje(username)) { // Verifica si el personaje existe
+				if (controlador.existePersonaje(username)) { // Verifica si el personaje existe
 					lblError.setText("Error. El personaje ya existe.");
 				} else { // Si el personaje no existe, realiza las comprobaciones adicionales
 					String password2 = new String(passwordFieldContraseña2.getPassword());
@@ -208,11 +208,11 @@ public class SignUp extends JFrame implements ActionListener {
 							String direccion = textFieldDireccion.getText();
 							String n_cuenta = textFieldNCuenta.getText();
 							usuario = new Cliente(username, password1, n_telefono, direccion, email, n_cuenta);
-							if (l.SignUp(usuario)) {
+							if (controlador.SignUp(usuario)) {
 								SignUp.this.setVisible(false);
 								SignUp.this.dispose();
 								try {
-									Paneles frame = new Paneles(l, usuario);
+									Paneles frame = new Paneles(controlador, usuario);
 									frame.setVisible(true);
 								} catch (Exception e1) {
 									e1.printStackTrace();

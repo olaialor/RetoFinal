@@ -195,7 +195,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 							SignUp frame = new SignUp(controlador, usuario);
 							frame.setVisible(true);
 							
-							paneles.CerrarPaneles();
+							paneles.cerrarPaneles();
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}

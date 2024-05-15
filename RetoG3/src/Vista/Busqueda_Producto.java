@@ -14,9 +14,7 @@ import java.awt.event.ActionListener;
 
 public class Busqueda_Producto extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Controlador controlador;
 	private JPanel mainPanel;

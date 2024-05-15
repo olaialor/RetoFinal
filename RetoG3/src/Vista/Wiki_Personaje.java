@@ -139,24 +139,24 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 	private JPanel createPanel(Personaje personaje) {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 245, 248));
-		panel.setLayout(new GridLayout(1, 2));
+		panel.setLayout(new GridLayout(1, 1));
 
 		JPanel textPanel = new JPanel();
 		textPanel.setBackground(new Color(255, 245, 248));
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-		textPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		textPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
 		JLabel nombre = new JLabel(personaje.getNombre());
 		nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		nombre.setFont(new Font("Goudy Stout", Font.PLAIN, 16));
 		textPanel.add(nombre);
 		Dimension size = nombre.getPreferredSize();
-		size.width = 50;
+		size.width = 20;
 		nombre.setPreferredSize(size);
 
 		textPanel.add(nombre);
 
-		textPanel.add(Box.createVerticalStrut(10));
+		textPanel.add(Box.createVerticalStrut(0));
 
 		JLabel descrip = new JLabel("Descripción: " + personaje.getDescripcion());
 		descrip.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -176,7 +176,7 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		JButton btnProd = new JButton("Ver productos");
 		btnProd.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnProd.setFont(new Font("Goudy Old Style", Font.BOLD, 19));
-		btnProd.setMargin(new Insets(5, 13, 5, 13)); // Ajustar los márgenes
+		btnProd.setMargin(new Insets(5, 13, 5, 13));
 		btnProd.setForeground(Color.white);
 		btnProd.setBackground(new Color(252, 193, 211));
 		btnProd.addActionListener(this);

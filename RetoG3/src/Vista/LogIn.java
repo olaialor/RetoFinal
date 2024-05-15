@@ -36,7 +36,7 @@ public class LogIn extends JFrame implements ActionListener {
 		this.controlador = controlador;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogIn.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 943, 713);
+		setBounds(128, 0, 943, 713);
 
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(254, 190, 253));

@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import Controlador.Controlador;
 import Modelo.Producto;
+import Modelo.Usuario;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -25,7 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
-public class Añadir_Producto extends JFrame implements ActionListener {
+public class Anadir_Producto extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPaneStock;
@@ -51,10 +52,10 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public Añadir_Producto(Controlador controlador) {
+	public Anadir_Producto(Controlador controlador, Paneles paneles, Usuario usuario) {
 		this.controlador = controlador;
 		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Añadir_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
+				.getImage(Anadir_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 768);
 		contentPaneStock = new JPanel();
@@ -133,7 +134,7 @@ public class Añadir_Producto extends JFrame implements ActionListener {
 		contentPaneStock.add(btnCancelar);
 		
 		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(Añadir_Producto.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(Anadir_Producto.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -21, 1352, 792);
 		contentPaneStock.add(lblNewLabel);
 		

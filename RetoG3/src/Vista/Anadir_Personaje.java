@@ -22,7 +22,7 @@ import Controlador.Controlador;
 import Modelo.Personaje;
 import com.toedter.calendar.JCalendar;
 
-public class Añadir_Personaje extends JFrame implements ActionListener {
+public class Anadir_Personaje extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -41,10 +41,10 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 	private Controlador controlador;
 	private JCalendar calendar;
 
-	public Añadir_Personaje(Controlador controlador) {
+	public Anadir_Personaje(Controlador controlador) {
 		this.controlador = controlador;
 		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Añadir_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
+				.getImage(Anadir_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 768);
 		contentPane = new JPanel();
@@ -125,7 +125,7 @@ public class Añadir_Personaje extends JFrame implements ActionListener {
 		contentPane.add(btnCancelar);
 
 		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(Añadir_Personaje.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(Anadir_Personaje.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -19, 1328, 767);
 		contentPane.add(lblNewLabel);
 
