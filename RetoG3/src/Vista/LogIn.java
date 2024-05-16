@@ -96,7 +96,7 @@ public class LogIn extends JFrame implements ActionListener {
 		lblError.setForeground(new Color(222, 111, 111));
 		lblError.setFont(new Font("Goudy Old Style", Font.PLAIN, 16));
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);
-		lblError.setBounds(745, 397, 174, 36);
+		lblError.setBounds(649, 397, 365, 36);
 		panel.add(lblError);
 
 		btnRevelar = new JButton("");
@@ -178,8 +178,8 @@ public class LogIn extends JFrame implements ActionListener {
 				Paneles paneles = new Paneles(controlador, usuario);
 				paneles.setVisible(true);
 				dispose();
-			} else {
-				lblError.setText("ERROR, Inserta de nuevo");
+			} else { 
+				lblError.setText("Usuario o contraseña incorrecta, inserta de nuevo.");
 			}
 		}
 	}

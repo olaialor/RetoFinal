@@ -38,5 +38,7 @@ public interface Icontrolador {
 			String cuenta);
 
 	public void eliminarUsuario(String nombreUsuario);
+
+	
 }
 

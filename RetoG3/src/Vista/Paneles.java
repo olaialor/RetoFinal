@@ -43,7 +43,7 @@ public class Paneles extends JFrame {
 			i++;
 			JPanel panel3 = new JPanel();
 			panel3.setLayout(new BorderLayout());
-			Anadir_Personaje ventana3 = new Anadir_Personaje(controlador);
+			Anadir_Personaje ventana3 = new Anadir_Personaje(controlador, this, usuario);
 			panel3.add(ventana3.getContentPane(), BorderLayout.CENTER);
 			tabbedPane.addTab("Añadir Personaje", panel3);
 			JPanel panel4 = new JPanel();
@@ -102,7 +102,37 @@ public class Paneles extends JFrame {
 		Paneles.tabbedPane.setSelectedIndex(i);
 
 	}
-	
+
+	public void refrescarPersonaje(Controlador controlador, Usuario usuario) {
+
+		tabbedPane.removeTabAt(0);
+
 		
+		JPanel panel1 = new JPanel();
+		panel1.setBackground(Color.RED);
+		panel1.setLayout(new BorderLayout());
+		Wiki_Personaje ventana1 = new Wiki_Personaje(controlador);
+		panel1.add(ventana1.getContentPane(), BorderLayout.CENTER);
+		tabbedPane.insertTab("Personajes", null, panel1, null, 0);
+
+		
+		tabbedPane.setSelectedIndex(0);
+	}
 	
+	public void refrescarTienda(Controlador controlador, Usuario usuario) {
+
+		tabbedPane.removeTabAt(1);
+
+		
+		JPanel panel1 = new JPanel();
+		panel1.setBackground(Color.RED);
+		panel1.setLayout(new BorderLayout());
+		Busqueda_Producto ventana2 = new Busqueda_Producto(controlador);
+		panel1.add(ventana2.getContentPane(), BorderLayout.CENTER);
+		tabbedPane.insertTab("Personajes", null, panel1, null, 1);
+
+		
+		tabbedPane.setSelectedIndex(1);
+	}
+
 }

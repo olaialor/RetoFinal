@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 import java.awt.Color;
 import javax.swing.JButton;
 
-
 public class SignUp extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -47,7 +46,7 @@ public class SignUp extends JFrame implements ActionListener {
 
 	public SignUp(Controlador controlador, Usuario usuario) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SignUp.class.getResource("/Imagenes/LazoHelloKitty.png")));
-		
+
 		this.controlador = controlador;
 		this.usuario = usuario;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -182,7 +181,6 @@ public class SignUp extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o == btnLogIn) {
 			SignUp.this.setVisible(false);
@@ -194,43 +192,60 @@ public class SignUp extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 		} else if (o == btnSignUp) {
+			lblError.setText("");
 			String username = textFieldUsername.getText();
-			try {
-				if (controlador.existePersonaje(username)) { // Verifica si el personaje existe
-					lblError.setText("Error. El personaje ya existe.");
-				} else { // Si el personaje no existe, realiza las comprobaciones adicionales
-					String password2 = new String(passwordFieldContraseña2.getPassword());
-					String password1 = new String(passwordFieldContraseña1.getPassword());
-					if (password1.equals(password2)) {
-						String email = textFieldEmail.getText();
-						if (formatoEmail.matcher(email).matches()) {
-							int n_telefono = Integer.valueOf(textFieldTelefono.getText());
-							String direccion = textFieldDireccion.getText();
-							String n_cuenta = textFieldNCuenta.getText();
-							usuario = new Cliente(username, password1, n_telefono, direccion, email, n_cuenta);
-							if (controlador.SignUp(usuario)) {
-								SignUp.this.setVisible(false);
-								SignUp.this.dispose();
+			String password1 = new String(passwordFieldContraseña1.getPassword());
+			String password2 = new String(passwordFieldContraseña2.getPassword());
+			String email = textFieldEmail.getText();
+			String telefono = textFieldTelefono.getText();
+			String direccion = textFieldDireccion.getText();
+			String nCuenta = textFieldNCuenta.getText();
+
+			if (username.isEmpty() || password1.isEmpty() || password2.isEmpty() || email.isEmpty()
+					|| telefono.isEmpty() || direccion.isEmpty() || nCuenta.isEmpty()) {
+				lblError.setText("Todos los campos son obligatorios.");
+			} else if (username.length() > 15|| direccion.length() > 15 ||nCuenta.length() > 15) {
+				lblError.setText("Campos ≤ 15 caracteres.");
+			} else {
+				try {
+					if (controlador.existePersonaje(username)) {
+						lblError.setText("El nombre de usuario ya está en uso.");
+					} else {
+						if (password1.equals(password2)) {
+							if (formatoEmail.matcher(email).matches()) {
 								try {
-									Paneles frame = new Paneles(controlador, usuario);
-									frame.setVisible(true);
-								} catch (Exception e1) {
-									e1.printStackTrace();
+									int n_telefono = Integer.valueOf(telefono);
+									usuario = new Cliente(username, password1, n_telefono, direccion, email, nCuenta);
+									boolean signupSuccess = controlador.SignUp(usuario);
+									if (signupSuccess) {
+										SignUp.this.setVisible(false);
+										SignUp.this.dispose();
+										try {
+											Paneles frame = new Paneles(controlador, usuario);
+											frame.setVisible(true);
+										} catch (Exception e1) {
+											e1.printStackTrace();
+											lblError.setText("Ocurrió un error al abrir el panel de usuario.");
+										}
+									} else {
+										lblError.setText("Error al registrarse. Intente nuevamente.");
+									}
+								} catch (NumberFormatException ex) {
+									lblError.setText("El teléfono debe ser un número válido.");
 								}
 							} else {
-								lblError.setText("Error. La contraseña no coincide.");
+								lblError.setText("El formato del email es incorrecto.");
 							}
 						} else {
-							lblError.setText("Formato del email no válido.");
+							lblError.setText("Las contraseñas no coinciden.");
 						}
-					} else {
-						lblError.setText("Error. La contraseña no coincide.");
 					}
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					lblError.setText("Ocurrió un error al verificar el nombre de usuario. Intente nuevamente.");
 				}
-			} catch (Exception e1) {
-				e1.printStackTrace();
 			}
-
 		}
 	}
 }
+

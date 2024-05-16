@@ -44,6 +44,8 @@ public class Anadir_Producto extends JFrame implements ActionListener {
 	private JButton btnCancelar;
 	private Controlador controlador;
 	private JLabel lblNewLabel;
+	private Usuario usuario;
+	private Paneles paneles;
 
 	/**
 	 * Launch the application.
@@ -54,6 +56,8 @@ public class Anadir_Producto extends JFrame implements ActionListener {
 	 */
 	public Anadir_Producto(Controlador controlador, Paneles paneles, Usuario usuario) {
 		this.controlador = controlador;
+		this.usuario=usuario;
+		this.paneles=paneles;
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Anadir_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,6 +137,12 @@ public class Anadir_Producto extends JFrame implements ActionListener {
 		btnCancelar.setBackground(new Color(255, 220, 230));
 		contentPaneStock.add(btnCancelar);
 		
+		lblRutaFoto = new JLabel("/Imagen/ruta_foto.jpg");
+		lblRutaFoto.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
+		lblRutaFoto.setBounds(620, 143, 255, 23);
+		lblRutaFoto.setForeground(new Color(100, 100, 100));
+		contentPaneStock.add(lblRutaFoto);
+		
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(Anadir_Producto.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -21, 1352, 792);
@@ -172,6 +182,7 @@ public class Anadir_Producto extends JFrame implements ActionListener {
 				if (opcion == JOptionPane.OK_OPTION) {
 					Producto producto= new Producto(personaje, controlador.nuevoCodigoProd(), precio, descripcion, stock, ruta);
 					controlador.añadirProducto(producto);
+					paneles.refrescarTienda(controlador,usuario);
 					JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {

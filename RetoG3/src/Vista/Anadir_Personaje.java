@@ -20,6 +20,8 @@ import javax.swing.border.LineBorder;
 
 import Controlador.Controlador;
 import Modelo.Personaje;
+import Modelo.Usuario;
+
 import com.toedter.calendar.JCalendar;
 
 public class Anadir_Personaje extends JFrame implements ActionListener {
@@ -40,9 +42,15 @@ public class Anadir_Personaje extends JFrame implements ActionListener {
 	private JButton btnCancelar;
 	private Controlador controlador;
 	private JCalendar calendar;
+	private Usuario usuario;
+	private Paneles paneles;
+	private JLabel lblError;
 
-	public Anadir_Personaje(Controlador controlador) {
+	public Anadir_Personaje(Controlador controlador, Paneles paneles, Usuario usuario) {
 		this.controlador = controlador;
+		this.usuario = usuario;
+		this.paneles = paneles;
+
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Anadir_Personaje.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,9 +114,9 @@ public class Anadir_Personaje extends JFrame implements ActionListener {
 
 		calendar = new JCalendar();
 		calendar.getDayChooser().getDayPanel().setForeground(new Color(255, 192, 203));
-		calendar.setDecorationBackgroundColor(new Color(255, 192, 203)); 
+		calendar.setDecorationBackgroundColor(new Color(255, 192, 203));
 		calendar.setDecorationBordersVisible(false);
-		calendar.setBounds(39, 471, 255, 180); 
+		calendar.setBounds(39, 471, 255, 180);
 		calendar.setBorder(new LineBorder(new Color(255, 192, 203)));
 		contentPane.add(calendar);
 
@@ -123,6 +131,18 @@ public class Anadir_Personaje extends JFrame implements ActionListener {
 		btnCancelar.setBounds(856, 630, 152, 41);
 		btnCancelar.setBackground(new Color(255, 220, 230));
 		contentPane.add(btnCancelar);
+
+		lblRutaFoto = new JLabel("/Imagen/ruta_foto.jpg");
+		lblRutaFoto.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
+		lblRutaFoto.setBounds(580, 445, 255, 23);
+		lblRutaFoto.setForeground(new Color(100, 100, 100));
+		contentPane.add(lblRutaFoto);
+
+		lblError = new JLabel("");
+		lblError.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
+		lblError.setBounds(450, 635, 255, 23);
+		lblError.setForeground(new Color(200, 70, 70));
+		contentPane.add(lblRutaFoto);
 
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(Anadir_Personaje.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
@@ -140,6 +160,7 @@ public class Anadir_Personaje extends JFrame implements ActionListener {
 		UIManager.put("OptionPane.messageForeground", Color.BLACK);
 		UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
 		if (e.getSource().equals(btnAnadir)) {
+
 			String nombre = textFieldNombre_Personaje.getText();
 			if (!controlador.existePersonaje(nombre)) {
 				String descripcion = textPaneDescrip.getText();
@@ -148,14 +169,15 @@ public class Anadir_Personaje extends JFrame implements ActionListener {
 
 				Date cumple = calendar.getDate();
 
-				int opcion = JOptionPane.showConfirmDialog(this,
-						"¿Estás seguro de que deseas añadir este personaje?", "Confirmar",
-						JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				
+				int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este personaje?",
+						"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
 				if (opcion == JOptionPane.OK_OPTION) {
 					int codigo = controlador.nuevoCodigoPer();
 					Personaje character = new Personaje(nombre, descripcion, cumple, curiosidad, ruta_foto, codigo);
 					controlador.añadirPersonaje(character);
+					paneles.refrescarPersonaje(controlador,usuario);
 
 					JOptionPane.showMessageDialog(this, "Personaje añadido correctamente.", "Éxito",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -167,8 +189,7 @@ public class Anadir_Personaje extends JFrame implements ActionListener {
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
 				}
 
 			} else {
