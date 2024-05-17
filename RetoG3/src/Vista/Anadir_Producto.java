@@ -1,13 +1,19 @@
 package Vista;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Controlador.Controlador;
+import Modelo.Producto;
+import Modelo.Usuario;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JLabel;
@@ -20,7 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
-public class Añadir_Producto extends JFrame implements ActionListener{
+public class Anadir_Producto extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPaneStock;
@@ -30,36 +36,30 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 	private JLabel lblDescripcionProd;
 	private JLabel lblPrecio;
 	private JTextArea textPaneDescripcionProd;
-	private JComboBox comboBoxNombrePer;
+	private JComboBox<String> comboBoxNombrePer;
 	private JLabel lblNombrePer;
 	private JSpinner spinnerStock;
 	private JLabel lblStock;
 	private JButton btnAnadir;
 	private JButton btnCancelar;
+	private Controlador controlador;
 	private JLabel lblNewLabel;
+	private Usuario usuario;
+	private Paneles paneles;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Añadir_Producto frame = new Añadir_Producto();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Añadir_Producto() {
+	public Anadir_Producto(Controlador controlador, Paneles paneles, Usuario usuario) {
+		this.controlador = controlador;
+		this.usuario=usuario;
+		this.paneles=paneles;
 		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(Añadir_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
+				.getImage(Anadir_Producto.class.getResource("/Imagenes/LazoHelloKitty.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 768);
 		contentPaneStock = new JPanel();
@@ -100,10 +100,15 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 		textPaneDescripcionProd.setBounds(51, 318, 652, 184);
 		contentPaneStock.add(textPaneDescripcionProd);
 
-		comboBoxNombrePer = new JComboBox();
+		comboBoxNombrePer = new JComboBox<String>();
 		comboBoxNombrePer.setFont(new Font("Goudy Old Style", Font.PLAIN, 19));
 		comboBoxNombrePer.setBounds(50, 68, 255, 41);
 		contentPaneStock.add(comboBoxNombrePer);
+		ArrayList<String> miUserLista=controlador.completarNombrePer();
+		for(String str : miUserLista) {
+			comboBoxNombrePer.addItem(str);
+		}
+		
 
 		lblNombrePer = new JLabel("Nombre Personaje");
 		lblNombrePer.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
@@ -122,16 +127,24 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 
 		btnAnadir = new JButton("Añadir");
 		btnAnadir.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
-		btnAnadir.setBounds(1075, 651, 152, 41);
+		btnAnadir.setBounds(1060, 630, 152, 41);
+		btnAnadir.setBackground(new Color(255, 220, 230));
 		contentPaneStock.add(btnAnadir);
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Goudy Old Style", Font.BOLD, 20));
-		btnCancelar.setBounds(866, 651, 152, 41);
+		btnCancelar.setBounds(856, 630, 152, 41);
+		btnCancelar.setBackground(new Color(255, 220, 230));
 		contentPaneStock.add(btnCancelar);
 		
+		lblRutaFoto = new JLabel("/Imagen/ruta_foto.jpg");
+		lblRutaFoto.setFont(new Font("Goudy Old Style", Font.BOLD, 22));
+		lblRutaFoto.setBounds(620, 143, 255, 23);
+		lblRutaFoto.setForeground(new Color(100, 100, 100));
+		contentPaneStock.add(lblRutaFoto);
+		
 		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(Añadir_Producto.class.getResource("/Imagenes/FondoAñadir2.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(Anadir_Producto.class.getResource("/Imagenes/fondo_Añadir2.jpg")));
 		lblNewLabel.setBounds(-42, -21, 1352, 792);
 		contentPaneStock.add(lblNewLabel);
 		
@@ -144,23 +157,41 @@ public class Añadir_Producto extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		UIManager.put("OptionPane.background", new Color(160,202,238));
-        UIManager.put("Panel.background", new Color(160,202,238));
-        UIManager.put("OptionPane.messageForeground", Color.BLACK);
-        UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
-		JButton sourceButton = (JButton) e.getSource();
-		if (sourceButton == btnAnadir) {
-			int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
-					"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-
-			if (opcion == JOptionPane.OK_OPTION) {
-				JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
-						JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+		UIManager.put("OptionPane.background", new Color(160, 202, 238));
+		UIManager.put("Panel.background", new Color(160, 202, 238));
+		UIManager.put("OptionPane.messageForeground", Color.BLACK);
+		UIManager.put("OptionPane.messageFont", new Font("Goudy Old Style", Font.PLAIN, 16));
+		boolean correcto=true;
+		double precio=0.0;
+		if (e.getSource().equals(btnAnadir)) {
+			String personaje= (String) comboBoxNombrePer.getSelectedItem();
+			try {
+			    precio = Double.parseDouble(textFieldPrecio.getText());
+			} catch (NumberFormatException e1) {
+			   
+			    JOptionPane.showMessageDialog(null, "Por favor ingresa un precio válido.", "Error", JOptionPane.ERROR_MESSAGE);
+			    correcto=false;
 			}
-		} else if (sourceButton == btnCancelar) {
-			JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
-		}
+			if (correcto) {
+				String ruta=textFieldRutaFoto.getText();
+				String descripcion=textPaneDescripcionProd.getText();
+				int stock= (int) spinnerStock.getValue();
+				int opcion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas añadir este producto?",
+						"Confirmar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+				if (opcion == JOptionPane.OK_OPTION) {
+					Producto producto= new Producto(personaje, controlador.nuevoCodigoProd(), precio, descripcion, stock, ruta);
+					controlador.añadirProducto(producto);
+					paneles.refrescarTienda(controlador,usuario);
+					JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Éxito",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+				}
+			} else if (e.getSource().equals(btnCancelar)) {
+				JOptionPane.showMessageDialog(this, "Precio no válido.", "Cancelado", JOptionPane.ERROR_MESSAGE);
+			}
+			}
+			
 	}
 }

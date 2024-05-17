@@ -8,6 +8,7 @@ public class Producto {
 	private int stock;	
 	private String ruta_img;
 
+
 	public Producto(String personaje, int cod_producto, double precio, String descripcion, int stock, String ruta_img) {
 		super();
 		this.personaje = personaje;

@@ -10,7 +10,9 @@ public class Personaje {
 	private String ruta_foto;
 	private int codigo;
 
-	public Personaje(String nombre, String descripcion, Date cumpleaños, String curiosidad, String ruta_foto, int codigo) {
+	
+	public Personaje(String nombre, String descripcion, Date cumpleaños, String curiosidad, String ruta_foto,
+			int codigo) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.cumpleaños = cumpleaños;
@@ -22,8 +24,6 @@ public class Personaje {
 	public Personaje() {
 		this.nombre = "";
 		this.descripcion = "";
-		this.curiosidad = "";
-		this.descripcion = "";
 		this.cumpleaños = null;
 		this.curiosidad = "";
 		this.ruta_foto = "";
@@ -33,6 +33,7 @@ public class Personaje {
 	public Personaje(String nombre) {
 		this.nombre = nombre;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -81,12 +82,18 @@ public class Personaje {
 		this.codigo = codigo;
 	}
 
-	@Override
-	public String toString() {
-		return "Personaje [nombre=" + nombre + ", descripcion=" + descripcion + ", cumpleaños=" + cumpleaños
-				+ ", curiosidad=" + curiosidad + ", ruta_foto=" + ruta_foto + ", codigo=" + codigo + "]";
+	public String getRuta() {
+		return ruta_foto;
 	}
 
-	
+	public void setRuta(String ruta_foto) {
+		this.ruta_foto = ruta_foto;
+	}
+
+	@Override
+	public String toString() {
+		return "Personaje [nombre=" + nombre + ", descripción=" + descripcion + ", cumpleaños=" + cumpleaños + ", curiosidad="
+				+ curiosidad + ", ruta=" + ruta_foto + ", codigo=" + codigo + "]";
+	}
 
 }

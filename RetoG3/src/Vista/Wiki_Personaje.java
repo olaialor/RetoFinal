@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import Controlador.Controlador;
 import Modelo.Personaje;
+
 import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,10 @@ import java.awt.event.ActionListener;
 
 public class Wiki_Personaje extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Controlador controlador;
 	private JPanel mainPanel;
 	private JLabel lblPersonaje2;
@@ -20,11 +25,6 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 	private JScrollPane scrollPane;
 	private JLabel lblLogo;
 	private JLabel lblFondo;
-	private JPanel panel2;
-	private String rutaImagen;
-	private ImageIcon imagen;
-	private JLabel imagenLabel;
-
 	public Wiki_Personaje(Controlador controlador) {
 		this.controlador = controlador;
 
@@ -46,7 +46,7 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 		lblPersonaje = new JLabel("New label");
 		lblPersonaje.setIcon(new ImageIcon(Wiki_Personaje.class.getResource("/Imagenes/personaje2.png")));
-		lblPersonaje.setBounds(-65, 526, 264, 237);
+		lblPersonaje.setBounds(-65, 526, 254, 237);
 		mainPanel.add(lblPersonaje);
 
 		scrollPaneContainer = new JPanel();
@@ -70,27 +70,26 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		// Ajustar el tamaño del JScrollPane
+		
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		// Agregar el JScrollPane al panel interno
-		scrollPaneContainer.setBackground(Color.white); // Establece el color de fondo del JScrollPane
+		scrollPaneContainer.setBackground(Color.white);
 		scrollPane.setPreferredSize(new Dimension(860, 580));
 
-		// Cambiar el color de la barra de desplazamiento
+	
 		scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 
 			@Override
 			protected JButton createDecreaseButton(int orientation) {
 				JButton button = super.createDecreaseButton(orientation);
-				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
+				button.setBackground(new Color(255, 213, 227)); 
 				return button;
 			}
 
 			@Override
 			protected JButton createIncreaseButton(int orientation) {
 				JButton button = super.createIncreaseButton(orientation);
-				button.setBackground(new Color(255, 213, 227)); // Cambiar el color de la flecha de desplazamiento
+				button.setBackground(new Color(255, 213, 227));
 				return button;
 			}
 
@@ -140,24 +139,24 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 	private JPanel createPanel(Personaje personaje) {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 245, 248));
-		panel.setLayout(new GridLayout(1, 2));
+		panel.setLayout(new GridLayout(1, 1));
 
 		JPanel textPanel = new JPanel();
 		textPanel.setBackground(new Color(255, 245, 248));
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-		textPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		textPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
 		JLabel nombre = new JLabel(personaje.getNombre());
 		nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		nombre.setFont(new Font("Goudy Stout", Font.PLAIN, 16));
 		textPanel.add(nombre);
 		Dimension size = nombre.getPreferredSize();
-		size.width = 50;
+		size.width = 20;
 		nombre.setPreferredSize(size);
 
 		textPanel.add(nombre);
 
-		textPanel.add(Box.createVerticalStrut(10));
+		textPanel.add(Box.createVerticalStrut(0));
 
 		JLabel descrip = new JLabel("Descripción: " + personaje.getDescripcion());
 		descrip.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -177,14 +176,14 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 		JButton btnProd = new JButton("Ver productos");
 		btnProd.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnProd.setFont(new Font("Goudy Old Style", Font.BOLD, 19));
-		btnProd.setMargin(new Insets(5, 13, 5, 13)); // Ajustar los márgenes
+		btnProd.setMargin(new Insets(5, 13, 5, 13));
 		btnProd.setForeground(Color.white);
 		btnProd.setBackground(new Color(252, 193, 211));
 		btnProd.addActionListener(this);
 		textPanel.add(Box.createVerticalStrut(20));
 		textPanel.add(btnProd);
 		btnProd.setActionCommand(String.valueOf(personaje.getCodigo()));
-		////
+		
 		btnProd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -200,8 +199,8 @@ public class Wiki_Personaje extends JFrame implements ActionListener {
 
 	    if (command != null) {
 	        String nombre = controlador.getNombre(Integer.parseInt(command));
-	        Busqueda_Producto busqueda_Producto = new Busqueda_Producto(controlador, nombre); // Pasa los criterios de filtro
-	        Paneles.tabbedPane.setSelectedIndex(1); // Cambia a la pestaña Busqueda_Producto
+	        Paneles.filtrar(controlador, nombre, null);
+	        
 	    }
 	}
 
