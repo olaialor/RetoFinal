@@ -127,7 +127,7 @@ public class Paneles extends JFrame {
 			panel4.add(ventana4.getContentPane(), BorderLayout.CENTER);
 			tabbedPane.addTab("Añadir Producto", panel4);
 			tabbedPane.setSelectedIndex(3);
-			tabbedPane.setBackgroundAt(3, customColor);
+			tabbedPane.setBackgroundAt(3,customColor);
 			tabbedPane.setForegroundAt(3, Color.WHITE);
 		}
 		
@@ -144,7 +144,7 @@ public class Paneles extends JFrame {
 		panel1.setLayout(new BorderLayout());
 		Busqueda_Producto ventana2 = new Busqueda_Producto(controlador);
 		panel1.add(ventana2.getContentPane(), BorderLayout.CENTER);
-		tabbedPane.insertTab("Personajes", null, panel1, null, 1);
+		tabbedPane.insertTab("Tenda", null, panel1, null, 1);
 		tabbedPane.setSelectedIndex(1);
 		tabbedPane.setBackgroundAt(1, customColor);
 		tabbedPane.setForegroundAt(1, Color.WHITE);

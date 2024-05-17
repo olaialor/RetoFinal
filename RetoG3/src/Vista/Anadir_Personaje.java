@@ -178,15 +178,16 @@ public class Anadir_Personaje extends JFrame implements ActionListener {
 					Personaje character = new Personaje(nombre, descripcion, cumple, curiosidad, ruta_foto, codigo);
 					controlador.añadirPersonaje(character);
 					paneles.refrescarPersonaje(controlador,usuario);
-
-					JOptionPane.showMessageDialog(this, "Personaje añadido correctamente.", "Éxito",
-							JOptionPane.INFORMATION_MESSAGE);
 					try {
 						Paneles.tabbedPane.setSelectedIndex(0);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+
+					JOptionPane.showMessageDialog(this, "Personaje añadido correctamente.", "Éxito",
+							JOptionPane.INFORMATION_MESSAGE);
+					
 
 				} else {
 					JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.ERROR_MESSAGE);

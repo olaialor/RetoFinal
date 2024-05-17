@@ -112,17 +112,20 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		textFieldEmail.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldEmail.setColumns(10);
 		textFieldEmail.setBounds(59, 562, 277, 35);
+		textFieldEmail.setEditable(false);
 		contentPane.add(textFieldEmail);
 
 		textFieldCuenta = new JTextField(((Cliente) usuario).getN_cuenta());
 		textFieldCuenta.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldCuenta.setColumns(10);
 		textFieldCuenta.setBounds(482, 565, 277, 35);
+		textFieldCuenta.setEditable(false);
 		contentPane.add(textFieldCuenta);
 
 		passwordField = new JPasswordField(usuario.getPassword());
 		passwordField.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		passwordField.setBounds(59, 401, 277, 35);
+		passwordField.setEditable(false);
 		contentPane.add(passwordField);
 
 		lblDireccin = new JLabel("Dirección");
@@ -134,6 +137,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		textFieldDirec.setFont(new Font("Goudy Old Style", Font.PLAIN, 18));
 		textFieldDirec.setColumns(10);
 		textFieldDirec.setBounds(885, 401, 277, 35);
+		textFieldDirec.setEditable(false);
 		contentPane.add(textFieldDirec);
 
 		textFieldTelf = new JTextField(usuario.getN_telefono());
@@ -141,7 +145,7 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 		textFieldTelf.setColumns(10);
 		textFieldTelf.setBounds(482, 401, 277, 35);
 		textFieldTelf.setText(Integer.toString(usuario.getN_telefono()));
-		textFieldTelf.setText(Integer.toString(usuario.getN_telefono()));
+		textFieldTelf.setEditable(false);
 		contentPane.add(textFieldTelf);
 
 		btnDarseDeBaja = new JButton("Darse de baja");
@@ -178,7 +182,6 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 				textFieldDirec.setEditable(false);
 				JOptionPane.showMessageDialog(null, "Cambios guardados correctamente.", "Éxito",
 						JOptionPane.INFORMATION_MESSAGE);
-
 			}
 		} else if (e.getSource() == btnDarseDeBaja) {
 			int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que desea eliminar su cuenta?", "",
@@ -187,20 +190,10 @@ public class Mi_Perfil extends JFrame implements ActionListener {
 				controlador.eliminarUsuario(usuario.getUsername());
 
 				try {
-
-					if (confirmacion == JOptionPane.OK_OPTION) {
-						controlador.eliminarUsuario(usuario.getUsername());
-
-						try {
-							SignUp frame = new SignUp(controlador, usuario);
-							frame.setVisible(true);
-							
-							paneles.cerrarPaneles();
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
-
+					SignUp frame = new SignUp(controlador, usuario);
+					frame.setVisible(true);
+					
+					paneles.cerrarPaneles();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
